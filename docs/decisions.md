@@ -44,9 +44,6 @@ here, with the reason.
 
 ## Open
 
-- Token sign-ins in the sessions list, and app-aware device labels:
-  [backend #956](https://github.com/lamberto15/nestjs-monorepo-template/issues/956).
-
 - Where the backend is deployed for passkey testing (needs `https`).
 - App attestation (backend done, #953): the app side waits for a
   development build with a paid Apple team or Android; meanwhile
@@ -54,6 +51,3 @@ here, with the reason.
 - Provider sign-in and magic links (backend done, #952): provider sign-in
   waits for a provider on the test server; magic links for universal/app
   links.
-- Notification preferences GET/PUT mismatch:
-  [backend #957](https://github.com/lamberto15/nestjs-monorepo-template/issues/957)
-  (worked around by `saveBody`).
