@@ -1,56 +1,57 @@
-# Welcome to your Expo app 👋
+# nestjs-monorepo-mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A **starter mobile app** for projects built on
+[nestjs-monorepo-template](https://github.com/lamberto15/nestjs-monorepo-template):
+Expo (SDK 58), React Native and Expo Router, already wired to the
+template's REST API and realtime socket through its typed client. Start your
+iOS and Android app from it the way you started your backend from the
+template.
 
-## Get started
+> Status: **foundation**. What's built and what's next:
+> [docs/decisions.md](docs/decisions.md#roadmap).
 
-1. Install dependencies
+## What the starter gives you (planned)
+
+- Sign in with email and password, two-factor (TOTP or a recovery code), and
+  passkeys; sign-up when the backend allows it.
+- Token sessions done right: secure storage, refresh before expiry, one
+  refresh at a time (the backend revokes a reused refresh token's family).
+- Tenant picker and switching.
+- Profile, language (incl. right to left), sessions and devices.
+- Notifications: the in-app list kept live over realtime, and push
+  (APNs/FCM, as the backend sends).
+
+No product features: add yours on top.
+
+## Use it
+
+1. **Use this template** on GitHub (or clone it) for your app's repo.
+2. Make it yours: the checklist in
+   [docs/development.md](docs/development.md#make-it-yours) (app name,
+   bundle ID and package, scheme, your backend repo for the client sync).
+3. Run it against your backend:
 
    ```bash
-   npm install
+   pnpm install
+   cp .env.example .env    # set EXPO_PUBLIC_API_URL
+   pnpm start              # i: iOS simulator, a: Android emulator, or scan the QR code
    ```
 
-2. Start the app
+Prerequisites: Node 24 and pnpm (as the backend), and the backend running
+(its `pnpm dev`, API on port 3000). A phone or emulator can't reach
+`localhost` on your computer: see
+[docs/development.md](docs/development.md#reaching-the-local-api).
 
-   ```bash
-   npx expo start
-   ```
+## Documentation
 
-In the output, you'll find options to open the app in a
+| Doc | What's in it |
+| --- | --- |
+| [AGENTS.md](AGENTS.md) | Rules for coding agents (and people): workflow, commands, Expo rules |
+| [docs/architecture.md](docs/architecture.md) | Folders, layers, state, navigation, styling |
+| [docs/backend-integration.md](docs/backend-integration.md) | API client sync, tokens, sign-in, tenants, errors, push, realtime |
+| [docs/development.md](docs/development.md) | Setup, make it yours, env, dev builds, EAS, git workflow |
+| [docs/decisions.md](docs/decisions.md) | Decisions and the roadmap |
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## License
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+[PolyForm Noncommercial 1.0.0](LICENSE), as the backend template.
