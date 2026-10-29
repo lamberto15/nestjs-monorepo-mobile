@@ -427,5 +427,28 @@
     "body": "Apa yang anda ubah di sini belum disimpan.",
     "keep": "Teruskan menyunting",
     "discard": "Buang"
+  },
+  "documents": {
+    "title": "PDF",
+    "make": "Buat PDF",
+    "failed": "Tidak dapat dibuat.",
+    "status": {
+      "queued": "Menunggu",
+      "rendering": "Sedang dibuat",
+      "completed": "Sedia: ketik untuk buka",
+      "failed": "Gagal"
+    }
+  },
+  "export": {
+    "start": "Eksport sebagai CSV",
+    "working": "Sedang dibuat…",
+    "open": "Buka fail ({{rows}} baris)"
+  },
+  "branding": {
+    "logo": "Logo",
+    "mode": {
+      "read-only": "Perkhidmatan hanya boleh dibaca buat masa ini: perubahan tidak disimpan.",
+      "maintenance": "Perkhidmatan sedang diselenggara."
+    }
   }
 }

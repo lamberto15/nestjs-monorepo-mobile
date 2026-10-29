@@ -1,5 +1,6 @@
 import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
+import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
@@ -8,6 +9,7 @@ import { ErrorState } from '@/components/error-state';
 import { ListRow } from '@/components/list-row';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
+import { API_URL } from '@/api/public-api';
 import { Spacing } from '@/constants/theme';
 import { apiErrorMessage } from '@/features/auth/errors';
 import { useMe } from '@/features/auth/hooks';
@@ -19,6 +21,9 @@ import {
   useInbox,
   useRecents,
 } from '@/features/work/hooks';
+import { useBranding } from '@/features/tenant/branding';
+import { useFeatures } from '@/features/tenant/features';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { formatDateTime } from '@/i18n/format';
 
 /**
@@ -43,6 +48,7 @@ export default function HomeScreen() {
           ),
         }}
       />
+      <TenantHeader />
       {me.data && (
         <ThemedText themeColor="textSecondary">
           {[me.data.user.name, me.data.tenant?.name]
@@ -73,6 +79,36 @@ export default function HomeScreen() {
         />
       )}
     </Screen>
+  );
+}
+
+/** The tenant's logo, and a notice when the service is read-only or in maintenance. */
+function TenantHeader() {
+  const { t } = useTranslation();
+  const scheme = useColorScheme();
+  const branding = useBranding();
+  const features = useFeatures();
+  const logo =
+    scheme === 'dark'
+      ? (branding.data?.darkLogoUrl ?? branding.data?.logoUrl)
+      : branding.data?.logoUrl;
+  const mode = features.data?.mode;
+  return (
+    <>
+      {logo && (
+        <Image
+          source={`${API_URL}${logo}`}
+          style={styles.logo}
+          contentFit="contain"
+          accessibilityLabel={t('branding.logo')}
+        />
+      )}
+      {mode && mode !== 'normal' && (
+        <ThemedText themeColor="danger" accessibilityRole="alert">
+          {t(`branding.mode.${mode}`)}
+        </ThemedText>
+      )}
+    </>
   );
 }
 
@@ -225,6 +261,10 @@ function Recents() {
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    height: 40,
+    width: 160,
+  },
   links: {
     gap: Spacing.two,
   },

@@ -427,5 +427,28 @@
     "body": "你在此处的更改尚未保存。",
     "keep": "继续编辑",
     "discard": "放弃"
+  },
+  "documents": {
+    "title": "PDF",
+    "make": "生成 PDF",
+    "failed": "无法生成。",
+    "status": {
+      "queued": "等待中",
+      "rendering": "生成中",
+      "completed": "已就绪：点击打开",
+      "failed": "失败"
+    }
+  },
+  "export": {
+    "start": "导出为 CSV",
+    "working": "生成中…",
+    "open": "打开文件（{{rows}} 行）"
+  },
+  "branding": {
+    "logo": "徽标",
+    "mode": {
+      "read-only": "服务暂时为只读：更改不会保存。",
+      "maintenance": "服务正在维护。"
+    }
   }
 }

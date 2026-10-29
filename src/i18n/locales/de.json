@@ -427,5 +427,28 @@
     "body": "Was du hier geändert hast, ist nicht gespeichert.",
     "keep": "Weiter bearbeiten",
     "discard": "Verwerfen"
+  },
+  "documents": {
+    "title": "PDFs",
+    "make": "PDF erstellen",
+    "failed": "Konnte nicht erstellt werden.",
+    "status": {
+      "queued": "Wartet",
+      "rendering": "Wird erstellt",
+      "completed": "Fertig: zum Öffnen tippen",
+      "failed": "Fehlgeschlagen"
+    }
+  },
+  "export": {
+    "start": "Als CSV exportieren",
+    "working": "Wird erstellt…",
+    "open": "Datei öffnen ({{rows}} Zeilen)"
+  },
+  "branding": {
+    "logo": "Logo",
+    "mode": {
+      "read-only": "Der Dienst ist gerade schreibgeschützt: Änderungen werden nicht gespeichert.",
+      "maintenance": "Der Dienst wird gewartet."
+    }
   }
 }

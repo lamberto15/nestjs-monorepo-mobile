@@ -23,7 +23,7 @@ app.
 | attachments                                                                                                                                                                                   | yes; presigned/resumable uploads and file versions not yet |
 | work-surfaces: inbox, recents, search, presence                                                                                                                                               | yes                                                        |
 | approvals (decide, request), acknowledgments                                                                                                                                                  | yes; policies and delegations: web                         |
-| documents (PDF), data-transfer (export), branding, settings and feature flags                                                                                                                 | planned (#24)                                              |
+| documents (PDF), data-transfer (list export), branding, feature switches                                                                                                                      | yes                                                        |
 | permissions, access, identity, tenancy (operators), automations, retention, data quality, reports, forms, sequences, merging, bulk operations, templates, choices, computed fields, money, AI | web (admin), or a feature's own work                       |
 
 ## The typed client
@@ -305,6 +305,24 @@ Reject and request changes need a reason. The realtime `approval.assigned`,
 Approval policies and delegations are admin work, left to the web app.
 Home → Documents to acknowledge: open the document (signed link), then
 `POST /v1/attachments/{id}/acknowledge`.
+
+## PDFs, exports, branding, switches
+
+- **PDFs** (`POST …/{id}/pdf?lang=`, 202): a worker renders it; the record's
+  documents (`…/{id}/documents`) are polled while one is being made and
+  `document.ready` / `document.failed` reload them; a completed one opens by
+  signed link. Shown when the type's `capabilities.pdf` and the
+  deployment's `documents` switch are on.
+- **List export** (`POST /v1/data/exports`, the list's current filters as
+  `filters`, CSV): the transfer is followed until done (`data.export-ready`
+  too), then its file opens. Offered when `GET /v1/data` has an export for
+  the subject.
+- **Branding** (`GET /v1/branding`): the tenant's colour as the accent, only
+  where it stays readable (white on it, or it on the background, 4.5:1:
+  `brandColors`); its logo on Home (a public path). Reloaded on a tenant
+  switch with everything else.
+- **Switches** (`GET /v1/features`): `useFeatures()` hides what is off; a
+  read-only or maintenance `mode` shows a notice on Home.
 
 ## User-Agent
 

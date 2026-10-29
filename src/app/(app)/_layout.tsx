@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useMe } from '@/features/auth/hooks';
+import { BrandingProvider } from '@/features/tenant/branding';
 import { applyLanguage, supportedLanguage } from '@/features/account/language';
 import { useUnreadCount } from '@/features/notifications/hooks';
 import { useRealtimeNotifications } from '@/features/notifications/use-realtime-notifications';
@@ -26,28 +27,32 @@ export default function AppLayout() {
   const badge = unread.data?.unreadCapped || count > 99 ? '99+' : String(count);
 
   return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="(home)">
-        <NativeTabs.Trigger.Label>{t('tabs.home')}</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="notes">
-        <NativeTabs.Trigger.Label>{t('tabs.notes')}</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="note.text" md="description" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="notifications">
-        <NativeTabs.Trigger.Label>
-          {t('tabs.notifications')}
-        </NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="bell.fill" md="notifications" />
-        {count > 0 && (
-          <NativeTabs.Trigger.Badge>{badge}</NativeTabs.Trigger.Badge>
-        )}
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="account">
-        <NativeTabs.Trigger.Label>{t('tabs.account')}</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="person.crop.circle" md="person" />
-      </NativeTabs.Trigger>
-    </NativeTabs>
+    <BrandingProvider>
+      <NativeTabs>
+        <NativeTabs.Trigger name="(home)">
+          <NativeTabs.Trigger.Label>{t('tabs.home')}</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
+        </NativeTabs.Trigger>
+        <NativeTabs.Trigger name="notes">
+          <NativeTabs.Trigger.Label>{t('tabs.notes')}</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon sf="note.text" md="description" />
+        </NativeTabs.Trigger>
+        <NativeTabs.Trigger name="notifications">
+          <NativeTabs.Trigger.Label>
+            {t('tabs.notifications')}
+          </NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon sf="bell.fill" md="notifications" />
+          {count > 0 && (
+            <NativeTabs.Trigger.Badge>{badge}</NativeTabs.Trigger.Badge>
+          )}
+        </NativeTabs.Trigger>
+        <NativeTabs.Trigger name="account">
+          <NativeTabs.Trigger.Label>
+            {t('tabs.account')}
+          </NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon sf="person.crop.circle" md="person" />
+        </NativeTabs.Trigger>
+      </NativeTabs>
+    </BrandingProvider>
   );
 }
