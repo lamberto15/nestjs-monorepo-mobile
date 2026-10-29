@@ -88,7 +88,8 @@
     "language": "Sprache",
     "sessions": "Sitzungen",
     "signOut": "Abmelden",
-    "notifications": "Mitteilungen"
+    "notifications": "Mitteilungen",
+    "organization": "Organisation"
   },
   "language": {
     "title": "Sprache",
@@ -138,5 +139,8 @@
     "save": "Ruhezeiten speichern",
     "turnOff": "Ausschalten",
     "useDeviceZone": "Zeitzone dieses Telefons verwenden ({{zone}})"
+  },
+  "organization": {
+    "title": "Organisation"
   }
 }

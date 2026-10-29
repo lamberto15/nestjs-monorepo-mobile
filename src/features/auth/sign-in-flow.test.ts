@@ -29,12 +29,13 @@ function withTwoFactor(call: Call) {
     : problem(401, 'mfa_required');
 }
 
-test('password, two-factor, then another tenant (a fresh code), then signed in', async () => {
+test('password, two-factor, then another tenant (by refresh, no code again), then signed in', async () => {
   const { flow, session } = load();
   const calls = fakeApi({
     'POST /v1/auth/token': withTwoFactor,
     'GET /v1/auth/tenants': () => reply({ items: tenants }),
-    'POST /v1/auth/token/revoke': () => new Response(null, { status: 204 }),
+    'POST /v1/auth/token/refresh': (call) =>
+      reply(pair((call.body as { tenantId: string }).tenantId)),
   });
 
   expect(await flow.signIn(credentials)).toBe('twoFactor');
@@ -50,20 +51,14 @@ test('password, two-factor, then another tenant (a fresh code), then signed in',
     calls.find((call) => call.path === '/v1/auth/tenants')?.authorization,
   ).toBe('Bearer a-t1');
 
-  expect(await flow.chooseTenant('t2')).toBe('twoFactor');
-  expect(await flow.continueWithSecondFactor({ code: '654321' }, 't2')).toBe(
-    'signedIn',
-  );
+  expect(await flow.chooseTenant('t2')).toBe('signedIn');
 
-  const signIns = calls.filter((call) => call.path === '/v1/auth/token');
-  expect(signIns.at(-1)?.body).toEqual({
-    ...credentials,
-    code: '654321',
-    tenantId: 't2',
-  });
+  expect(calls.filter((call) => call.path === '/v1/auth/token')).toHaveLength(
+    2,
+  );
   expect(
-    calls.find((call) => call.path === '/v1/auth/token/revoke')?.body,
-  ).toEqual({ refreshToken: 'r-t1' });
+    calls.find((call) => call.path === '/v1/auth/token/refresh')?.body,
+  ).toEqual({ refreshToken: 'r-t1', tenantId: 't2' });
   expect(session.status()).toBe('signedIn');
   expect(await session.accessToken()).toBe('a-t2');
   expect(flow.pendingTenants()).toEqual([]);

@@ -88,7 +88,8 @@
     "language": "Bahasa",
     "sessions": "Sesi",
     "signOut": "Log keluar",
-    "notifications": "Pemberitahuan"
+    "notifications": "Pemberitahuan",
+    "organization": "Organisasi"
   },
   "language": {
     "title": "Bahasa",
@@ -138,5 +139,8 @@
     "save": "Simpan waktu senyap",
     "turnOff": "Matikan",
     "useDeviceZone": "Guna zon waktu telefon ini ({{zone}})"
+  },
+  "organization": {
+    "title": "Organisasi"
   }
 }

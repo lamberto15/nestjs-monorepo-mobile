@@ -6,13 +6,9 @@ import type { Step } from '@/features/auth/sign-in-flow';
  * Moves the sign-in flow to its next screen. `signedIn` needs nothing: the
  * root layout's guard leaves the signed-out screens on its own.
  */
-export function goToStep(step: Step, tenantId?: string) {
+export function goToStep(step: Step) {
   if (step === 'twoFactor') {
-    router.push(
-      tenantId
-        ? { pathname: '/two-factor', params: { tenantId } }
-        : '/two-factor',
-    );
+    router.push('/two-factor');
   } else if (step === 'chooseTenant') {
     router.push('/choose-tenant');
   }
