@@ -1,7 +1,15 @@
 import '@/i18n';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import * as Linking from 'expo-linking';
+import {
+  DarkTheme,
+  DefaultTheme,
+  router,
+  Stack,
+  ThemeProvider,
+  type Href,
+} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
@@ -9,10 +17,14 @@ import { useColorScheme } from 'react-native';
 import { queryClient } from '@/api/query-client';
 import { session } from '@/api/session';
 import { OfflineBanner } from '@/components/offline-banner';
+import { PrivacyCover } from '@/components/privacy-cover';
+import { appLock } from '@/features/account/app-lock';
+import { pendingLink } from '@/features/auth/pending-link';
 import { useSessionStatus } from '@/hooks/use-session-status';
 
 SplashScreen.preventAutoHideAsync();
 void session.restore();
+void appLock.load();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -27,6 +39,20 @@ export default function RootLayout() {
 
 function RootNavigator() {
   const status = useSessionStatus();
+  const url = Linking.useURL();
+
+  // A link that arrives signed out opens once signed in.
+  useEffect(() => {
+    if (status === 'signedOut') {
+      pendingLink.keep(url);
+    }
+  }, [status, url]);
+  useEffect(() => {
+    const path = status === 'signedIn' ? pendingLink.take() : undefined;
+    if (path) {
+      router.push(path as Href);
+    }
+  }, [status]);
 
   useEffect(() => {
     if (status !== 'restoring') {
@@ -59,6 +85,7 @@ function RootNavigator() {
         </Stack.Protected>
       </Stack>
       <OfflineBanner />
+      <PrivacyCover />
     </>
   );
 }

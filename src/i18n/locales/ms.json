@@ -414,5 +414,11 @@
     "on": "diakui {{date}}",
     "overdue": "lewat",
     "confirm": "Saya telah membacanya"
+  },
+  "lock": {
+    "title": "Kunci dengan Face ID atau cap jari",
+    "hint": "Diminta apabila aplikasi dibuka, dan selepas seminit ditinggalkan.",
+    "unlock": "Buka kunci",
+    "prompt": "Buka kunci aplikasi"
   }
 }
