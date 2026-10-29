@@ -1,0 +1,10 @@
+# Git hooks (installed by `pnpm install`). CI runs the full checks.
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}
+pre-commit:
+  commands:
+    prettier:
+      glob: '*.{js,mjs,cjs,ts,tsx,json,md,yml,yaml}'
+      run: pnpm exec prettier --check {staged_files}
