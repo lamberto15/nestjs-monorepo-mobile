@@ -31,6 +31,10 @@ export default function AppLayout() {
         <NativeTabs.Trigger.Label>{t('tabs.home')}</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="notes">
+        <NativeTabs.Trigger.Label>{t('tabs.notes')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="note.text" md="description" />
+      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="notifications">
         <NativeTabs.Trigger.Label>
           {t('tabs.notifications')}

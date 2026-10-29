@@ -74,7 +74,8 @@
   "tabs": {
     "home": "首页",
     "notifications": "通知",
-    "account": "账户"
+    "account": "账户",
+    "notes": "笔记"
   },
   "notifications": {
     "title": "通知",
@@ -149,5 +150,33 @@
   },
   "organization": {
     "title": "组织"
+  },
+  "notes": {
+    "list": "笔记",
+    "note": "笔记",
+    "new": "新建笔记",
+    "add": "新建",
+    "edit": "编辑",
+    "create": "创建笔记",
+    "save": "保存",
+    "delete": "删除",
+    "title": "标题",
+    "body": "正文",
+    "search": "搜索",
+    "searchHint": "标题或正文",
+    "status": "状态",
+    "statuses": {
+      "all": "全部",
+      "draft": "草稿",
+      "published": "已发布"
+    },
+    "empty": "暂无笔记。",
+    "noMatch": "没有匹配的笔记。",
+    "noBody": "无正文。",
+    "updated": "更新于 {{time}}",
+    "deleteTitle": "删除这条笔记？",
+    "deleteBody": "“{{title}}”将移到已删除笔记中；管理员可以恢复它。",
+    "conflict": "你打开此笔记后，其他人修改了它。请加载最新版本，再重新修改。",
+    "loadLatest": "加载最新版本"
   }
 }

@@ -74,7 +74,8 @@
   "tabs": {
     "home": "Start",
     "notifications": "Mitteilungen",
-    "account": "Konto"
+    "account": "Konto",
+    "notes": "Notizen"
   },
   "notifications": {
     "title": "Mitteilungen",
@@ -149,5 +150,33 @@
   },
   "organization": {
     "title": "Organisation"
+  },
+  "notes": {
+    "list": "Notizen",
+    "note": "Notiz",
+    "new": "Neue Notiz",
+    "add": "Neu",
+    "edit": "Bearbeiten",
+    "create": "Notiz erstellen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "title": "Titel",
+    "body": "Text",
+    "search": "Suche",
+    "searchHint": "Titel oder Text",
+    "status": "Status",
+    "statuses": {
+      "all": "Alle",
+      "draft": "Entwurf",
+      "published": "Veröffentlicht"
+    },
+    "empty": "Noch keine Notizen.",
+    "noMatch": "Keine passenden Notizen.",
+    "noBody": "Kein Text.",
+    "updated": "geändert {{time}}",
+    "deleteTitle": "Diese Notiz löschen?",
+    "deleteBody": "„{{title}}“ wird zu den gelöschten Notizen verschoben; die Administration kann sie wiederherstellen.",
+    "conflict": "Jemand anderes hat diese Notiz geändert, seit du sie geöffnet hast. Lade die neue Version und nimm deine Änderung erneut vor.",
+    "loadLatest": "Neueste Version laden"
   }
 }

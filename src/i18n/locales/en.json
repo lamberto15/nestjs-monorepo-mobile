@@ -74,7 +74,8 @@
   "tabs": {
     "home": "Home",
     "notifications": "Notifications",
-    "account": "Account"
+    "account": "Account",
+    "notes": "Notes"
   },
   "notifications": {
     "title": "Notifications",
@@ -149,5 +150,33 @@
   },
   "organization": {
     "title": "Organization"
+  },
+  "notes": {
+    "list": "Notes",
+    "note": "Note",
+    "new": "New note",
+    "add": "New",
+    "edit": "Edit",
+    "create": "Create note",
+    "save": "Save",
+    "delete": "Delete",
+    "title": "Title",
+    "body": "Text",
+    "search": "Search",
+    "searchHint": "Title or text",
+    "status": "Status",
+    "statuses": {
+      "all": "All",
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "empty": "No notes yet.",
+    "noMatch": "No notes match.",
+    "noBody": "No text.",
+    "updated": "updated {{time}}",
+    "deleteTitle": "Delete this note?",
+    "deleteBody": "\"{{title}}\" is moved to the deleted notes; an administrator can restore it.",
+    "conflict": "Someone else changed this note since you opened it. Load their version, then make your change again.",
+    "loadLatest": "Load the latest version"
   }
 }
