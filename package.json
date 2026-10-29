@@ -93,6 +93,10 @@
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1",
       "\\.css$": "<rootDir>/src/test/style-stub.ts"
-    }
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/scripts/"
+    ]
   }
 }
