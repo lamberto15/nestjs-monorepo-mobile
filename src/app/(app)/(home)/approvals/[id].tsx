@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/button';
+import { feedback } from '@/components/feedback';
 import { ErrorState } from '@/components/error-state';
 import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
@@ -134,6 +135,7 @@ export default function ApprovalScreen() {
                   { decision: choosing, comment, etag },
                   {
                     onSuccess: () => {
+                      feedback.success();
                       setChoosing(null);
                       setComment('');
                     },

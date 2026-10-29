@@ -184,7 +184,8 @@
     "deleteTitle": "Padam nota ini?",
     "deleteBody": "\"{{title}}\" dipindahkan ke nota yang dipadam; pentadbir boleh memulihkannya.",
     "conflict": "Orang lain telah menukar nota ini sejak anda membukanya. Muatkan versi mereka, kemudian buat perubahan anda semula.",
-    "loadLatest": "Muatkan versi terkini"
+    "loadLatest": "Muatkan versi terkini",
+    "share": "Kongsi"
   },
   "avatar": {
     "change": "Tukar gambar",
@@ -420,5 +421,11 @@
     "hint": "Diminta apabila aplikasi dibuka, dan selepas seminit ditinggalkan.",
     "unlock": "Buka kunci",
     "prompt": "Buka kunci aplikasi"
+  },
+  "unsaved": {
+    "title": "Buang perubahan anda?",
+    "body": "Apa yang anda ubah di sini belum disimpan.",
+    "keep": "Teruskan menyunting",
+    "discard": "Buang"
   }
 }

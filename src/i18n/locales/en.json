@@ -184,7 +184,8 @@
     "deleteTitle": "Delete this note?",
     "deleteBody": "\"{{title}}\" is moved to the deleted notes; an administrator can restore it.",
     "conflict": "Someone else changed this note since you opened it. Load their version, then make your change again.",
-    "loadLatest": "Load the latest version"
+    "loadLatest": "Load the latest version",
+    "share": "Share"
   },
   "avatar": {
     "change": "Change picture",
@@ -420,5 +421,11 @@
     "hint": "Asks when the app opens, and after a minute away.",
     "unlock": "Unlock",
     "prompt": "Unlock the app"
+  },
+  "unsaved": {
+    "title": "Discard your changes?",
+    "body": "What you changed here is not saved.",
+    "keep": "Keep editing",
+    "discard": "Discard"
   }
 }

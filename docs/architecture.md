@@ -107,6 +107,17 @@ layout must work: Arabic is one of the backend's languages.
   `PrivacyInfo.xcprivacy`. A new native dependency: check its file and add
   what it lists. Usage strings: camera, photos, Face ID.
 
+- **Unsaved changes:** forms (the Notes form) ask before leaving with
+  changes (`usePreventRemove`); a successful save goes through.
+- **Feedback:** `feedback.success()` / `.warning()` (haptics) after saves,
+  decisions and before discarding.
+- **No offline read cache yet, on purpose.** TanStack Query can persist its
+  cache, but the stores Expo Go has (`expo-sqlite/kv-store`, AsyncStorage)
+  are not encrypted, and the cache holds account data and record content.
+  A project that needs offline reading: persist with SQLCipher
+  (`expo-sqlite`'s `useSQLCipher`, a development build), only queries that
+  opt in, keyed by user and tenant, cleared on sign-out.
+
 ## Accessibility
 
 - Colours meet WCAG AA: text on `primary` and `dangerFill` and `link` on

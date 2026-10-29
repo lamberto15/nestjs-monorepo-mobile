@@ -184,7 +184,8 @@
     "deleteTitle": "Diese Notiz löschen?",
     "deleteBody": "„{{title}}“ wird zu den gelöschten Notizen verschoben; die Administration kann sie wiederherstellen.",
     "conflict": "Jemand anderes hat diese Notiz geändert, seit du sie geöffnet hast. Lade die neue Version und nimm deine Änderung erneut vor.",
-    "loadLatest": "Neueste Version laden"
+    "loadLatest": "Neueste Version laden",
+    "share": "Teilen"
   },
   "avatar": {
     "change": "Bild ändern",
@@ -420,5 +421,11 @@
     "hint": "Fragt beim Öffnen der App und nach einer Minute Abwesenheit.",
     "unlock": "Entsperren",
     "prompt": "App entsperren"
+  },
+  "unsaved": {
+    "title": "Änderungen verwerfen?",
+    "body": "Was du hier geändert hast, ist nicht gespeichert.",
+    "keep": "Weiter bearbeiten",
+    "discard": "Verwerfen"
   }
 }

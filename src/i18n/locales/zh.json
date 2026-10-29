@@ -184,7 +184,8 @@
     "deleteTitle": "删除这条笔记？",
     "deleteBody": "“{{title}}”将移到已删除笔记中；管理员可以恢复它。",
     "conflict": "你打开此笔记后，其他人修改了它。请加载最新版本，再重新修改。",
-    "loadLatest": "加载最新版本"
+    "loadLatest": "加载最新版本",
+    "share": "分享"
   },
   "avatar": {
     "change": "更换头像",
@@ -420,5 +421,11 @@
     "hint": "打开应用时以及离开一分钟后会要求验证。",
     "unlock": "解锁",
     "prompt": "解锁应用"
+  },
+  "unsaved": {
+    "title": "放弃更改？",
+    "body": "你在此处的更改尚未保存。",
+    "keep": "继续编辑",
+    "discard": "放弃"
   }
 }
