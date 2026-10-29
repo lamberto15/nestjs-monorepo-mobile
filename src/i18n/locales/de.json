@@ -257,5 +257,45 @@
     "cancelHint": "Tippe zum Abbrechen.",
     "pendingHint": "Deine anderen Anmeldungen wurden abgemeldet. Bis dahin kannst du abbrechen.",
     "cancel": "Löschung abbrechen"
+  },
+  "comments": {
+    "title": "Kommentare",
+    "empty": "Noch keine Kommentare.",
+    "more": "Ältere Kommentare",
+    "someone": "Jemand",
+    "edited": "bearbeitet",
+    "resolved": "erledigt",
+    "reply": "Antworten",
+    "edit": "Bearbeiten",
+    "resolve": "Erledigen",
+    "reopen": "Wieder öffnen",
+    "delete": "Löschen",
+    "deleteTitle": "Diesen Kommentar löschen?",
+    "deleteThread": "Seine Antworten werden ebenfalls gelöscht.",
+    "save": "Speichern",
+    "new": "Kommentar hinzufügen",
+    "yourReply": "Deine Antwort",
+    "send": "Kommentieren",
+    "sendReply": "Antworten",
+    "text": "Kommentar"
+  },
+  "records": {
+    "watch": "Beobachten",
+    "unwatch": "Nicht mehr beobachten",
+    "star": "Zu Favoriten",
+    "unstar": "Aus Favoriten entfernen",
+    "tags": "Tags",
+    "editTags": "Tags bearbeiten",
+    "done": "Fertig",
+    "noTags": "Keine Tags.",
+    "noTagsDefined": "Für diese Art von Eintrag gibt es noch keine Tags."
+  },
+  "revisions": {
+    "history": "Verlauf",
+    "number": "Version {{number}}",
+    "created": "Erstellt.",
+    "restore": "Diese Version wiederherstellen",
+    "restoreTitle": "Version {{number}} wiederherstellen?",
+    "restoreBody": "Ihre Werte werden die aktuellen; der Verlauf behält jede Version."
   }
 }

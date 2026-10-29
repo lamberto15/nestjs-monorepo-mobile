@@ -8,7 +8,15 @@ import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { apiErrorMessage } from '@/features/auth/errors';
-import { isConflict, useDeleteNote, useNote } from '@/features/notes/hooks';
+import { useMe } from '@/features/auth/hooks';
+import {
+  isConflict,
+  noteRecord,
+  useDeleteNote,
+  useNote,
+} from '@/features/notes/hooks';
+import { Comments } from '@/features/records/comments';
+import { TagsEditor, WatchAndFavorite } from '@/features/records/record-addons';
 import { formatDateTime } from '@/i18n/format';
 
 export default function NoteScreen() {
@@ -16,6 +24,8 @@ export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const query = useNote(id);
   const remove = useDeleteNote(id);
+  const me = useMe();
+  const record = noteRecord(id);
 
   if (!query.data) {
     return (
@@ -55,16 +65,17 @@ export default function NoteScreen() {
           t('notes.updated', { time: formatDateTime(note.updatedAt) }),
         ].join(' · ')}
       </ThemedText>
-      {note.tags.length > 0 && (
-        <View style={styles.tags}>
-          {note.tags.map((tag) => (
-            <ThemedText key={tag.id} type="small" themeColor="textSecondary">
-              #{tag.name}
-            </ThemedText>
-          ))}
-        </View>
-      )}
       <ThemedText>{note.body || t('notes.noBody')}</ThemedText>
+      <WatchAndFavorite
+        record={record}
+        label={note.title}
+        watching={note.watching}
+      />
+      <TagsEditor
+        record={record}
+        tags={note.tags}
+        editable={Boolean(note.can?.update)}
+      />
 
       {remove.error && (
         <ThemedText themeColor="danger" accessibilityRole="alert">
@@ -81,22 +92,36 @@ export default function NoteScreen() {
           }
         />
       )}
+      <Button
+        title={t('revisions.history')}
+        variant="secondary"
+        onPress={() =>
+          router.push({ pathname: '/notes/[id]/history', params: { id } })
+        }
+      />
       {note.can?.delete && (
         <Button
           title={t('notes.delete')}
-          variant="secondary"
+          variant="danger"
           loading={remove.isPending}
           onPress={confirmDelete}
         />
+      )}
+      {me.data && (
+        <View style={styles.comments}>
+          <Comments
+            record={record}
+            userId={me.data.user.id}
+            canModerate={Boolean(note.can?.update)}
+          />
+        </View>
       )}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  tags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: Spacing.two,
+  comments: {
+    marginTop: Spacing.four,
   },
 });

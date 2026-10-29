@@ -257,5 +257,45 @@
     "cancelHint": "点击取消。",
     "pendingHint": "你的其他登录已退出。在此之前你可以取消。",
     "cancel": "取消删除"
+  },
+  "comments": {
+    "title": "评论",
+    "empty": "暂无评论。",
+    "more": "更早的评论",
+    "someone": "某人",
+    "edited": "已编辑",
+    "resolved": "已解决",
+    "reply": "回复",
+    "edit": "编辑",
+    "resolve": "解决",
+    "reopen": "重新打开",
+    "delete": "删除",
+    "deleteTitle": "删除这条评论？",
+    "deleteThread": "其回复也会被删除。",
+    "save": "保存",
+    "new": "添加评论",
+    "yourReply": "你的回复",
+    "send": "评论",
+    "sendReply": "回复",
+    "text": "评论"
+  },
+  "records": {
+    "watch": "关注",
+    "unwatch": "取消关注",
+    "star": "加入收藏",
+    "unstar": "移出收藏",
+    "tags": "标签",
+    "editTags": "编辑标签",
+    "done": "完成",
+    "noTags": "无标签。",
+    "noTagsDefined": "这类记录还没有标签。"
+  },
+  "revisions": {
+    "history": "历史",
+    "number": "版本 {{number}}",
+    "created": "已创建。",
+    "restore": "恢复此版本",
+    "restoreTitle": "恢复版本 {{number}}？",
+    "restoreBody": "其值将成为当前值；历史会保留每个版本。"
   }
 }

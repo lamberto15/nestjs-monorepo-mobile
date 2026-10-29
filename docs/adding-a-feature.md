@@ -51,7 +51,17 @@ pnpm typecheck        # the new paths exist; anything that changed shows here
   for Notes, that an edit sends `If-Match` and that a 412 is a conflict
   (`src/features/notes/hooks.test.tsx`, with the fake API in `src/test/`).
 
-## 4. Check
+## 4. Record add-ons
+
+Comments, tags, watching, favorites and revisions have the same routes on
+every record type, so they are built once (`src/features/records/`) for a
+`RecordRef` (`{ base: '/v1/notes', subject: 'Note', id }`). A feature
+exports one (`noteRecord(id)`) and mounts what it uses on its detail:
+`<Comments>`, `<TagsEditor>`, `<WatchAndFavorite>`, and `<Revisions>` on a
+history screen. Ask the record with `include=can,watching`. Comments of
+watched records stay live through the realtime `record.commented` event.
+
+## 5. Check
 
 ```bash
 pnpm format && pnpm lint && pnpm typecheck && pnpm i18n:check && pnpm test
