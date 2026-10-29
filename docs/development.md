@@ -67,6 +67,7 @@ pnpm lint            # expo lint (ESLint)
 pnpm typecheck
 pnpm i18n:check      # every language has en.json's keys and placeholders
 pnpm test            # Jest (jest-expo); tests sit next to the code: *.test.ts
+pnpm test:scripts    # the repo scripts' own tests (node --test)
 pnpm client:check    # src/api/client matches its pinned commit
 pnpm dlx expo-doctor
 ```

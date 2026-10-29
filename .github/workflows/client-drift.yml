@@ -1,0 +1,60 @@
+name: Client drift
+
+# The typed client is copied from the backend at a pinned commit
+# (client-sync.json). Once a week, and on demand, this checks whether the
+# backend's client moved since, and opens a draft pull request that syncs
+# it, with the typecheck's result: what the app must adapt to.
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install pnpm and Node.js
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          runtime: node@24
+          cache: true
+          install: false
+      - run: pnpm install --frozen-lockfile
+      - name: Sync to the backend's latest commit
+        env:
+          # A private backend repository needs a token that can read it
+          # (a secret named BACKEND_TOKEN); a public one works without.
+          GITHUB_TOKEN: ${{ secrets.BACKEND_TOKEN || secrets.GITHUB_TOKEN }}
+        run: pnpm client:sync main
+      - name: Open a pull request when it moved
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet; then
+            echo "The client matches the backend."
+            exit 0
+          fi
+          sha=$(node -e "console.log(require('./client-sync.json').commit.slice(0, 7))")
+          branch="build/client-sync-$sha"
+          if git ls-remote --exit-code --heads origin "$branch"; then
+            echo "A pull request for $sha exists already."
+            exit 0
+          fi
+          if pnpm typecheck > typecheck.log 2>&1; then
+            result="The app typechecks against it."
+          else
+            result=$(printf 'The typecheck fails: adapt the app.\n\n```\n%s\n```' "$(tail -40 typecheck.log)")
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add client-sync.json src/api/client
+          git commit -m "build(client): sync to $sha"
+          git push -u origin "$branch"
+          printf 'The backend client moved: synced to %s.\n\n%s\n\nPush a commit to run CI on it: a pull request opened by this workflow does not start one.\n' "$sha" "$result" > body.md
+          gh pr create --draft --title "build(client): sync to $sha" --label dependencies --body-file body.md

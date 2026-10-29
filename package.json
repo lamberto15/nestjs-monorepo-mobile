@@ -69,7 +69,9 @@
     "client:check": "node scripts/client-sync.mjs --check",
     "prepare": "lefthook install",
     "test": "jest",
-    "i18n:check": "node scripts/i18n-check.mjs"
+    "i18n:check": "node scripts/i18n-check.mjs",
+    "feature:add": "node scripts/feature-add.mjs",
+    "test:scripts": "node --test scripts/*.test.mjs"
   },
   "private": true,
   "devEngines": {
