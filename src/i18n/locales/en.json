@@ -54,8 +54,7 @@
   },
   "home": {
     "signedInAs": "Signed in as {{name}}",
-    "tenant": "Organization: {{name}}",
-    "signOut": "Sign out"
+    "tenant": "Organization: {{name}}"
   },
   "validation": {
     "email": "Enter a valid email address.",
@@ -67,5 +66,51 @@
     "network": "Can't reach the server. Check your connection and try again.",
     "unknown": "Something went wrong. Try again.",
     "captcha": "This server asks for a bot check that the app can't show yet. Ask its administrator, or sign in on the web."
+  },
+  "tabs": {
+    "home": "Home",
+    "notifications": "Notifications",
+    "account": "Account"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications yet.",
+    "markAllRead": "Mark all read",
+    "unread": "Unread"
+  },
+  "account": {
+    "title": "Account",
+    "email": "Signed in with {{email}}",
+    "name": "Name",
+    "save": "Save",
+    "saved": "Saved.",
+    "language": "Language",
+    "sessions": "Sessions",
+    "signOut": "Sign out"
+  },
+  "language": {
+    "title": "Language",
+    "restart": "Close and reopen the app to switch the layout direction."
+  },
+  "sessions": {
+    "title": "Sessions",
+    "hint": "Where you are signed in with a browser. This app's own sign-in isn't listed.",
+    "none": "No browser sessions.",
+    "current": "This one",
+    "unknownDevice": "Unknown device",
+    "lastActive": "last active {{time}}",
+    "signOut": "Sign out",
+    "signOutEverywhere": "Sign out everywhere",
+    "everywhereTitle": "Sign out everywhere?",
+    "everywhereBody": "Every browser and app signed in to your account, this one included, will be signed out.",
+    "cancel": "Cancel",
+    "methods": {
+      "password": "Password",
+      "passkey": "Passkey",
+      "magic-link": "Email link",
+      "oidc": "Single sign-on",
+      "sso": "Organization sign-on",
+      "impersonation": "Impersonation"
+    }
   }
 }

@@ -54,8 +54,7 @@
   },
   "home": {
     "signedInAs": "Angemeldet als {{name}}",
-    "tenant": "Organisation: {{name}}",
-    "signOut": "Abmelden"
+    "tenant": "Organisation: {{name}}"
   },
   "validation": {
     "email": "Gib eine gültige E-Mail-Adresse ein.",
@@ -67,5 +66,51 @@
     "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
     "unknown": "Etwas ist schiefgelaufen. Versuche es erneut.",
     "captcha": "Dieser Server verlangt eine Bot-Prüfung, die die App noch nicht anzeigen kann. Wende dich an die Administration oder melde dich im Web an."
+  },
+  "tabs": {
+    "home": "Start",
+    "notifications": "Mitteilungen",
+    "account": "Konto"
+  },
+  "notifications": {
+    "title": "Mitteilungen",
+    "empty": "Noch keine Mitteilungen.",
+    "markAllRead": "Alle gelesen",
+    "unread": "Ungelesen"
+  },
+  "account": {
+    "title": "Konto",
+    "email": "Angemeldet mit {{email}}",
+    "name": "Name",
+    "save": "Speichern",
+    "saved": "Gespeichert.",
+    "language": "Sprache",
+    "sessions": "Sitzungen",
+    "signOut": "Abmelden"
+  },
+  "language": {
+    "title": "Sprache",
+    "restart": "Schließe die App und öffne sie erneut, um die Leserichtung zu wechseln."
+  },
+  "sessions": {
+    "title": "Sitzungen",
+    "hint": "Wo du in einem Browser angemeldet bist. Die Anmeldung dieser App wird nicht aufgeführt.",
+    "none": "Keine Browser-Sitzungen.",
+    "current": "Diese",
+    "unknownDevice": "Unbekanntes Gerät",
+    "lastActive": "zuletzt aktiv {{time}}",
+    "signOut": "Abmelden",
+    "signOutEverywhere": "Überall abmelden",
+    "everywhereTitle": "Überall abmelden?",
+    "everywhereBody": "Alle Browser und Apps, die bei deinem Konto angemeldet sind, auch diese, werden abgemeldet.",
+    "cancel": "Abbrechen",
+    "methods": {
+      "password": "Passwort",
+      "passkey": "Passkey",
+      "magic-link": "E-Mail-Link",
+      "oidc": "Single Sign-on",
+      "sso": "Anmeldung der Organisation",
+      "impersonation": "Identitätswechsel"
+    }
   }
 }

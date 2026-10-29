@@ -54,8 +54,7 @@
   },
   "home": {
     "signedInAs": "Log masuk sebagai {{name}}",
-    "tenant": "Organisasi: {{name}}",
-    "signOut": "Log keluar"
+    "tenant": "Organisasi: {{name}}"
   },
   "validation": {
     "email": "Masukkan alamat e-mel yang sah.",
@@ -67,5 +66,51 @@
     "network": "Tidak dapat mencapai pelayan. Semak sambungan anda dan cuba lagi.",
     "unknown": "Sesuatu tidak kena. Cuba lagi.",
     "captcha": "Pelayan ini meminta semakan bot yang belum dapat dipaparkan oleh aplikasi. Hubungi pentadbirnya, atau log masuk melalui web."
+  },
+  "tabs": {
+    "home": "Utama",
+    "notifications": "Pemberitahuan",
+    "account": "Akaun"
+  },
+  "notifications": {
+    "title": "Pemberitahuan",
+    "empty": "Belum ada pemberitahuan.",
+    "markAllRead": "Tanda semua dibaca",
+    "unread": "Belum dibaca"
+  },
+  "account": {
+    "title": "Akaun",
+    "email": "Log masuk dengan {{email}}",
+    "name": "Nama",
+    "save": "Simpan",
+    "saved": "Disimpan.",
+    "language": "Bahasa",
+    "sessions": "Sesi",
+    "signOut": "Log keluar"
+  },
+  "language": {
+    "title": "Bahasa",
+    "restart": "Tutup dan buka semula aplikasi untuk menukar arah susun atur."
+  },
+  "sessions": {
+    "title": "Sesi",
+    "hint": "Tempat anda log masuk melalui pelayar. Log masuk aplikasi ini sendiri tidak disenaraikan.",
+    "none": "Tiada sesi pelayar.",
+    "current": "Yang ini",
+    "unknownDevice": "Peranti tidak diketahui",
+    "lastActive": "aktif terakhir {{time}}",
+    "signOut": "Log keluar",
+    "signOutEverywhere": "Log keluar di semua tempat",
+    "everywhereTitle": "Log keluar di semua tempat?",
+    "everywhereBody": "Semua pelayar dan aplikasi yang log masuk ke akaun anda, termasuk yang ini, akan dilog keluar.",
+    "cancel": "Batal",
+    "methods": {
+      "password": "Kata laluan",
+      "passkey": "Kunci laluan",
+      "magic-link": "Pautan e-mel",
+      "oidc": "Log masuk tunggal",
+      "sso": "Log masuk organisasi",
+      "impersonation": "Penyamaran"
+    }
   }
 }
