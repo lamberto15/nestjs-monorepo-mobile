@@ -16,6 +16,8 @@ import {
   useNote,
 } from '@/features/notes/hooks';
 import { Comments } from '@/features/records/comments';
+import { CustomFieldsView } from '@/features/records/custom-fields';
+import { useListMetadata } from '@/features/records/list';
 import { TagsEditor, WatchAndFavorite } from '@/features/records/record-addons';
 import { formatDateTime } from '@/i18n/format';
 
@@ -26,6 +28,9 @@ export default function NoteScreen() {
   const remove = useDeleteNote(id);
   const me = useMe();
   const record = noteRecord(id);
+  // What this record type supports (tags, comments…), and its custom fields.
+  const metadata = useListMetadata('Note');
+  const capabilities = metadata.data?.capabilities;
 
   if (!query.data) {
     return (
@@ -66,16 +71,19 @@ export default function NoteScreen() {
         ].join(' · ')}
       </ThemedText>
       <ThemedText>{note.body || t('notes.noBody')}</ThemedText>
+      <CustomFieldsView metadata={metadata.data} values={note.custom} />
       <WatchAndFavorite
         record={record}
         label={note.title}
         watching={note.watching}
       />
-      <TagsEditor
-        record={record}
-        tags={note.tags}
-        editable={Boolean(note.can?.update)}
-      />
+      {capabilities?.tags !== false && (
+        <TagsEditor
+          record={record}
+          tags={note.tags}
+          editable={Boolean(note.can?.update)}
+        />
+      )}
 
       {remove.error && (
         <ThemedText themeColor="danger" accessibilityRole="alert">
@@ -107,7 +115,7 @@ export default function NoteScreen() {
           onPress={confirmDelete}
         />
       )}
-      {me.data && (
+      {me.data && capabilities?.comments !== false && (
         <View style={styles.comments}>
           <Comments
             record={record}

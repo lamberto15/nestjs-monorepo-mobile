@@ -24,6 +24,12 @@ import {
   type Comment,
   type RecordRef,
 } from '@/features/records/hooks';
+import {
+  insertMention,
+  mentionQuery,
+  usePeople,
+  withNames,
+} from '@/features/records/mentions';
 import { formatDateTime } from '@/i18n/format';
 
 /**
@@ -146,7 +152,9 @@ function CommentItem({
           }
         />
       ) : (
-        <ThemedText selectable>{comment.body}</ThemedText>
+        <ThemedText selectable>
+          {withNames(comment.body, comment.mentionNames)}
+        </ThemedText>
       )}
       {mode === 'view' && (
         <View style={styles.actions}>
@@ -283,6 +291,8 @@ function InlineEditor({
   const { t } = useTranslation();
   const [body, setBody] = useState(initial);
   const empty = body.trim().length === 0;
+  const typed = mentionQuery(body);
+  const people = usePeople(typed);
   return (
     <View style={styles.editor}>
       <TextField
@@ -292,6 +302,17 @@ function InlineEditor({
         multiline
         style={styles.input}
       />
+      {typed &&
+        people.data?.items.map((person) => (
+          <Pressable
+            key={person.key}
+            accessibilityRole="button"
+            accessibilityLabel={t('comments.mention', { name: person.name })}
+            onPress={() => setBody(insertMention(body, person.key))}
+          >
+            <ThemedText type="linkPrimary">@{person.name}</ThemedText>
+          </Pressable>
+        ))}
       <View style={styles.editorActions}>
         {onCancel && (
           <Button

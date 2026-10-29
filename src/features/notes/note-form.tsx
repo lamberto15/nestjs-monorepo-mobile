@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -11,6 +12,8 @@ import {
   firstError,
 } from '@/features/auth/errors';
 import { isConflict, type NoteInput } from '@/features/notes/hooks';
+import { CustomFieldsInputs } from '@/features/records/custom-fields';
+import { useListMetadata } from '@/features/records/list';
 
 /** Title and body, for a new note and an edit; the API's field errors under their fields. */
 export function NoteForm({
@@ -27,8 +30,13 @@ export function NoteForm({
   onSubmit: (input: NoteInput) => Promise<unknown>;
 }) {
   const { t } = useTranslation();
+  const metadata = useListMetadata('Note');
+  // Custom fields come from the metadata at runtime: kept beside the form.
+  const [custom, setCustom] = useState<Record<string, unknown>>(
+    initial.custom ?? {},
+  );
   const form = useForm({
-    defaultValues: initial,
+    defaultValues: { title: initial.title, body: initial.body },
     validators: {
       onSubmit: z.object({
         title: z
@@ -39,9 +47,11 @@ export function NoteForm({
       }),
     },
     onSubmit: async ({ value }) => {
-      await onSubmit({ title: value.title.trim(), body: value.body }).catch(
-        () => null,
-      );
+      await onSubmit({
+        title: value.title.trim(),
+        body: value.body,
+        ...(Object.keys(custom).length > 0 && { custom }),
+      }).catch(() => null);
     },
   });
 
@@ -74,6 +84,11 @@ export function NoteForm({
           />
         )}
       </form.Field>
+      <CustomFieldsInputs
+        metadata={metadata.data}
+        values={custom}
+        onChange={setCustom}
+      />
       {Boolean(error) &&
         !isConflict(error) &&
         !fieldError(error, 'title') &&

@@ -13,6 +13,7 @@ import {
 import { api } from '@/api/api';
 import { etagOf, isApiError, unwrap, type GetResponse } from '@/api/client';
 import type { RecordRef } from '@/features/records/hooks';
+import { stableQuery, type ListQuery } from '@/features/records/list';
 
 export type Note = GetResponse<'/v1/notes/{id}'>;
 
@@ -26,33 +27,39 @@ export type NoteStatus = Note['status'];
 export interface NoteInput {
   title: string;
   body: string;
+  /** Custom field values by key; on an update only the keys sent change, null removes one. */
+  custom?: Record<string, unknown>;
 }
 
 export const noteKeys = {
   all: ['notes'] as const,
-  list: (search: string, status: NoteStatus | 'all') =>
-    ['notes', 'list', search, status] as const,
+  list: (query: ListQuery) => ['notes', 'list', stableQuery(query)] as const,
   detail: (id: string) => ['notes', 'detail', id] as const,
 };
 
 const PAGE_SIZE = 20;
 
-/** The list: newest change first, a page at a time; each note says what you may do with it. */
-export function useNotes(search: string, status: NoteStatus | 'all') {
+/**
+ * The list for a query (search, filters, a saved view's params): newest
+ * change first unless it sorts, a page at a time; each note says what you
+ * may do with it.
+ */
+export function useNotes(query: ListQuery) {
   return useInfiniteQuery({
-    queryKey: noteKeys.list(search, status),
+    queryKey: noteKeys.list(query),
     queryFn: ({ pageParam, signal }) =>
       unwrap(
         api.GET('/v1/notes', {
           params: {
+            // Filters come from the list's metadata at runtime, so the
+            // query is the route's as a string map, not its typed keys.
             query: {
-              limit: PAGE_SIZE,
               sort: '-updatedAt',
+              ...stableQuery(query),
+              limit: PAGE_SIZE,
               include: 'can',
-              ...(search && { q: search }),
-              ...(status !== 'all' && { status }),
               ...(pageParam && { cursor: pageParam }),
-            },
+            } as never,
           },
           signal,
         }),

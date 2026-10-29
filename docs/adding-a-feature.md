@@ -61,6 +61,18 @@ exports one (`noteRecord(id)`) and mounts what it uses on its detail:
 history screen. Ask the record with `include=can,watching`. Comments of
 watched records stay live through the realtime `record.commented` event.
 
+### Lists from the metadata
+
+`GET /v1/lists/{subject}` describes a list: its filterable fields (custom
+fields included, with their labels), whether it can be searched, and the
+record type's `capabilities`. `useListMetadata(subject)` reads it;
+`<ListFilters>` turns its enum and yes/no fields into tap filters,
+`<ViewsBar>` applies and saves views (`/v1/views`), `<CustomFieldsView>` and
+`<CustomFieldsInputs>` show and edit custom values. The list hook takes the
+query as a string map (`useNotes(query)`), since filters are known at
+runtime. Mentions in comments: typing `@ma` suggests people
+(`GET /v1/people`), choosing one writes `@user:<id>`, reading shows names.
+
 ## 5. Check
 
 ```bash

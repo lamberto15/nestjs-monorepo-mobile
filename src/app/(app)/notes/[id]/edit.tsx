@@ -54,7 +54,11 @@ export default function EditNoteScreen() {
       <NoteForm
         // A new version read: the form starts again from it.
         key={etag}
-        initial={{ title: note.title, body: note.body ?? '' }}
+        initial={{
+          title: note.title,
+          body: note.body ?? '',
+          custom: note.custom ?? {},
+        }}
         submitTitle={t('notes.save')}
         pending={update.isPending}
         error={update.error}

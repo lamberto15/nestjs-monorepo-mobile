@@ -277,7 +277,8 @@
     "yourReply": "你的回复",
     "send": "评论",
     "sendReply": "回复",
-    "text": "评论"
+    "text": "评论",
+    "mention": "提及 {{name}}"
   },
   "records": {
     "watch": "关注",
@@ -297,5 +298,27 @@
     "restore": "恢复此版本",
     "restoreTitle": "恢复版本 {{number}}？",
     "restoreBody": "其值将成为当前值；历史会保留每个版本。"
+  },
+  "filters": {
+    "all": "全部",
+    "yes": "是",
+    "no": "否",
+    "none": "无",
+    "fields": {
+      "status": "状态"
+    },
+    "values": {
+      "draft": "草稿",
+      "published": "已发布"
+    }
+  },
+  "views": {
+    "title": "已保存视图",
+    "none": "全部",
+    "name": "视图名称",
+    "save": "保存视图",
+    "saveCurrent": "保存这些筛选条件",
+    "delete": "删除视图",
+    "deleteTitle": "删除此视图？"
   }
 }

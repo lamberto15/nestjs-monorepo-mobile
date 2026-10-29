@@ -277,7 +277,8 @@
     "yourReply": "Balasan anda",
     "send": "Komen",
     "sendReply": "Balas",
-    "text": "Komen"
+    "text": "Komen",
+    "mention": "Sebut {{name}}"
   },
   "records": {
     "watch": "Ikuti",
@@ -297,5 +298,27 @@
     "restore": "Pulihkan versi ini",
     "restoreTitle": "Pulihkan versi {{number}}?",
     "restoreBody": "Nilainya menjadi nilai semasa; sejarah menyimpan setiap versi."
+  },
+  "filters": {
+    "all": "Semua",
+    "yes": "Ya",
+    "no": "Tidak",
+    "none": "Tiada",
+    "fields": {
+      "status": "Status"
+    },
+    "values": {
+      "draft": "Draf",
+      "published": "Diterbitkan"
+    }
+  },
+  "views": {
+    "title": "Paparan disimpan",
+    "none": "Semua",
+    "name": "Nama paparan",
+    "save": "Simpan paparan",
+    "saveCurrent": "Simpan penapis ini",
+    "delete": "Padam paparan",
+    "deleteTitle": "Padam paparan ini?"
   }
 }

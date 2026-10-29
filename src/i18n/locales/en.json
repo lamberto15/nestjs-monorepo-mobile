@@ -277,7 +277,8 @@
     "yourReply": "Your reply",
     "send": "Comment",
     "sendReply": "Reply",
-    "text": "Comment"
+    "text": "Comment",
+    "mention": "Mention {{name}}"
   },
   "records": {
     "watch": "Watch",
@@ -297,5 +298,27 @@
     "restore": "Restore this version",
     "restoreTitle": "Restore version {{number}}?",
     "restoreBody": "Its values become the current ones; the history keeps every version."
+  },
+  "filters": {
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "fields": {
+      "status": "Status"
+    },
+    "values": {
+      "draft": "Draft",
+      "published": "Published"
+    }
+  },
+  "views": {
+    "title": "Saved views",
+    "none": "All",
+    "name": "View name",
+    "save": "Save view",
+    "saveCurrent": "Save these filters",
+    "delete": "Delete view",
+    "deleteTitle": "Delete this view?"
   }
 }

@@ -277,7 +277,8 @@
     "yourReply": "ردّك",
     "send": "تعليق",
     "sendReply": "رد",
-    "text": "تعليق"
+    "text": "تعليق",
+    "mention": "الإشارة إلى {{name}}"
   },
   "records": {
     "watch": "متابعة",
@@ -297,5 +298,27 @@
     "restore": "استعادة هذا الإصدار",
     "restoreTitle": "استعادة الإصدار {{number}}؟",
     "restoreBody": "تصبح قيمه هي الحالية؛ ويحتفظ السجل بكل إصدار."
+  },
+  "filters": {
+    "all": "الكل",
+    "yes": "نعم",
+    "no": "لا",
+    "none": "لا شيء",
+    "fields": {
+      "status": "الحالة"
+    },
+    "values": {
+      "draft": "مسودة",
+      "published": "منشورة"
+    }
+  },
+  "views": {
+    "title": "العروض المحفوظة",
+    "none": "الكل",
+    "name": "اسم العرض",
+    "save": "حفظ العرض",
+    "saveCurrent": "حفظ هذه المرشحات",
+    "delete": "حذف العرض",
+    "deleteTitle": "حذف هذا العرض؟"
   }
 }
