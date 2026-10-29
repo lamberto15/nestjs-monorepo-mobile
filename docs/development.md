@@ -103,6 +103,23 @@ fixes), not one per small change.
 
 Update a branch with `git merge origin/main`; never rebase or force-push.
 
+## Store privacy answers
+
+What the template itself collects, for App Store "App Privacy" and Google
+Play "Data safety" (a project adds what its features collect):
+
+| Data                                                              | Why                             | Where                       |
+| ----------------------------------------------------------------- | ------------------------------- | --------------------------- |
+| Email, name, password (never stored on the device)                | Sign-in, the account            | The project's API           |
+| Profile picture (optional)                                        | The account                     | The project's API           |
+| Content the person creates (notes, comments, files, photos taken) | The app's purpose               | The project's API           |
+| Device name and model in the User-Agent                           | Sessions and new-sign-in alerts | The project's API           |
+| Push token (once push is added, #13)                              | Notifications                   | The project's API, APNs/FCM |
+
+No tracking, no third-party analytics or ads (`NSPrivacyTracking: false`).
+Data is encrypted in transit (HTTPS); the account can be deleted in the app
+(Account → Delete account) and its data exported (Account → Your data).
+
 ## Builds and releases (EAS)
 
 `eas.json` has three profiles, each reading its EAS environment's

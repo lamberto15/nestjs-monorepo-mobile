@@ -1,7 +1,16 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Share,
+  StyleSheet,
+  View,
+} from 'react-native';
+
+import { WEB_URL } from '@/api/public-api';
+import { feedback } from '@/components/feedback';
 
 import { Button } from '@/components/button';
 import { ErrorState } from '@/components/error-state';
@@ -70,7 +79,12 @@ export default function NoteScreen() {
           text: t('notes.delete'),
           style: 'destructive',
           onPress: () =>
-            remove.mutate(etag, { onSuccess: () => router.back() }),
+            remove.mutate(etag, {
+              onSuccess: () => {
+                feedback.success();
+                router.back();
+              },
+            }),
         },
       ],
     );
@@ -88,6 +102,21 @@ export default function NoteScreen() {
       <PresenceLine others={others} />
       <ThemedText>{note.body || t('notes.noBody')}</ThemedText>
       <CustomFieldsView metadata={metadata.data} values={note.custom} />
+      {WEB_URL && (
+        <Button
+          title={t('notes.share')}
+          variant="secondary"
+          onPress={() => {
+            const url = `${WEB_URL}/notes/${encodeURIComponent(id)}`;
+            // iOS shares the link; Android, the text with the link in it.
+            void Share.share({
+              title: note.title,
+              message: `${note.title}\n${url}`,
+              url,
+            });
+          }}
+        />
+      )}
       <WatchAndFavorite
         record={record}
         label={note.title}
