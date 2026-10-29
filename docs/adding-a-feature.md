@@ -16,18 +16,18 @@ pnpm typecheck        # the new paths exist; anything that changed shows here
 
 ## 2. The files
 
-| File                                 | What it holds (Notes)                                                                                                 |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `src/features/<x>/hooks.ts`          | Query keys, list (`useInfiniteQuery`, cursor), one record with its ETag, create/update/delete mutations, `isConflict` |
-| `src/features/<x>/<x>-form.tsx`      | The form for create and edit (TanStack Form + zod, API field errors)                                                  |
-| `src/app/(app)/<x>/_layout.tsx`      | The tab's stack and its titles                                                                                        |
-| `src/app/(app)/<x>/index.tsx`        | List: search (debounced), filters, pull to refresh, paging, empty and error states                                    |
-| `src/app/(app)/<x>/new.tsx`          | Create                                                                                                                |
-| `src/app/(app)/<x>/[id]/index.tsx`   | Detail, actions per the record's `can`                                                                                |
-| `src/app/(app)/<x>/[id]/edit.tsx`    | Edit with `If-Match`                                                                                                  |
-| `src/app/(app)/_layout.tsx`          | A tab trigger (Android shows at most 5)                                                                               |
-| `src/features/notifications/link.ts` | Its detail path in `APP_ROUTES`, so notification links open it in the app                                             |
-| `src/i18n/locales/*.json`            | Its texts in every language (`pnpm i18n:check`)                                                                       |
+| File                                 | What it holds (Notes)                                                                                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| `src/features/<x>/hooks.ts`          | Query keys, list (`useInfiniteQuery`, cursor), one record with its ETag, create/update/delete mutations, `isConflict`           |
+| `src/features/<x>/<x>-form.tsx`      | The form for create and edit (TanStack Form + zod, API field errors)                                                            |
+| `src/app/(app)/<x>/_layout.tsx`      | The tab's stack and its titles                                                                                                  |
+| `src/app/(app)/<x>/index.tsx`        | List: search (debounced), filters, pull to refresh, paging, empty and error states                                              |
+| `src/app/(app)/<x>/new.tsx`          | Create                                                                                                                          |
+| `src/app/(app)/<x>/[id]/index.tsx`   | Detail, actions per the record's `can`                                                                                          |
+| `src/app/(app)/<x>/[id]/edit.tsx`    | Edit with `If-Match`                                                                                                            |
+| `src/app/(app)/_layout.tsx`          | A tab trigger (Android shows at most 5)                                                                                         |
+| `src/features/notifications/link.ts` | Its subject in `RECORD_ROUTES` (inbox, recents, favorites and search open it) and its path in `APP_ROUTES` (notification links) |
+| `src/i18n/locales/*.json`            | Its texts in every language (`pnpm i18n:check`)                                                                                 |
 
 ## 3. The rules the example follows
 
@@ -73,6 +73,9 @@ record type's `capabilities`. `useListMetadata(subject)` reads it;
 query as a string map (`useNotes(query)`), since filters are known at
 runtime. Mentions in comments: typing `@ma` suggests people
 (`GET /v1/people`), choosing one writes `@user:<id>`, reading shows names.
+
+On the detail, record the visit (`useRecordRecent`) and show who else is
+there (`usePresence(subject, id, 'viewing' | 'editing')`, `<PresenceLine>`).
 
 ## 5. Check
 

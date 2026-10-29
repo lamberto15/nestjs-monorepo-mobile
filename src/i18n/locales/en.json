@@ -333,5 +333,33 @@
     "uploading": "Uploading…",
     "tooLarge": "This file is too large: at most {{max}}.",
     "noCamera": "The camera is not allowed. Allow it in Settings."
+  },
+  "search": {
+    "title": "Search",
+    "hint": "Words, \"a phrase\", -not",
+    "none": "Nothing matches."
+  },
+  "inbox": {
+    "title": "Waiting on you",
+    "empty": "Nothing waits on you.",
+    "dismiss": "Dismiss",
+    "more": "More",
+    "due": "due {{date}}",
+    "kinds": {
+      "approval.decide": "Approval to decide",
+      "approval.revise": "Changes requested on your request",
+      "mention": "You were mentioned"
+    }
+  },
+  "favorites": {
+    "title": "Favorites"
+  },
+  "recents": {
+    "title": "Recently opened",
+    "clear": "Clear history"
+  },
+  "presence": {
+    "viewing": "Also here: {{names}}",
+    "editing": "{{names}} editing"
   }
 }

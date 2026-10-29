@@ -333,5 +333,33 @@
     "uploading": "上传中…",
     "tooLarge": "文件过大：最多 {{max}}。",
     "noCamera": "未允许使用相机，请在设置中允许。"
+  },
+  "search": {
+    "title": "搜索",
+    "hint": "词语、\"短语\"、-排除",
+    "none": "没有匹配结果。"
+  },
+  "inbox": {
+    "title": "等待你处理",
+    "empty": "没有等待你处理的事项。",
+    "dismiss": "忽略",
+    "more": "更多",
+    "due": "截止 {{date}}",
+    "kinds": {
+      "approval.decide": "待你决定的审批",
+      "approval.revise": "你的申请被要求修改",
+      "mention": "有人提及了你"
+    }
+  },
+  "favorites": {
+    "title": "收藏"
+  },
+  "recents": {
+    "title": "最近打开",
+    "clear": "清除历史"
+  },
+  "presence": {
+    "viewing": "也在这里：{{names}}",
+    "editing": "{{names}} 正在编辑"
   }
 }

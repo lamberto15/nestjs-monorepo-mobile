@@ -1,4 +1,4 @@
-import { appRoute, linkUrl } from '@/features/notifications/link';
+import { appRoute, linkUrl, recordRoute } from '@/features/notifications/link';
 
 test('a web app path opens on the web app; an absolute URL as it is', () => {
   expect(linkUrl('/notes/1', 'https://app.test/')).toBe(
@@ -22,4 +22,10 @@ test('a link to a screen of this app opens it in the app', () => {
   expect(appRoute('/notes')).toBeUndefined();
   expect(appRoute('/reports/1')).toBeUndefined();
   expect(appRoute('https://app.test/notes/1')).toBeUndefined();
+});
+
+test('a record opens its screen when the app has one', () => {
+  expect(recordRoute('Note', 'n1')).toBe('/notes/n1');
+  expect(recordRoute('Invoice', 'i1')).toBeUndefined();
+  expect(recordRoute('Note', null)).toBeUndefined();
 });

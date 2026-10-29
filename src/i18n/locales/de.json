@@ -333,5 +333,33 @@
     "uploading": "Wird hochgeladen…",
     "tooLarge": "Diese Datei ist zu groß: höchstens {{max}}.",
     "noCamera": "Die Kamera ist nicht erlaubt. Erlaube sie in den Einstellungen."
+  },
+  "search": {
+    "title": "Suche",
+    "hint": "Wörter, \"eine Phrase\", -nicht",
+    "none": "Nichts gefunden."
+  },
+  "inbox": {
+    "title": "Wartet auf dich",
+    "empty": "Nichts wartet auf dich.",
+    "dismiss": "Ausblenden",
+    "more": "Mehr",
+    "due": "fällig {{date}}",
+    "kinds": {
+      "approval.decide": "Genehmigung zu entscheiden",
+      "approval.revise": "Änderungen an deiner Anfrage erbeten",
+      "mention": "Du wurdest erwähnt"
+    }
+  },
+  "favorites": {
+    "title": "Favoriten"
+  },
+  "recents": {
+    "title": "Zuletzt geöffnet",
+    "clear": "Verlauf löschen"
+  },
+  "presence": {
+    "viewing": "Ebenfalls hier: {{names}}",
+    "editing": "{{names}} bearbeitet"
   }
 }

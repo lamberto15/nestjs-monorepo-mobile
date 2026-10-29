@@ -1,5 +1,4 @@
-import { router, Stack, type Href } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
+import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -10,7 +9,6 @@ import {
   View,
 } from 'react-native';
 
-import { WEB_URL } from '@/api/public-api';
 import { ErrorState } from '@/components/error-state';
 import { ListRow } from '@/components/list-row';
 import { ThemedText } from '@/components/themed-text';
@@ -21,7 +19,7 @@ import {
   useMarkRead,
   useNotifications,
 } from '@/features/notifications/hooks';
-import { appRoute, linkUrl } from '@/features/notifications/link';
+import { canOpen, openTarget } from '@/features/notifications/open-target';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDateTime } from '@/i18n/format';
 
@@ -84,20 +82,13 @@ export default function NotificationsScreen() {
               />
             }
             onPress={
-              item.read && !appRoute(item.link) && !linkUrl(item.link, WEB_URL)
+              item.read && !canOpen({ link: item.link })
                 ? undefined
                 : () => {
                     if (!item.read) {
                       markRead.mutate(item.id);
                     }
-                    // A screen of this app opens here; anything else in the browser.
-                    const route = appRoute(item.link);
-                    const url = linkUrl(item.link, WEB_URL);
-                    if (route) {
-                      router.push(route as Href);
-                    } else if (url) {
-                      void WebBrowser.openBrowserAsync(url);
-                    }
+                    openTarget({ link: item.link });
                   }
             }
           />

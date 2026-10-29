@@ -6,6 +6,7 @@ export default function HomeLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: t('tabs.home') }} />
+      <Stack.Screen name="search" options={{ title: t('search.title') }} />
     </Stack>
   );
 }
