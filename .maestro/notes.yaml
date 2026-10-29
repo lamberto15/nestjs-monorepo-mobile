@@ -1,0 +1,20 @@
+# Creates a note, finds it, deletes it. Runs after sign-in.yaml.
+appId: host.exp.Exponent
+---
+- runFlow: sign-in.yaml
+- tapOn: Notes
+- tapOn: New
+- tapOn: Title
+- inputText: Maestro check
+- tapOn: Create note
+- assertVisible: Maestro check
+- tapOn: Delete
+- tapOn:
+    text: Delete
+    index: 1
+- assertNotVisible: Maestro check
+- tapOn: Account
+- scrollUntilVisible:
+    element: Sign out
+- tapOn: Sign out
+- assertVisible: Forgot password?

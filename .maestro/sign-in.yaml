@@ -1,0 +1,14 @@
+# Signs in with the test account from EMAIL and PASSWORD, and lands on Home.
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn: Email
+- inputText: ${EMAIL}
+- tapOn: Password
+- inputText: ${PASSWORD}
+- tapOn:
+    text: Sign in
+    index: 1
+- extendedWaitUntil:
+    visible: Waiting on you
+    timeout: 15000

@@ -1,0 +1,45 @@
+name: Preview build
+
+# An EAS build of the preview profile (internal distribution), when a pull
+# request gets the `preview` label or by hand. Skipped until the repository
+# has an EXPO_TOKEN secret (expo.dev → Access tokens) and the project is
+# linked to EAS (`eas init`): docs/development.md, "Builds and releases".
+on:
+  pull_request:
+    types: [labeled]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: >-
+      (github.event_name == 'workflow_dispatch' || github.event.label.name == 'preview')
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - name: Needs an EXPO_TOKEN secret
+        if: env.EXPO_TOKEN == ''
+        run: echo 'No EXPO_TOKEN secret, so nothing to build.'
+      - uses: actions/checkout@v7
+        if: env.EXPO_TOKEN != ''
+      - name: Install pnpm and Node.js
+        if: env.EXPO_TOKEN != ''
+        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
+        with:
+          runtime: node@24
+          cache: true
+          install: false
+      - if: env.EXPO_TOKEN != ''
+        run: pnpm install --frozen-lockfile
+      - name: Set up EAS
+        if: env.EXPO_TOKEN != ''
+        uses: expo/expo-github-action@9da89d3617bb88139671bad31b09c65714c2ee06 # v9.0.1
+        with:
+          eas-version: 27.1.0
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build (iOS and Android, preview)
+        if: env.EXPO_TOKEN != ''
+        run: eas build --profile preview --platform all --non-interactive --no-wait
