@@ -361,5 +361,58 @@
   "presence": {
     "viewing": "也在这里：{{names}}",
     "editing": "{{names}} 正在编辑"
+  },
+  "approvals": {
+    "title": "审批",
+    "request": "申请",
+    "empty": "这里没有内容。",
+    "scopes": {
+      "toDecide": "待我决定",
+      "mine": "我的申请",
+      "decided": "我已决定"
+    },
+    "status": {
+      "pending": "待处理",
+      "approved": "已批准",
+      "rejected": "已拒绝",
+      "changes_requested": "需修改",
+      "cancelled": "已撤回",
+      "expired": "已过期",
+      "failed": "失败"
+    },
+    "stage": "第 {{current}}/{{count}} 阶段 {{name}}",
+    "openRecord": "打开记录",
+    "conflict": "有人已对此申请作出决定，现在显示其最新状态。",
+    "comment": "备注（可选）",
+    "commentRequired": "原因（必填）",
+    "history": "历史",
+    "decisions": {
+      "approve": "批准",
+      "reject": "拒绝",
+      "request-changes": "要求修改",
+      "cancel": "撤回申请",
+      "resubmit": "重新提交"
+    },
+    "events": {
+      "requested": "已申请",
+      "stage_started": "阶段开始",
+      "approved": "已批准",
+      "rejected": "已拒绝",
+      "changes_requested": "要求修改",
+      "resubmitted": "已重新提交",
+      "cancelled": "已撤回",
+      "expired": "已过期",
+      "escalated": "已升级",
+      "applied": "已执行"
+    }
+  },
+  "acknowledgments": {
+    "title": "待确认的文件",
+    "pending": "待确认",
+    "done": "已确认",
+    "empty": "没有需要确认的文件。",
+    "on": "确认于 {{date}}",
+    "overdue": "已逾期",
+    "confirm": "我已阅读"
   }
 }

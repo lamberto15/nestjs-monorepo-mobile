@@ -361,5 +361,58 @@
   "presence": {
     "viewing": "Ebenfalls hier: {{names}}",
     "editing": "{{names}} bearbeitet"
+  },
+  "approvals": {
+    "title": "Genehmigungen",
+    "request": "Anfrage",
+    "empty": "Nichts hier.",
+    "scopes": {
+      "toDecide": "Zu entscheiden",
+      "mine": "Meine Anfragen",
+      "decided": "Von mir entschieden"
+    },
+    "status": {
+      "pending": "Offen",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "changes_requested": "Änderungen erbeten",
+      "cancelled": "Zurückgezogen",
+      "expired": "Abgelaufen",
+      "failed": "Fehlgeschlagen"
+    },
+    "stage": "Stufe {{current}} von {{count}} {{name}}",
+    "openRecord": "Eintrag öffnen",
+    "conflict": "Jemand hat inzwischen über diese Anfrage entschieden. Sie wird jetzt aktuell angezeigt.",
+    "comment": "Kommentar (optional)",
+    "commentRequired": "Warum? (Pflicht)",
+    "history": "Verlauf",
+    "decisions": {
+      "approve": "Genehmigen",
+      "reject": "Ablehnen",
+      "request-changes": "Änderungen erbitten",
+      "cancel": "Anfrage zurückziehen",
+      "resubmit": "Erneut einreichen"
+    },
+    "events": {
+      "requested": "Angefragt",
+      "stage_started": "Stufe begonnen",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "changes_requested": "Änderungen erbeten",
+      "resubmitted": "Erneut eingereicht",
+      "cancelled": "Zurückgezogen",
+      "expired": "Abgelaufen",
+      "escalated": "Eskaliert",
+      "applied": "Umgesetzt"
+    }
+  },
+  "acknowledgments": {
+    "title": "Dokumente zur Kenntnisnahme",
+    "pending": "Zu bestätigen",
+    "done": "Bestätigt",
+    "empty": "Nichts zu bestätigen.",
+    "on": "bestätigt {{date}}",
+    "overdue": "überfällig",
+    "confirm": "Gelesen"
   }
 }

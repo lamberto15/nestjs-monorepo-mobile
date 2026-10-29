@@ -361,5 +361,58 @@
   "presence": {
     "viewing": "Turut di sini: {{names}}",
     "editing": "{{names}} sedang menyunting"
+  },
+  "approvals": {
+    "title": "Kelulusan",
+    "request": "Permintaan",
+    "empty": "Tiada apa-apa di sini.",
+    "scopes": {
+      "toDecide": "Untuk diputuskan",
+      "mine": "Permintaan saya",
+      "decided": "Diputuskan oleh saya"
+    },
+    "status": {
+      "pending": "Menunggu",
+      "approved": "Diluluskan",
+      "rejected": "Ditolak",
+      "changes_requested": "Perubahan diminta",
+      "cancelled": "Dibatalkan",
+      "expired": "Tamat tempoh",
+      "failed": "Gagal"
+    },
+    "stage": "Peringkat {{current}} daripada {{count}} {{name}}",
+    "openRecord": "Buka rekod",
+    "conflict": "Seseorang telah memutuskan permintaan ini. Ia kini dipaparkan seperti sekarang.",
+    "comment": "Komen (pilihan)",
+    "commentRequired": "Kenapa? (wajib)",
+    "history": "Sejarah",
+    "decisions": {
+      "approve": "Luluskan",
+      "reject": "Tolak",
+      "request-changes": "Minta perubahan",
+      "cancel": "Batalkan permintaan",
+      "resubmit": "Hantar semula"
+    },
+    "events": {
+      "requested": "Diminta",
+      "stage_started": "Peringkat bermula",
+      "approved": "Diluluskan",
+      "rejected": "Ditolak",
+      "changes_requested": "Perubahan diminta",
+      "resubmitted": "Dihantar semula",
+      "cancelled": "Dibatalkan",
+      "expired": "Tamat tempoh",
+      "escalated": "Dieskalasi",
+      "applied": "Dilaksanakan"
+    }
+  },
+  "acknowledgments": {
+    "title": "Dokumen untuk diakui",
+    "pending": "Untuk diakui",
+    "done": "Diakui",
+    "empty": "Tiada apa untuk diakui.",
+    "on": "diakui {{date}}",
+    "overdue": "lewat",
+    "confirm": "Saya telah membacanya"
   }
 }

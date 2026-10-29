@@ -361,5 +361,58 @@
   "presence": {
     "viewing": "موجود هنا أيضًا: {{names}}",
     "editing": "{{names}} يعدّل"
+  },
+  "approvals": {
+    "title": "الموافقات",
+    "request": "طلب",
+    "empty": "لا شيء هنا.",
+    "scopes": {
+      "toDecide": "بانتظار قرارك",
+      "mine": "طلباتي",
+      "decided": "قراراتي"
+    },
+    "status": {
+      "pending": "معلّق",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "changes_requested": "طُلبت تغييرات",
+      "cancelled": "ملغى",
+      "expired": "منتهي",
+      "failed": "فشل"
+    },
+    "stage": "المرحلة {{current}} من {{count}} {{name}}",
+    "openRecord": "فتح السجل",
+    "conflict": "اتخذ أحدهم قرارًا بشأن هذا الطلب في الأثناء. يُعرض الآن كما هو.",
+    "comment": "تعليق (اختياري)",
+    "commentRequired": "لماذا؟ (مطلوب)",
+    "history": "السجل",
+    "decisions": {
+      "approve": "موافقة",
+      "reject": "رفض",
+      "request-changes": "طلب تغييرات",
+      "cancel": "إلغاء الطلب",
+      "resubmit": "إعادة التقديم"
+    },
+    "events": {
+      "requested": "طُلب",
+      "stage_started": "بدأت المرحلة",
+      "approved": "تمت الموافقة",
+      "rejected": "رُفض",
+      "changes_requested": "طُلبت تغييرات",
+      "resubmitted": "أُعيد تقديمه",
+      "cancelled": "أُلغي",
+      "expired": "انتهى",
+      "escalated": "صُعّد",
+      "applied": "نُفّذ"
+    }
+  },
+  "acknowledgments": {
+    "title": "مستندات للإقرار",
+    "pending": "للإقرار",
+    "done": "تم الإقرار",
+    "empty": "لا شيء للإقرار.",
+    "on": "أُقرّ {{date}}",
+    "overdue": "متأخر",
+    "confirm": "قرأته"
   }
 }
