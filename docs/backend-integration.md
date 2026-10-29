@@ -161,21 +161,48 @@ service. So:
 
 ## Realtime (backend `webhooks-and-realtime`)
 
-One socket for the app's life, with the token asked on every
-(re)connection:
+One socket while signed in (`src/api/realtime.ts`, opened by
+`useRealtimeNotifications()` in the signed-in layout), the token asked on
+every (re)connection. Events are typed (`notification`,
+`notifications.unread-count`, …: the client's README) and change the
+TanStack Query cache directly (`src/features/notifications/cache.ts`).
+Events sent while offline are **not replayed**: every `connect` refetches
+the notifications and the count. The socket disconnects when the app goes
+to the background and reconnects when it comes back; signing out unmounts
+the layout, which closes it.
 
-```ts
-createRealtime({
-  url: process.env.EXPO_PUBLIC_API_URL!,
-  token: () => session.accessToken(),
-});
-```
+## Notifications (backend `notifications`)
 
-Events are typed (`notification`, `notifications.unread-count`, …: the
-client's README). Events sent while offline are **not replayed**: on
-`connect` and when the app returns to the foreground, refetch what the
-screen shows (the unread count at least). Disconnect when the app goes to
-the background, and on sign-out.
+The Notifications tab: `GET /v1/notifications` a page at a time (cursor),
+the tab's badge from `GET /v1/notifications/unread-count` (`99+` above 99
+or when capped). Tapping an unread one marks it read
+(`POST /v1/notifications/{id}/read`); "Mark all read" sends `before` = the
+newest one shown, so what arrives meanwhile stays unread. A notification's
+`link` (a web app path) is not opened yet.
+
+## Account (backend `auth`)
+
+- **Profile:** the name, `PATCH /v1/auth/me { name }`.
+- **Language:** saved on the account (`PATCH /v1/auth/me { locale }`), so
+  the API answers and mails in it too; the signed-in layout applies a saved
+  language at start. Switching between left-to-right and right-to-left
+  (Arabic) applies on the next launch: React Native reads the direction at
+  start (`src/features/account/language.ts`).
+- **Sessions:** `GET /v1/auth/sessions` lists **browser sessions only**; a
+  token client such as this app is not in it, so the app can end other
+  sessions and "sign out everywhere" (which ends its own too), but not
+  show itself. Tracked:
+  [backend #956](https://github.com/lamberto15/nestjs-monorepo-template/issues/956).
+
+## User-Agent
+
+Every call sends `User-Agent: <name>/<version> (<model>; <OS> <version>)`
+(`src/api/public-api.ts`), for the API's sessions, sign-in log, audit and
+new-sign-in alerts. Without it the platform's default goes (Expo Go's
+`Expo/…`, Android's `okhttp/…`), which the API labels by its first word
+("Expo"). The API reads `iPhone`/`iPad` and `Android` in it, so it now says
+"iOS" or "Android"; naming the app ("NestJSMobile on iOS") is part of
+backend #956. The realtime socket keeps the platform's agent.
 
 ## Languages and time (backend `i18n-and-time`)
 

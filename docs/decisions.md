@@ -32,12 +32,18 @@ here, with the reason.
 3. **Sign-in** (done): password, two-factor, tenant picker, sign-up, forgot
    password, sign-out; all five languages (drafts: have native speakers
    review de, ar, zh, ms); Jest tests.
-4. **Account:** profile and language, sessions, passkeys.
-5. **Notifications:** list and unread count over realtime, push
-   registration, preferences.
+4. **Account and notifications, Expo Go part** (done): tabs; profile,
+   language saved on the account (RTL on next launch), browser sessions and
+   sign out everywhere; notifications list and badge kept live over
+   realtime; an explicit User-Agent.
+5. **With a development build:** passkeys, push registration
+   (`PUT /v1/devices`, native APNs/FCM tokens), notification preferences.
 6. **Provider sign-in and magic link**, once the backend issue lands.
 
 ## Open
+
+- Token sign-ins in the sessions list, and app-aware device labels:
+  [backend #956](https://github.com/lamberto15/nestjs-monorepo-template/issues/956).
 
 - Where the backend is deployed for passkey testing (needs `https`).
 - Bot protection for apps: app attestation,
