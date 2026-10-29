@@ -30,7 +30,8 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
+# local env files: your settings (server URLs, APP_ID) never go in the template
+.env
 .env*.local
 
 # typescript

@@ -4,7 +4,7 @@
 
 1. Node 24 (the backend's `.nvmrc`) and pnpm.
 2. `pnpm install`
-3. `cp .env.example .env` and fill it (below).
+3. `cp .env.example .env.local` and fill it (below).
 4. The backend running locally: in its repo, `pnpm setup` once, then
    `pnpm dev` (API on <http://localhost:3000>).
 5. `pnpm start`, then `i` (iOS simulator), `a` (Android emulator), or scan
@@ -19,7 +19,7 @@ bundle (passkeys, push credentials); from then on, use a development build:
 
 After creating your repo from this template:
 
-- [ ] `APP_ID` in `.env` and each EAS environment (e.g.
+- [ ] `APP_ID` in `.env.local` and each EAS environment (e.g.
       `dev.example.app`): the iOS bundle ID and Android package, set by
       `app.config.ts`; **permanent after the first store upload**. `app.json`:
       `name`, `slug`, `scheme`. `app.name` in

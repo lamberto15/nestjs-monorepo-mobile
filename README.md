@@ -36,7 +36,7 @@ No product features: add yours on top.
 
    ```bash
    pnpm install
-   cp .env.example .env    # set EXPO_PUBLIC_API_URL
+   cp .env.example .env.local    # set EXPO_PUBLIC_API_URL
    pnpm start              # i: iOS simulator, a: Android emulator, or scan the QR code
    ```
 
