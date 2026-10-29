@@ -320,5 +320,18 @@
     "saveCurrent": "Save these filters",
     "delete": "Delete view",
     "deleteTitle": "Delete this view?"
+  },
+  "attachments": {
+    "title": "Files",
+    "empty": "No files yet.",
+    "checking": "Being checked…",
+    "delete": "Delete",
+    "deleteTitle": "Delete {{name}}?",
+    "camera": "Camera",
+    "photo": "Photo",
+    "file": "File",
+    "uploading": "Uploading…",
+    "tooLarge": "This file is too large: at most {{max}}.",
+    "noCamera": "The camera is not allowed. Allow it in Settings."
   }
 }

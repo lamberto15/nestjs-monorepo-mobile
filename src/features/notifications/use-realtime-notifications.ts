@@ -41,6 +41,14 @@ export function useRealtimeNotifications() {
         updateList(queryClient, (data) => removeItem(data, id)),
     });
     realtime.socket.on('connect', refetch);
+    // A file added or removed on a watched record: its list reloads.
+    const stopFiles = realtime.on(
+      'record.attachments.changed',
+      ({ subject, recordId }) =>
+        queryClient.invalidateQueries({
+          queryKey: ['records', subject, recordId, 'attachments'],
+        }),
+    );
     // A comment on a watched record: its open conversation reloads.
     const stopComments = realtime.on(
       'record.commented',
@@ -63,6 +71,7 @@ export function useRealtimeNotifications() {
       realtime.socket.off('connect', refetch);
       stopWatching();
       stopComments();
+      stopFiles();
       realtime.close();
     };
   }, [queryClient]);

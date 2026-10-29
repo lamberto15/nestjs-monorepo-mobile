@@ -45,8 +45,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to use a photo as your account picture.",
-          "cameraPermission": false,
+          "photosPermission": "Allow $(PRODUCT_NAME) to use your photos as your account picture or attachments.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to take photos to attach to records.",
           "microphonePermission": false
         }
       ]
