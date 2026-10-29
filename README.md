@@ -12,19 +12,31 @@ template.
 
 ## What the starter gives you
 
-Built: the typed API client synced from your backend, token sessions done
-right (secure storage, refresh before expiry, one refresh at a time: the
-backend revokes a reused refresh token's family), sign-in with two-factor
-and a tenant picker (switch any time), sign-up, forgot password, tabs, profile and language
-saved on the account, browser sessions, notifications with a live unread
-badge (realtime), notification settings and quiet hours, five languages (Arabic right to left), tests, CI.
+- **Sessions done right:** the typed API client synced from your backend,
+  tokens in the secure store, one refresh at a time (the backend revokes a
+  reused refresh token's family), step-up for sensitive actions.
+- **Sign-in:** password, two-factor, sign-up, forgot password; tenants,
+  switched any time.
+- **Account:** profile and picture, language (five, Arabic right to left),
+  security (two-factor, password, an optional Face ID / fingerprint lock),
+  sessions of browsers and apps, your data and consents, account deletion.
+- **Work:** Home with what waits on you, favorites and recents; global
+  search; approvals and acknowledgments; notifications live over realtime,
+  with settings and quiet hours.
+- **Records:** an example feature (Notes) with search, filters from the
+  API, saved views, ETag conflicts, custom fields; comments with mentions,
+  tags, watching, history, files from the camera, PDFs, CSV export, who
+  else is looking; `pnpm feature:add` copies it for your own features.
+- **Platform:** offline handling, timeouts, error states, accessibility
+  (WCAG AA colours), the tenant's branding, a privacy cover, the iOS
+  privacy manifest, consent-gated telemetry (off by default).
+- **Quality:** tests, CI, a weekly client drift check, a UI catalogue,
+  Maestro flows, EAS preview builds.
 
-Planned:
+Waiting on accounts or devices (see the open issues): provider sign-in and
+magic links, passkeys, push, app attestation, store releases.
 
-- Passkeys, provider sign-in and magic links, app attestation (the backend has them).
-- Push (APNs/FCM, as the backend sends) and notification preferences.
-
-No product features: add yours on top.
+No product features: add yours on top (docs/adding-a-feature.md).
 
 ## Use it
 
