@@ -19,8 +19,8 @@ export function useUpdateProfile() {
 }
 
 /**
- * The person's browser sessions. A token client such as this app is not one
- * of them: it never appears here (docs/backend-integration.md, "Account").
+ * Where the person is signed in: browser sessions and apps (`kind`), this
+ * app's own sign-in marked `current`.
  */
 export function useSessions() {
   return useQuery({

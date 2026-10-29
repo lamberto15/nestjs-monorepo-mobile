@@ -1114,7 +1114,7 @@ export interface paths {
         get: operations["NotificationsController_preferences_v1"];
         /**
          * Change how you are told
-         * @description The body replaces your settings: a type or channel left out goes back to its default. A mandatory type cannot be switched off. Audited.
+         * @description The body replaces your settings: a type or channel left out goes back to its default. On a mandatory type, a channel that is on by default cannot be switched off (one off by default may stay off: what GET answers, PUT takes back). Audited.
          */
         put: operations["NotificationsController_updatePreferences_v1"];
         post?: never;
@@ -4626,8 +4626,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Your browser sessions
-         * @description While an administrator acts as you: only that session.
+         * Where you are signed in: your browser sessions and apps
+         * @description Browsers first, then apps (token clients still signed in). `current`: the session or app of this request. While an administrator acts as you: only that session.
          */
         get: operations["SessionsController_list_v1"];
         put?: never;
@@ -4648,7 +4648,10 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Sign one of your sessions out */
+        /**
+         * Sign one of your sessions or apps out
+         * @description An app (its token family) is signed out at once: its refresh token stops working, its realtime connections end; an access token it holds lives until it expires (15 minutes).
+         */
         delete: operations["SessionsController_revoke_v1"];
         options?: never;
         head?: never;
@@ -13264,7 +13267,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description An unknown type or channel, a value the channel does not take, or a mandatory type switched off (validation_failed, each error naming `<type>.<channel>`). */
+            /** @description An unknown type or channel, a value the channel does not take, or, on a mandatory type, a channel that is on by default switched off (validation_failed, each error naming `<type>.<channel>`). */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -29935,13 +29938,23 @@ export interface operations {
                 content: {
                     "application/json": {
                         items: {
+                            /** @description A browser session's id, or an app's (its token family's `sid`). */
                             id: string;
+                            /**
+                             * @description `browser`: a cookie session; `app`: a token client (POST /auth/token and the other token sign-ins).
+                             * @enum {string}
+                             */
+                            kind: "browser" | "app";
                             /** Format: date-time */
                             createdAt: string;
-                            /** Format: date-time */
+                            /**
+                             * Format: date-time
+                             * @description The last request (a browser's), or the last refresh (an app's).
+                             */
                             lastActiveAt: string;
+                            /** @description A browser's recorded user agent; null for an app. */
                             userAgent: string | null;
-                            /** @description A readable summary of the user agent ("Chrome on macOS"); null when none was recorded. */
+                            /** @description A readable summary of the user agent ("Chrome on macOS", "NestJSMobile on iOS"); null when none was recorded. */
                             device: string | null;
                             /**
                              * @description How it was signed in (`impersonation`: an administrator acting as you); null: before this was recorded.

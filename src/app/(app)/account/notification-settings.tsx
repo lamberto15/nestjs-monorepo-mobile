@@ -34,7 +34,7 @@ export default function NotificationSettingsScreen() {
   const { t } = useTranslation();
   const types = useNotificationTypes();
   const preferences = usePreferences();
-  const save = useSavePreferences(types.data?.items ?? []);
+  const save = useSavePreferences();
 
   if (!types.data || !preferences.data) {
     const error = types.error ?? preferences.error;

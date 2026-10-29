@@ -199,11 +199,12 @@ zone to the phone's when they differ.
   language at start. Switching between left-to-right and right-to-left
   (Arabic) applies on the next launch: React Native reads the direction at
   start (`src/features/account/language.ts`).
-- **Sessions:** `GET /v1/auth/sessions` lists **browser sessions only**; a
-  token client such as this app is not in it, so the app can end other
-  sessions and "sign out everywhere" (which ends its own too), but not
-  show itself. Tracked:
-  [backend #956](https://github.com/lamberto15/nestjs-monorepo-template/issues/956).
+- **Sessions:** `GET /v1/auth/sessions` lists browser sessions and apps
+  (`kind`: `browser` / `app`; an app is a token family), this app's own
+  marked `current` and shown first as "This device". Any other one can be
+  ended (`DELETE /v1/auth/sessions/{id}`; an app's realtime connections end
+  with it); this device signs out from Account. "Sign out everywhere" ends
+  this one too.
 
 ## User-Agent
 
@@ -211,9 +212,10 @@ Every call sends `User-Agent: <name>/<version> (<model>; <OS> <version>)`
 (`src/api/public-api.ts`), for the API's sessions, sign-in log, audit and
 new-sign-in alerts. Without it the platform's default goes (Expo Go's
 `Expo/…`, Android's `okhttp/…`), which the API labels by its first word
-("Expo"). The API reads `iPhone`/`iPad` and `Android` in it, so it now says
-"iOS" or "Android"; naming the app ("NestJSMobile on iOS") is part of
-backend #956. The realtime socket keeps the platform's agent.
+("Expo"). With it the API labels the app "NestJSMobile on iOS" (its name
+and the system it reads from `iPhone`/`iPad` or `Android`); a token
+sign-in keeps that label for the whole family. The realtime socket keeps
+the platform's agent.
 
 ## Languages and time (backend `i18n-and-time`)
 
