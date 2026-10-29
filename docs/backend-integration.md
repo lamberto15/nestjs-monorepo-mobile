@@ -85,12 +85,19 @@ none) and make `Idempotency-Key`s with `expo-crypto` (React Native has no
 
 ## Sign-in methods
 
+As built: `src/features/auth/sign-in-flow.ts` (password → two-factor →
+tenant, the credentials in memory for the flow only),
+`src/app/(auth)/` (the screens), `src/features/auth/hooks.ts` (sign-up,
+forgot password, `me`). Email links (verification, password reset) open
+the web app; the app then says "check your email" and returns to sign-in.
+Passkeys come with the account phase (a development build).
+
 | Method                    | Status                     | How                                                                                                                                                                                                                                                                                                                                                                        |
 | ------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Password                  | first release              | `POST /v1/auth/token`                                                                                                                                                                                                                                                                                                                                                      |
-| Two-factor                | first release              | the first `/token` answers the problem `mfa_required`; ask for the code and send the same request with `code` (or `recoveryCode`)                                                                                                                                                                                                                                          |
-| Sign-up                   | first release              | `POST /v1/auth/sign-up` when `GET /v1/auth/methods` says it's on; then verify the email, then `/token`                                                                                                                                                                                                                                                                     |
-| Passkeys                  | first release              | `POST /v1/auth/passkeys/sign-in/options` → the platform's passkey API → `POST /v1/auth/passkeys/token { response, code?, tenantId? }`. Needs a dev build, and on the backend `PASSKEY_APPLE_APPS` (`TEAMID.bundle.id`) and `PASSKEY_ANDROID_APPS` (package and signing SHA-256), which it serves as `apple-app-site-association` and `assetlinks.json` on the RP ID's host |
+| Password                  | built                      | `POST /v1/auth/token`                                                                                                                                                                                                                                                                                                                                                      |
+| Two-factor                | built                      | the first `/token` answers the problem `mfa_required`; ask for the code and send the same request with `code` (or `recoveryCode`)                                                                                                                                                                                                                                          |
+| Sign-up                   | built                      | `POST /v1/auth/sign-up` when `GET /v1/auth/methods` says it's on; then verify the email, then `/token`                                                                                                                                                                                                                                                                     |
+| Passkeys                  | account phase              | `POST /v1/auth/passkeys/sign-in/options` → the platform's passkey API → `POST /v1/auth/passkeys/token { response, code?, tenantId? }`. Needs a dev build, and on the backend `PASSKEY_APPLE_APPS` (`TEAMID.bundle.id`) and `PASSKEY_ANDROID_APPS` (package and signing SHA-256), which it serves as `apple-app-site-association` and `assetlinks.json` on the RP ID's host |
 | Google, Microsoft, GitHub | **blocked on the backend** | see below                                                                                                                                                                                                                                                                                                                                                                  |
 | Magic link                | **blocked on the backend** | see below                                                                                                                                                                                                                                                                                                                                                                  |
 
@@ -99,9 +106,12 @@ none) and make `Idempotency-Key`s with `expo-crypto` (React Native has no
 **Bot protection.** When `methods.captcha` is set (Turnstile), sign-in, its
 two-factor step, sign-up and forgot-password want a widget token in
 `X-Captcha-Token`, always or after a 403 `captcha_required`
-(`captcha.mode`). An app renders Turnstile in a WebView with
-`captcha.siteKey`; outside production the backend's `stub` provider stands
-in. Decide this with the sign-in screens.
+(`captcha.mode`). **Decided:** no widget in the app; the safe exemption is
+app attestation (App Attest, Play Integrity), tracked as
+[backend #953](https://github.com/lamberto15/nestjs-monorepo-template/issues/953).
+Until it lands, run the backend with `CAPTCHA_MODE` unset (the default);
+when a captcha is required the app says so (`errors.captcha`) instead of
+failing silently.
 
 **Blocked: provider sign-in and magic links.** Today both end in the web
 app: the OIDC callback sets the session cookie and redirects to `WEB_URL`,
@@ -115,13 +125,19 @@ the app's screens wait for it.
 
 ## Tenants (backend `tenancy`)
 
-Tokens act in **one tenant** (`tenantId` at sign-in). After sign-in:
-`GET /v1/auth/tenants`; with one, use it; with several, show the picker.
-Switching tenants means a **new token sign-in** with the other `tenantId`
-(the cookie route `POST /v1/auth/tenant` is for browsers, and
-`/v1/auth/token/refresh` takes no `tenantId`), so today it asks for the
-credentials again. Clear the query
-cache on a switch: every cached answer belongs to the old tenant. With
+Tokens act in **one tenant**: `tenantId` at sign-in, else the last one
+chosen. After sign-in the app reads `GET /v1/auth/tenants` with the new
+tokens (before the session holds them); with one it starts the session,
+with several it shows the picker (`choose-tenant`), the `current` one first.
+Choosing the current one keeps the tokens; another means a **new token
+sign-in** with its `tenantId` (the cookie route `POST /v1/auth/tenant` is
+for browsers, and `/v1/auth/token/refresh` takes no `tenantId`), with a
+fresh two-factor code when the account has two-factor; the first pair is
+revoked only after the new one arrives. Switching later, from inside the
+app, waits for
+[backend #954](https://github.com/lamberto15/nestjs-monorepo-template/issues/954)
+(`tenantId` on refresh). Clear the query cache on a switch: every cached
+answer belongs to the old tenant. With
 `TENANCY=single` the list has one entry and the picker never shows.
 
 `GET /v1/auth/me` (with `can`: every allowed `Subject.action`) and

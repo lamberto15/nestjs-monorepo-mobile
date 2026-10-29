@@ -16,6 +16,8 @@ here, with the reason.
 | Libraries                    | TanStack Query, TanStack Form + zod, i18next (`expo-localization`), `expo-secure-store`, `expo-notifications`, `expo-crypto`, `socket.io-client` | Mirror the backend's web app; Expo modules first                                                                                                      |
 | Push                         | Native APNs/FCM tokens to `PUT /v1/devices`                                                                                                      | The backend sends through APNs/FCM, not Expo's push service                                                                                           |
 | App identity                 | Placeholders (name, bundle ID, package), by design                                                                                               | Each project sets its own ([Make it yours](development.md#make-it-yours))                                                                             |
+| Captcha                      | No widget in the app; app attestation on the backend (#953)                                                                                      | A WebView widget is fragile, and a plain exemption lets bots around the check                                                                         |
+| Languages                    | en, de, ar, zh, ms from the sign-in phase, `pnpm i18n:check` in CI                                                                               | As the backend; RTL tested early                                                                                                                      |
 | Package manager              | pnpm                                                                                                                                             | As the backend                                                                                                                                        |
 | License                      | PolyForm Noncommercial 1.0.0                                                                                                                     | As the backend; the copied client already carries it                                                                                                  |
 
@@ -27,7 +29,9 @@ here, with the reason.
    `eas.json`; `pnpm client:sync` and the client; session with single-flight
    refresh and route guards; TanStack Query; i18n (English, RTL allowed);
    Prettier with the backend's settings, commitlint, lefthook, CI.
-3. **Sign-in:** password, two-factor, sign-up, tenant picker, sign-out.
+3. **Sign-in** (done): password, two-factor, tenant picker, sign-up, forgot
+   password, sign-out; all five languages (drafts: have native speakers
+   review de, ar, zh, ms); Jest tests.
 4. **Account:** profile and language, sessions, passkeys.
 5. **Notifications:** list and unread count over realtime, push
    registration, preferences.
@@ -36,7 +40,8 @@ here, with the reason.
 ## Open
 
 - Where the backend is deployed for passkey testing (needs `https`).
-- Captcha on sign-in (Turnstile in a WebView, or a backend exemption for
-  apps): decide with the sign-in screens.
-- Switching tenants re-asks for credentials (`/token/refresh` takes no
-  `tenantId`); a backend change could avoid it.
+- Bot protection for apps: app attestation,
+  [backend #953](https://github.com/lamberto15/nestjs-monorepo-template/issues/953);
+  meanwhile `CAPTCHA_MODE` unset.
+- Switching tenants after sign-in:
+  [backend #954](https://github.com/lamberto15/nestjs-monorepo-template/issues/954).
