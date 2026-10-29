@@ -414,5 +414,11 @@
     "on": "bestätigt {{date}}",
     "overdue": "überfällig",
     "confirm": "Gelesen"
+  },
+  "lock": {
+    "title": "Mit Face ID oder Fingerabdruck sperren",
+    "hint": "Fragt beim Öffnen der App und nach einer Minute Abwesenheit.",
+    "unlock": "Entsperren",
+    "prompt": "App entsperren"
   }
 }

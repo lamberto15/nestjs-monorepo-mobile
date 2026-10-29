@@ -11,6 +11,7 @@ import { ListRow } from '@/components/list-row';
 import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
+import { AppLockSwitch } from '@/features/account/app-lock-switch';
 import { useChangePassword } from '@/features/account/lifecycle';
 import { StepUpCancelled } from '@/features/account/step-up';
 import {
@@ -42,6 +43,7 @@ export default function SecurityScreen() {
         detail={me.data.mfaEnabled ? t('mfa.on') : t('mfa.off')}
         onPress={() => router.push('/account/two-factor')}
       />
+      <AppLockSwitch />
       <ChangePassword hasPassword={me.data.hasPassword} />
     </Screen>
   );

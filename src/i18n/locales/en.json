@@ -414,5 +414,11 @@
     "on": "acknowledged {{date}}",
     "overdue": "overdue",
     "confirm": "I have read it"
+  },
+  "lock": {
+    "title": "Lock with Face ID or fingerprint",
+    "hint": "Asks when the app opens, and after a minute away.",
+    "unlock": "Unlock",
+    "prompt": "Unlock the app"
   }
 }

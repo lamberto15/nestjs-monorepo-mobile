@@ -88,6 +88,25 @@ layout must work: Arabic is one of the backend's languages.
   and saves pause and continue when the network is back; `OfflineBanner`
   says so at the top.
 
+## Privacy and links
+
+- **App switcher:** `PrivacyCover` covers the screen whenever the app is
+  not in front, so the system's snapshot shows no data.
+- **App lock** (Account → Security, on a device with a face or fingerprint
+  enrolled): asks when the app opens and after a minute in the
+  background; the setting is in the secure store and turned off on
+  sign-out. Face ID needs a development build (Expo Go falls back to the
+  passcode).
+- **Links in:** Expo Router opens `scheme://notes/1` and web paths by
+  itself; one that arrives signed out is kept (`pendingLink`) and opened
+  after sign-in. Every screen a link may open is in `RECORD_ROUTES` /
+  `APP_ROUTES` (`src/features/notifications/link.ts`).
+- **iOS privacy manifest** (`ios.privacyManifests` in app.json): the
+  required-reason APIs of the installed native packages (UserDefaults,
+  file timestamps, boot time, disk space), read from their
+  `PrivacyInfo.xcprivacy`. A new native dependency: check its file and add
+  what it lists. Usage strings: camera, photos, Face ID.
+
 ## Accessibility
 
 - Colours meet WCAG AA: text on `primary` and `dangerFill` and `link` on
