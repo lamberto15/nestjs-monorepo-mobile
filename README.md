@@ -1,56 +1,46 @@
-# Welcome to your Expo app 👋
+# nestjs-monorepo-mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The iOS and Android app of
+[nestjs-monorepo-template](https://github.com/lamberto15/nestjs-monorepo-template):
+Expo (SDK 58), React Native, Expo Router, talking to the template's REST API
+and realtime socket through its typed client.
 
-## Get started
+> Status: **foundation**. The plan is in [docs/decisions.md](docs/decisions.md#roadmap).
 
-1. Install dependencies
+## What it does (planned first release)
 
-   ```bash
-   npm install
-   ```
+- Sign in with email and password, two-factor (TOTP or a recovery code), and
+  passkeys; sign up when the backend allows it.
+- Pick and switch tenants (organizations).
+- Profile, language, sessions and devices.
+- Notifications: the in-app list kept live over realtime, and push (APNs/FCM).
 
-2. Start the app
+## Quick start
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Prerequisites: Node 24 (as the backend's `.nvmrc`), pnpm, and the backend
+running locally (its `pnpm dev`, API on port 3000).
 
 ```bash
-npm run reset-project
+pnpm install
+cp .env.example .env    # then set EXPO_PUBLIC_API_URL
+pnpm start              # press i (iOS simulator), a (Android emulator), or scan the QR code
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+A phone or emulator can't reach `localhost` on your computer: see
+[docs/development.md](docs/development.md#reaching-the-local-api).
 
-### Other setup steps
+## Documentation
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Doc | What's in it |
+| --- | --- |
+| [AGENTS.md](AGENTS.md) | Rules for coding agents (and people): workflow, commands, Expo rules |
+| [docs/architecture.md](docs/architecture.md) | Folders, layers, state, navigation, styling |
+| [docs/backend-integration.md](docs/backend-integration.md) | API client sync, tokens, sign-in, tenants, errors, push, realtime |
+| [docs/development.md](docs/development.md) | Setup, env, dev builds, EAS, git workflow |
+| [docs/decisions.md](docs/decisions.md) | Decisions and the roadmap |
 
-## Learn more
+## License
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Not decided yet: `LICENSE` is still the Expo template's
+([decisions](docs/decisions.md#open)). The copied API client in
+`src/api/client/` keeps the backend's license (PolyForm Noncommercial 1.0.0).
