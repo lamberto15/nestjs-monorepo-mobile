@@ -1,6 +1,6 @@
 # Architecture
 
-> Describes the target layout. Folders marked *(planned)* arrive in phase 2
+> Folders marked _(planned)_ arrive with later phases
 > ([decisions](decisions.md#roadmap)); update this file as they land.
 
 ## Folders
@@ -8,20 +8,24 @@
 ```
 src/
   app/                 routes only (Expo Router): screens and _layout.tsx
-    (auth)/            signed-out stack: sign-in, two-factor, sign-up   (planned)
-    (app)/             signed-in tabs, guarded by the session           (planned)
-  api/                                                                  (planned)
+    _layout.tsx        providers, session restore, Stack.Protected guards
+    sign-in.tsx        signed-out entry (for now: checks the API is reachable)
+    (app)/             signed-in screens, guarded by the session
+  api/
     client/            the backend's typed client, copied by `pnpm client:sync`; never edit
-    api.ts             the one `createApiClient()` instance
+    public-api.ts      API_URL and `publicApi`: calls without a session
+    api.ts             `api`: calls with the session's access token
     session.ts         tokens: secure storage, single-flight refresh, sign-out
-    realtime.ts        the one `createRealtime()` connection
-  features/<name>/     a feature's hooks, components and queries (auth, tenants, notifications…)
-  components/          shared components (themed-text, themed-view, ui/)
-  hooks/               shared hooks (theme, color scheme)
+    query-client.ts    TanStack Query defaults (retries per error kind)
+    realtime.ts        the one `createRealtime()` connection          (planned)
+  features/<name>/     a feature's hooks, components and queries      (planned)
+  components/          shared components (themed-text, themed-view)
+  hooks/               shared hooks (theme, color scheme, session status)
   constants/theme.ts   design tokens: colors, spacing, typography
-  i18n/                i18next setup and locales/<lang>.json              (planned)
-assets/                icons, splash, fonts
-scripts/               repo scripts (client sync)
+  i18n/                i18next setup and locales/<lang>.json
+  types/               ambient types
+assets/                icons, splash
+scripts/               client-sync.mjs
 ```
 
 `src/app/` holds routes only: everything else lives outside it, so Expo
@@ -38,21 +42,22 @@ A screen never calls `fetch` or the client directly; a feature hook does.
 
 ## State
 
-| Kind | Where |
-| --- | --- |
-| Server data | TanStack Query (cache, retries, refetch on focus and reconnect) |
-| Session (tokens, tenant) | `src/api/session.ts`, persisted in `expo-secure-store`, exposed by a React context |
-| Forms | TanStack Form + zod (as the backend's web app) |
-| UI-only | component state |
+| Kind                     | Where                                                                                  |
+| ------------------------ | -------------------------------------------------------------------------------------- |
+| Server data              | TanStack Query (cache, retries, refetch on focus and reconnect)                        |
+| Session (tokens, tenant) | `src/api/session.ts`, persisted in `expo-secure-store`, read with `useSessionStatus()` |
+| Forms                    | TanStack Form + zod (as the backend's web app)                                         |
+| UI-only                  | component state                                                                        |
 
 No global store library until a real need appears.
 
 ## Navigation
 
 Expo Router with typed routes (`experiments.typedRoutes`). The root layout
-decides between the `(auth)` and `(app)` groups from the session
-(`Stack.Protected` or a redirect: check the SDK 58 docs). Deep links use the
-`scheme` from the app config.
+keeps the splash screen up while the stored session is checked, then guards
+the routes with `Stack.Protected`: `(app)` when signed in, `sign-in` when
+not (`redirectTo` sends the other way). Signing out clears the query cache.
+Deep links use the `scheme` in `app.json`.
 
 ## Styling
 

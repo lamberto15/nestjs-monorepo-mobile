@@ -1,3 +1,6 @@
+allowBuilds:
+  lefthook: true
+  unrs-resolver: false
 minimumReleaseAgeExclude:
   - '@expo/cli@58.1.17'
   - '@expo/config-plugins@58.0.11'

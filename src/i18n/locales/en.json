@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "NestJS Mobile"
+  },
+  "server": {
+    "connecting": "Connecting to {{url}}…",
+    "connected": "Connected to {{url}}",
+    "unreachable": "Can't reach {{url}}",
+    "retry": "Try again",
+    "methods": "Sign-in methods: {{methods}}"
+  },
+  "methods": {
+    "password": "password",
+    "passkeys": "passkeys",
+    "magicLink": "email link",
+    "signUp": "sign-up"
+  },
+  "home": {
+    "signedIn": "You're signed in.",
+    "signOut": "Sign out"
+  }
+}

@@ -10,12 +10,17 @@ template.
 > Status: **foundation**. What's built and what's next:
 > [docs/decisions.md](docs/decisions.md#roadmap).
 
-## What the starter gives you (planned)
+## What the starter gives you
+
+Built: the typed API client synced from your backend, token sessions done
+right (secure storage, refresh before expiry, one refresh at a time: the
+backend revokes a reused refresh token's family), signed-in and signed-out
+route guards, TanStack Query, i18n, CI.
+
+Planned:
 
 - Sign in with email and password, two-factor (TOTP or a recovery code), and
   passkeys; sign-up when the backend allows it.
-- Token sessions done right: secure storage, refresh before expiry, one
-  refresh at a time (the backend revokes a reused refresh token's family).
 - Tenant picker and switching.
 - Profile, language (incl. right to left), sessions and devices.
 - Notifications: the in-app list kept live over realtime, and push
@@ -44,13 +49,13 @@ Prerequisites: Node 24 and pnpm (as the backend), and the backend running
 
 ## Documentation
 
-| Doc | What's in it |
-| --- | --- |
-| [AGENTS.md](AGENTS.md) | Rules for coding agents (and people): workflow, commands, Expo rules |
-| [docs/architecture.md](docs/architecture.md) | Folders, layers, state, navigation, styling |
-| [docs/backend-integration.md](docs/backend-integration.md) | API client sync, tokens, sign-in, tenants, errors, push, realtime |
-| [docs/development.md](docs/development.md) | Setup, make it yours, env, dev builds, EAS, git workflow |
-| [docs/decisions.md](docs/decisions.md) | Decisions and the roadmap |
+| Doc                                                        | What's in it                                                         |
+| ---------------------------------------------------------- | -------------------------------------------------------------------- |
+| [AGENTS.md](AGENTS.md)                                     | Rules for coding agents (and people): workflow, commands, Expo rules |
+| [docs/architecture.md](docs/architecture.md)               | Folders, layers, state, navigation, styling                          |
+| [docs/backend-integration.md](docs/backend-integration.md) | API client sync, tokens, sign-in, tenants, errors, push, realtime    |
+| [docs/development.md](docs/development.md)                 | Setup, make it yours, env, dev builds, EAS, git workflow             |
+| [docs/decisions.md](docs/decisions.md)                     | Decisions and the roadmap                                            |
 
 ## License
 

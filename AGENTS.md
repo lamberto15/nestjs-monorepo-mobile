@@ -78,7 +78,9 @@ This project uses **pnpm** (`pnpm-lock.yaml`).
 pnpm expo install <package>  # ALWAYS instead of pnpm add: SDK-compatible versions
 pnpm start                   # dev server
 pnpm lint                    # expo lint
-pnpm exec tsc --noEmit       # typecheck
+pnpm typecheck               # tsc --noEmit
+pnpm format                  # Prettier (format:check in CI)
+pnpm client:sync [<ref>]     # copy the backend's typed client (client-sync.json)
 pnpm dlx expo-doctor         # diagnose dependency and config issues
 pnpm expo install --fix      # fix incompatible package versions
 ```
