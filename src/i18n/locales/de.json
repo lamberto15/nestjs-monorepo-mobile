@@ -277,7 +277,8 @@
     "yourReply": "Deine Antwort",
     "send": "Kommentieren",
     "sendReply": "Antworten",
-    "text": "Kommentar"
+    "text": "Kommentar",
+    "mention": "{{name}} erwähnen"
   },
   "records": {
     "watch": "Beobachten",
@@ -297,5 +298,27 @@
     "restore": "Diese Version wiederherstellen",
     "restoreTitle": "Version {{number}} wiederherstellen?",
     "restoreBody": "Ihre Werte werden die aktuellen; der Verlauf behält jede Version."
+  },
+  "filters": {
+    "all": "Alle",
+    "yes": "Ja",
+    "no": "Nein",
+    "none": "Keine",
+    "fields": {
+      "status": "Status"
+    },
+    "values": {
+      "draft": "Entwurf",
+      "published": "Veröffentlicht"
+    }
+  },
+  "views": {
+    "title": "Gespeicherte Ansichten",
+    "none": "Alle",
+    "name": "Name der Ansicht",
+    "save": "Ansicht speichern",
+    "saveCurrent": "Diese Filter speichern",
+    "delete": "Ansicht löschen",
+    "deleteTitle": "Diese Ansicht löschen?"
   }
 }

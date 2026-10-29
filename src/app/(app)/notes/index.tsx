@@ -10,7 +10,6 @@ import {
   View,
 } from 'react-native';
 
-import { ChoiceChips } from '@/components/choice-chips';
 import { ErrorState } from '@/components/error-state';
 import { ListRow } from '@/components/list-row';
 import { TextField } from '@/components/text-field';
@@ -18,17 +17,22 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useMe } from '@/features/auth/hooks';
-import { useNotes, type NoteStatus } from '@/features/notes/hooks';
+import { useNotes } from '@/features/notes/hooks';
+import { useListMetadata, type ListQuery } from '@/features/records/list';
+import { ListFilters, ViewsBar } from '@/features/records/list-filters';
 import { useDebounced } from '@/hooks/use-debounced';
 import { formatDateTime } from '@/i18n/format';
 
 export default function NotesScreen() {
   const { t } = useTranslation();
   const me = useMe();
+  const metadata = useListMetadata('Note');
   const [search, setSearch] = useState('');
-  const [status, setStatus] = useState<NoteStatus | 'all'>('all');
-  const query = useDebounced(search.trim());
-  const list = useNotes(query, status);
+  // Filters and sort: tapped, or a saved view's.
+  const [filters, setFilters] = useState<ListQuery>({});
+  const [viewId, setViewId] = useState<string | null>(null);
+  const q = useDebounced(search.trim());
+  const list = useNotes({ ...filters, ...(q && { q }) });
   const items = list.data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
@@ -56,25 +60,34 @@ export default function NotesScreen() {
         keyExtractor={(note) => note.id}
         ListHeaderComponent={
           <View style={styles.filters}>
-            <TextField
-              label={t('notes.search')}
-              value={search}
-              onChangeText={setSearch}
-              placeholder={t('notes.searchHint')}
-              autoCapitalize="none"
-              autoCorrect={false}
-              clearButtonMode="while-editing"
-              returnKeyType="search"
+            {metadata.data?.search !== false && (
+              <TextField
+                label={t('notes.search')}
+                value={search}
+                onChangeText={setSearch}
+                placeholder={t('notes.searchHint')}
+                autoCapitalize="none"
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                returnKeyType="search"
+              />
+            )}
+            <ViewsBar
+              subject="Note"
+              query={filters}
+              activeId={viewId}
+              onApply={(id, query) => {
+                setViewId(id);
+                setFilters(query);
+              }}
             />
-            <ChoiceChips
-              accessibilityLabel={t('notes.status')}
-              value={status}
-              onChange={setStatus}
-              choices={[
-                { value: 'all', label: t('notes.statuses.all') },
-                { value: 'draft', label: t('notes.statuses.draft') },
-                { value: 'published', label: t('notes.statuses.published') },
-              ]}
+            <ListFilters
+              metadata={metadata.data}
+              query={filters}
+              onChange={(query) => {
+                setViewId(null);
+                setFilters(query);
+              }}
             />
           </View>
         }
@@ -109,7 +122,7 @@ export default function NotesScreen() {
             <ErrorState error={list.error} onRetry={() => list.refetch()} />
           ) : (
             <ThemedText themeColor="textSecondary">
-              {query || status !== 'all'
+              {q || Object.keys(filters).length
                 ? t('notes.noMatch')
                 : t('notes.empty')}
             </ThemedText>
