@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useMe } from '@/features/auth/hooks';
+import { useTelemetry } from '@/features/telemetry/use-telemetry';
 import { BrandingProvider } from '@/features/tenant/branding';
 import { applyLanguage, supportedLanguage } from '@/features/account/language';
 import { useUnreadCount } from '@/features/notifications/hooks';
@@ -14,6 +15,7 @@ export default function AppLayout() {
   const me = useMe();
   const unread = useUnreadCount();
   useRealtimeNotifications();
+  useTelemetry();
 
   // The language saved on the account wins over the device's.
   const saved = supportedLanguage(me.data?.user.locale);
