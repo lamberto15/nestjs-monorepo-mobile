@@ -57,11 +57,40 @@ export function withChannel<C extends keyof Channels>(
   };
 }
 
-export function useSavePreferences() {
+/**
+ * What `PUT` accepts: `GET` reports a mandatory type's channels as `false`
+ * where the person has none (no device for push), but `PUT` refuses any
+ * `false` on a mandatory type ("cannot be switched off"). Those are left
+ * out, so the API keeps its defaults for them.
+ */
+export function saveBody(
+  preferences: Preferences,
+  types: readonly NotificationType[],
+): Preferences {
+  const mandatory = new Set(
+    types.filter((type) => type.mandatory).map((type) => type.type),
+  );
+  return Object.fromEntries(
+    Object.entries(preferences).map(([type, channels]) => [
+      type,
+      mandatory.has(type)
+        ? Object.fromEntries(
+            Object.entries(channels).filter(([, value]) => value !== false),
+          )
+        : channels,
+    ]),
+  );
+}
+
+export function useSavePreferences(types: readonly NotificationType[]) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (types: Preferences) =>
-      unwrap(api.PUT('/v1/notifications/preferences', { body: types })),
+    mutationFn: (preferences: Preferences) =>
+      unwrap(
+        api.PUT('/v1/notifications/preferences', {
+          body: saveBody(preferences, types),
+        }),
+      ),
     onSuccess: (saved) => queryClient.setQueryData(keys.preferences, saved),
   });
 }

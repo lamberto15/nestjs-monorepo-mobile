@@ -34,7 +34,7 @@ export default function NotificationSettingsScreen() {
   const { t } = useTranslation();
   const types = useNotificationTypes();
   const preferences = usePreferences();
-  const save = useSavePreferences();
+  const save = useSavePreferences(types.data?.items ?? []);
 
   if (!types.data || !preferences.data) {
     const error = types.error ?? preferences.error;
@@ -66,6 +66,12 @@ export default function NotificationSettingsScreen() {
       <ThemedText themeColor="textSecondary">
         {t('notificationSettings.hint')}
       </ThemedText>
+      {/* At the top: a refused save reverts the choice, and the reason must be seen. */}
+      {save.error && (
+        <ThemedText themeColor="danger" accessibilityRole="alert">
+          {apiErrorMessage(save.error, t)}
+        </ThemedText>
+      )}
       {types.data.items.map((type) => (
         <ThemedView
           key={type.type}
@@ -111,11 +117,6 @@ export default function NotificationSettingsScreen() {
             ))}
         </ThemedView>
       ))}
-      {save.error && (
-        <ThemedText themeColor="danger" accessibilityRole="alert">
-          {apiErrorMessage(save.error, t)}
-        </ThemedText>
-      )}
       <QuietHours />
     </Screen>
   );
