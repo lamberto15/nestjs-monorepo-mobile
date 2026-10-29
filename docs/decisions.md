@@ -38,6 +38,9 @@ here, with the reason.
    realtime; an explicit User-Agent.
    Then (done): notification settings and quiet hours, notification links,
    `APP_ID` from the environment.
+   Then (done): browsers and apps in Sessions, tenant switching by refresh;
+   offline handling, request timeout, error states, an accessibility pass.
+   Work is tracked as GitHub issues (#10–#14), one group per issue.
 5. **With a development build:** passkeys, push registration
    (`PUT /v1/devices`, native APNs/FCM tokens), notification preferences.
 6. **Provider sign-in and magic link**, once the backend issue lands.
