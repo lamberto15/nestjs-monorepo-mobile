@@ -15,6 +15,22 @@ bundle (passkeys, push credentials); from then on, use a development build:
 `pnpm expo run:ios` / `run:android`, or
 `pnpm dlx eas-cli build --profile development`.
 
+## Make it yours
+
+After creating your repo from this template:
+
+- [ ] App name, `slug` and `scheme` in the app config.
+- [ ] iOS bundle ID and Android package: **permanent after the first store
+      upload**.
+- [ ] Icons and splash in `assets/`, colors in `src/constants/theme.ts`.
+- [ ] The client sync's source: your backend repository and commit
+      ([backend-integration](backend-integration.md#the-typed-client)).
+- [ ] EAS: `pnpm dlx eas-cli init` (your project ID), environments and
+      their `EXPO_PUBLIC_API_URL`.
+- [ ] Backend: `PUSH_PROVIDER` (APNs/FCM keys), `PASSKEY_APPLE_APPS` and
+      `PASSKEY_ANDROID_APPS` with your IDs.
+- [ ] `LICENSE` for your app.
+
 ## Environment
 
 | Variable | What |
@@ -73,6 +89,6 @@ Update a branch with `git merge origin/main`; never rebase or force-push.
 
 Planned in phase 2: `eas.json` with `development`, `preview` and
 `production` profiles, EAS environments for the variables, and
-`eas update` for over-the-air JavaScript updates. The bundle ID and package
-name are **placeholders** until decided ([decisions](decisions.md)): they
-can't change after the first store upload.
+`eas update` for over-the-air JavaScript updates. The template ships no EAS
+project ID and placeholder IDs: each project sets its own
+([Make it yours](#make-it-yours)).

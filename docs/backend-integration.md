@@ -10,13 +10,18 @@ there.
 
 The backend's `packages/api-client` (openapi-fetch on types generated from
 the API's OpenAPI document, plus a typed socket.io realtime client) is
-private and not published. This app **copies it** from a pinned backend
-commit:
+private and not published. This app **copies it** from a pinned commit of
+**your** backend repository (your project made from the template; the
+template itself by default):
 
 ```bash
 pnpm client:sync            # (planned) copy the client at the pinned commit
 pnpm client:sync <sha>      # move the pin to another commit
 ```
+
+The source repository and commit are configured in one place (planned:
+next to the copy), so a project points it at its own backend once. Your
+backend's own routes then come typed with the rest.
 
 - The copy lives in `src/api/client/` with the pinned commit recorded next
   to it. Never edit it: change the backend and sync again.

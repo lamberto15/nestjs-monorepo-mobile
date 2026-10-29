@@ -1,9 +1,14 @@
 # AGENTS.md
 
-The **mobile app** (Expo, React Native, Expo Router) of
-[nestjs-monorepo-template](https://github.com/lamberto15/nestjs-monorepo-template),
+A **starter mobile app** (Expo, React Native, Expo Router) for projects built
+on [nestjs-monorepo-template](https://github.com/lamberto15/nestjs-monorepo-template),
 a NestJS REST backend. Prioritize mobile-first patterns, performance, and
 cross-platform compatibility (iOS, Android; web only as a dev convenience).
+
+**This is a template.** It holds what every app on the backend needs
+(client, session, sign-in, tenants, notifications), not product features.
+Names and IDs stay placeholders; keep live hostnames, account identifiers,
+signing data and credentials out of the repository.
 
 <!--
 Maintainers: this file is the source of truth for every coding agent.
