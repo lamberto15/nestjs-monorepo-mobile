@@ -127,3 +127,40 @@ test('a refused switch (not a member) keeps the session as it was', async () => 
   expect(await store.getItemAsync(KEY)).toBe('r2');
   expect(await session.accessToken()).toBe('a2');
 });
+
+test('a step-up sends the refresh token with the proof and keeps the new pair', async () => {
+  const { session, store } = await load('r1');
+  const calls = fakeApi({
+    'POST /v1/auth/token/refresh': () => reply(tokens(2)),
+    'POST /v1/auth/reauthenticate': () =>
+      reply({
+        authenticatedAt: 'now',
+        recentUntil: 'later',
+        tokens: tokens(3),
+      }),
+  });
+
+  await session.reauthenticate({ password: 'pw' });
+
+  const proof = calls.find((call) => call.path === '/v1/auth/reauthenticate');
+  expect(proof?.body).toEqual({ password: 'pw', refreshToken: 'r2' });
+  expect(proof?.authorization).toBe('Bearer a2');
+  expect(await store.getItemAsync(KEY)).toBe('r3');
+  expect(await session.accessToken()).toBe('a3');
+});
+
+test('a wrong proof keeps the session as it was', async () => {
+  const { session, store } = await load('r1');
+  fakeApi({
+    'POST /v1/auth/token/refresh': () => reply(tokens(2)),
+    'POST /v1/auth/reauthenticate': () =>
+      problem(403, 'reauthentication_failed'),
+  });
+
+  await expect(
+    session.reauthenticate({ password: 'no' }),
+  ).rejects.toMatchObject({ code: 'reauthentication_failed' });
+
+  expect(session.status()).toBe('signedIn');
+  expect(await store.getItemAsync(KEY)).toBe('r2');
+});

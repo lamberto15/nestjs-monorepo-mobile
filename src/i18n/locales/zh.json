@@ -93,7 +93,14 @@
     "sessions": "会话",
     "signOut": "退出登录",
     "notifications": "通知",
-    "organization": "组织"
+    "organization": "组织",
+    "security": "安全",
+    "twoFactorOn": "双重验证已开启",
+    "yourData": "你的数据",
+    "delete": "删除账户",
+    "unverified": "确认你的邮箱地址",
+    "unverifiedHint": "点击重新发送链接。",
+    "verificationSent": "已发送，请查看邮箱。"
   },
   "language": {
     "title": "语言",
@@ -178,5 +185,77 @@
     "deleteBody": "“{{title}}”将移到已删除笔记中；管理员可以恢复它。",
     "conflict": "你打开此笔记后，其他人修改了它。请加载最新版本，再重新修改。",
     "loadLatest": "加载最新版本"
+  },
+  "avatar": {
+    "change": "更换头像",
+    "remove": "移除头像"
+  },
+  "reauth": {
+    "title": "确认是你本人",
+    "hint": "此操作需要近期登录。",
+    "confirm": "确认",
+    "signInAgain": "你的账户通过链接或其他提供方登录，应用无法在此请求。请退出后重新登录，再试一次。"
+  },
+  "security": {
+    "title": "安全"
+  },
+  "password": {
+    "change": "更改密码",
+    "set": "设置密码",
+    "current": "当前密码",
+    "new": "新密码",
+    "save": "保存密码",
+    "changed": "密码已更改",
+    "signInAgain": "你已在所有设备上退出登录。请使用新密码登录。"
+  },
+  "mfa": {
+    "title": "双重验证",
+    "on": "开启",
+    "off": "关闭",
+    "offHint": "双重验证会在登录时要求输入身份验证器应用中的验证码，仅凭被盗密码无法登录。",
+    "turnOn": "开启双重验证",
+    "addHint": "将此账户添加到身份验证器应用，然后输入其显示的验证码。",
+    "openApp": "在身份验证器应用中打开",
+    "noApp": "未打开身份验证器应用，请改为复制密钥。",
+    "orKey": "或在应用中输入此密钥：",
+    "copyKey": "复制密钥",
+    "firstCode": "应用中的验证码",
+    "confirm": "开启",
+    "recoveryTitle": "恢复码",
+    "recoveryHint": "手机丢失时，每个恢复码可登录一次。请妥善保存：只在此时显示。",
+    "copyCodes": "复制恢复码",
+    "savedCodes": "我已保存",
+    "enabled": "双重验证已开启。",
+    "remaining": "剩余恢复码：{{count}}",
+    "newCodes": "生成新的恢复码",
+    "turnOff": "关闭双重验证",
+    "turnOffTitle": "关闭双重验证？",
+    "turnOffBody": "登录时将只要求输入密码。"
+  },
+  "yourData": {
+    "title": "你的数据",
+    "exportTitle": "你的数据副本",
+    "exportHint": "你账户中的所有内容，以文件形式提供。需要片刻；链接有效 30 分钟。",
+    "request": "申请副本",
+    "download": "下载",
+    "status": {
+      "queued": "等待中",
+      "running": "生成中",
+      "completed": "已就绪",
+      "failed": "失败"
+    },
+    "consentsTitle": "你同意的内容",
+    "agreed": "同意于 {{date}}",
+    "newVersion": "有新版本，请重新同意。"
+  },
+  "deleteAccount": {
+    "title": "删除账户",
+    "hint": "你的账户和数据将被永久删除。",
+    "graceHint": "不会立即执行：在等待期内你可以在此处或通过我们发送的邮件取消。",
+    "confirm": "删除我的账户",
+    "scheduled": "你的账户将于 {{date}} 删除。",
+    "cancelHint": "点击取消。",
+    "pendingHint": "你的其他登录已退出。在此之前你可以取消。",
+    "cancel": "取消删除"
   }
 }

@@ -93,7 +93,14 @@
     "sessions": "Sitzungen",
     "signOut": "Abmelden",
     "notifications": "Mitteilungen",
-    "organization": "Organisation"
+    "organization": "Organisation",
+    "security": "Sicherheit",
+    "twoFactorOn": "Zwei-Faktor an",
+    "yourData": "Deine Daten",
+    "delete": "Konto löschen",
+    "unverified": "Bestätige deine E-Mail-Adresse",
+    "unverifiedHint": "Tippe, um den Link erneut zu senden.",
+    "verificationSent": "Gesendet. Prüfe deine E-Mails."
   },
   "language": {
     "title": "Sprache",
@@ -178,5 +185,77 @@
     "deleteBody": "„{{title}}“ wird zu den gelöschten Notizen verschoben; die Administration kann sie wiederherstellen.",
     "conflict": "Jemand anderes hat diese Notiz geändert, seit du sie geöffnet hast. Lade die neue Version und nimm deine Änderung erneut vor.",
     "loadLatest": "Neueste Version laden"
+  },
+  "avatar": {
+    "change": "Bild ändern",
+    "remove": "Bild entfernen"
+  },
+  "reauth": {
+    "title": "Bestätige, dass du es bist",
+    "hint": "Dafür braucht es eine aktuelle Anmeldung.",
+    "confirm": "Bestätigen",
+    "signInAgain": "Dein Konto meldet sich per Link oder über einen anderen Anbieter an, was die App hier nicht abfragen kann. Melde dich ab und wieder an und versuche es dann erneut."
+  },
+  "security": {
+    "title": "Sicherheit"
+  },
+  "password": {
+    "change": "Passwort ändern",
+    "set": "Passwort festlegen",
+    "current": "Aktuelles Passwort",
+    "new": "Neues Passwort",
+    "save": "Passwort speichern",
+    "changed": "Passwort geändert",
+    "signInAgain": "Du wurdest überall abgemeldet. Melde dich mit dem neuen Passwort an."
+  },
+  "mfa": {
+    "title": "Zwei-Faktor",
+    "on": "An",
+    "off": "Aus",
+    "offHint": "Zwei-Faktor fragt bei der Anmeldung nach einem Code aus einer Authenticator-App, damit ein gestohlenes Passwort nicht reicht.",
+    "turnOn": "Zwei-Faktor einschalten",
+    "addHint": "Füge dieses Konto deiner Authenticator-App hinzu und gib dann den angezeigten Code ein.",
+    "openApp": "In Authenticator-App öffnen",
+    "noApp": "Keine Authenticator-App geöffnet. Kopiere stattdessen den Schlüssel.",
+    "orKey": "Oder gib diesen Schlüssel in der App ein:",
+    "copyKey": "Schlüssel kopieren",
+    "firstCode": "Code aus der App",
+    "confirm": "Einschalten",
+    "recoveryTitle": "Wiederherstellungscodes",
+    "recoveryHint": "Jeder meldet dich einmal an, falls du dein Telefon verlierst. Bewahre sie sicher auf: Sie werden nur jetzt angezeigt.",
+    "copyCodes": "Codes kopieren",
+    "savedCodes": "Ich habe sie gespeichert",
+    "enabled": "Zwei-Faktor ist an.",
+    "remaining": "Verbleibende Wiederherstellungscodes: {{count}}",
+    "newCodes": "Neue Wiederherstellungscodes erstellen",
+    "turnOff": "Zwei-Faktor ausschalten",
+    "turnOffTitle": "Zwei-Faktor ausschalten?",
+    "turnOffBody": "Bei der Anmeldung wird nur noch das Passwort abgefragt."
+  },
+  "yourData": {
+    "title": "Deine Daten",
+    "exportTitle": "Eine Kopie deiner Daten",
+    "exportHint": "Alles, was dein Konto enthält, als Datei. Das dauert einen Moment; der Link gilt 30 Minuten.",
+    "request": "Kopie anfordern",
+    "download": "Herunterladen",
+    "status": {
+      "queued": "Wartet",
+      "running": "Wird erstellt",
+      "completed": "Fertig",
+      "failed": "Fehlgeschlagen"
+    },
+    "consentsTitle": "Deine Zustimmungen",
+    "agreed": "Zugestimmt {{date}}",
+    "newVersion": "Eine neue Version: bitte erneut zustimmen."
+  },
+  "deleteAccount": {
+    "title": "Konto löschen",
+    "hint": "Dein Konto und deine Daten werden endgültig gelöscht.",
+    "graceHint": "Es passiert nicht sofort: In der Wartezeit kannst du abbrechen, hier oder über die E-Mail, die wir senden.",
+    "confirm": "Mein Konto löschen",
+    "scheduled": "Dein Konto wird am {{date}} gelöscht.",
+    "cancelHint": "Tippe zum Abbrechen.",
+    "pendingHint": "Deine anderen Anmeldungen wurden abgemeldet. Bis dahin kannst du abbrechen.",
+    "cancel": "Löschung abbrechen"
   }
 }

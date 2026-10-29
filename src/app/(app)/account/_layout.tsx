@@ -12,6 +12,13 @@ export default function AccountLayout() {
         options={{ title: t('organization.title') }}
       />
       <Stack.Screen name="sessions" options={{ title: t('sessions.title') }} />
+      <Stack.Screen name="security" options={{ title: t('security.title') }} />
+      <Stack.Screen name="two-factor" options={{ title: t('mfa.title') }} />
+      <Stack.Screen name="your-data" options={{ title: t('yourData.title') }} />
+      <Stack.Screen
+        name="delete-account"
+        options={{ title: t('deleteAccount.title') }}
+      />
       <Stack.Screen
         name="notification-settings"
         options={{ title: t('notificationSettings.title') }}

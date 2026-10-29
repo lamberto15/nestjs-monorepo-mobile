@@ -90,8 +90,8 @@ layout must work: Arabic is one of the backend's languages.
 
 ## Accessibility
 
-- Colours meet WCAG AA: text on `primary` and `link` on the background are
-  at least 4.5:1 in both themes (the values in `theme.ts` say their ratio).
+- Colours meet WCAG AA: text on `primary` and `dangerFill` and `link` on
+  the background are at least 4.5:1 in both themes (the values in `theme.ts` say their ratio).
   Check a new colour pair before using it.
 - `ThemedText` announces `title` and `subtitle` as headings; a chosen row
   passes `selected` to `ListRow`; a row whose look carries meaning (an

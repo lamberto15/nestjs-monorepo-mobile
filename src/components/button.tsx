@@ -11,7 +11,7 @@ import { useTheme } from '@/hooks/use-theme';
 
 export type ButtonProps = Omit<PressableProps, 'children'> & {
   title: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   loading?: boolean;
 };
 
@@ -24,7 +24,7 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const theme = useTheme();
-  const primary = variant === 'primary';
+  const filled = variant !== 'secondary';
   const inactive = disabled || loading;
   return (
     <Pressable
@@ -33,20 +33,23 @@ export function Button({
       disabled={inactive}
       style={(state) => [
         styles.button,
-        primary
-          ? { backgroundColor: theme.primary }
-          : { borderColor: theme.border, borderWidth: 1 },
+        variant === 'secondary'
+          ? { borderColor: theme.border, borderWidth: 1 }
+          : {
+              backgroundColor:
+                variant === 'danger' ? theme.dangerFill : theme.primary,
+            },
         (state.pressed || inactive) && styles.dimmed,
         typeof style === 'function' ? style(state) : style,
       ]}
       {...rest}
     >
       {loading ? (
-        <ActivityIndicator color={primary ? theme.onPrimary : theme.text} />
+        <ActivityIndicator color={filled ? theme.onPrimary : theme.text} />
       ) : (
         <ThemedText
           type="smallBold"
-          style={{ color: primary ? theme.onPrimary : theme.text }}
+          style={{ color: filled ? theme.onPrimary : theme.text }}
         >
           {title}
         </ThemedText>

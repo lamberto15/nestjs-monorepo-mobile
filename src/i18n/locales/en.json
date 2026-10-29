@@ -93,7 +93,14 @@
     "sessions": "Sessions",
     "signOut": "Sign out",
     "notifications": "Notifications",
-    "organization": "Organization"
+    "organization": "Organization",
+    "security": "Security",
+    "twoFactorOn": "Two-factor on",
+    "yourData": "Your data",
+    "delete": "Delete account",
+    "unverified": "Confirm your email address",
+    "unverifiedHint": "Tap to send the link again.",
+    "verificationSent": "Sent. Check your email."
   },
   "language": {
     "title": "Language",
@@ -178,5 +185,77 @@
     "deleteBody": "\"{{title}}\" is moved to the deleted notes; an administrator can restore it.",
     "conflict": "Someone else changed this note since you opened it. Load their version, then make your change again.",
     "loadLatest": "Load the latest version"
+  },
+  "avatar": {
+    "change": "Change picture",
+    "remove": "Remove picture"
+  },
+  "reauth": {
+    "title": "Confirm it's you",
+    "hint": "This needs a recent sign-in.",
+    "confirm": "Confirm",
+    "signInAgain": "Your account signs in with a link or another provider, which this app can't ask for here. Sign out and sign in again, then try once more."
+  },
+  "security": {
+    "title": "Security"
+  },
+  "password": {
+    "change": "Change password",
+    "set": "Set a password",
+    "current": "Current password",
+    "new": "New password",
+    "save": "Save password",
+    "changed": "Password changed",
+    "signInAgain": "You were signed out everywhere. Sign in with your new password."
+  },
+  "mfa": {
+    "title": "Two-factor",
+    "on": "On",
+    "off": "Off",
+    "offHint": "Two-factor asks for a code from an authenticator app when you sign in, so a stolen password isn't enough.",
+    "turnOn": "Turn on two-factor",
+    "addHint": "Add this account to your authenticator app, then enter the code it shows.",
+    "openApp": "Open in authenticator app",
+    "noApp": "No authenticator app opened. Copy the key instead.",
+    "orKey": "Or enter this key in the app:",
+    "copyKey": "Copy key",
+    "firstCode": "Code from the app",
+    "confirm": "Turn on",
+    "recoveryTitle": "Recovery codes",
+    "recoveryHint": "Each signs you in once if you lose your phone. Keep them somewhere safe: they are shown only now.",
+    "copyCodes": "Copy codes",
+    "savedCodes": "I've saved them",
+    "enabled": "Two-factor is on.",
+    "remaining": "Recovery codes left: {{count}}",
+    "newCodes": "Make new recovery codes",
+    "turnOff": "Turn off two-factor",
+    "turnOffTitle": "Turn off two-factor?",
+    "turnOffBody": "Signing in will ask only for your password."
+  },
+  "yourData": {
+    "title": "Your data",
+    "exportTitle": "A copy of your data",
+    "exportHint": "Everything your account holds, as a file. It takes a moment; the link lasts 30 minutes.",
+    "request": "Request a copy",
+    "download": "Download",
+    "status": {
+      "queued": "Waiting",
+      "running": "Being made",
+      "completed": "Ready",
+      "failed": "Failed"
+    },
+    "consentsTitle": "What you agreed to",
+    "agreed": "Agreed {{date}}",
+    "newVersion": "A new version: please agree again."
+  },
+  "deleteAccount": {
+    "title": "Delete account",
+    "hint": "Your account and your data are deleted for good.",
+    "graceHint": "Nothing happens at once: you can cancel during the waiting period, here or from the email we send.",
+    "confirm": "Delete my account",
+    "scheduled": "Your account will be deleted on {{date}}.",
+    "cancelHint": "Tap to cancel.",
+    "pendingHint": "Your other sign-ins were signed out. Until then you can cancel.",
+    "cancel": "Cancel the deletion"
   }
 }
