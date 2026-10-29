@@ -36,6 +36,8 @@ here, with the reason.
    language saved on the account (RTL on next launch), browser sessions and
    sign out everywhere; notifications list and badge kept live over
    realtime; an explicit User-Agent.
+   Then (done): notification settings and quiet hours, notification links,
+   `APP_ID` from the environment.
 5. **With a development build:** passkeys, push registration
    (`PUT /v1/devices`, native APNs/FCM tokens), notification preferences.
 6. **Provider sign-in and magic link**, once the backend issue lands.

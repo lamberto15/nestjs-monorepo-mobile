@@ -19,9 +19,10 @@ bundle (passkeys, push credentials); from then on, use a development build:
 
 After creating your repo from this template:
 
-- [ ] `app.json`: `name`, `slug`, `scheme`, and `ios.bundleIdentifier` /
-      `android.package` (placeholders `com.example.nestjsmobile`):
-      **permanent after the first store upload**. `app.name` in
+- [ ] `APP_ID` in `.env` and each EAS environment (e.g.
+      `dev.example.app`): the iOS bundle ID and Android package, set by
+      `app.config.ts`; **permanent after the first store upload**. `app.json`:
+      `name`, `slug`, `scheme`. `app.name` in
       `src/i18n/locales/`.
 - [ ] Icons and splash in `assets/`, colors in `src/constants/theme.ts`.
 - [ ] `client-sync.json`: your backend repository, then `pnpm client:sync main`
@@ -34,9 +35,11 @@ After creating your repo from this template:
 
 ## Environment
 
-| Variable              | What                                  |
-| --------------------- | ------------------------------------- |
-| `EXPO_PUBLIC_API_URL` | The API's base URL, no trailing slash |
+| Variable              | What                                                                        |
+| --------------------- | --------------------------------------------------------------------------- |
+| `EXPO_PUBLIC_API_URL` | The API's base URL, no trailing slash                                       |
+| `EXPO_PUBLIC_WEB_URL` | The web app's origin: notification links open there (optional)              |
+| `APP_ID`              | iOS bundle ID and Android package (`app.config.ts`); empty: the placeholder |
 
 `EXPO_PUBLIC_*` variables are **inlined into the bundle**: never put a
 secret in one. For EAS builds, set them per environment in EAS

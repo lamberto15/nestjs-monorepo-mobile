@@ -57,7 +57,12 @@ A screen never calls `fetch` or the client directly; a feature hook does.
 | Forms                    | TanStack Form + zod (as the backend's web app)                                         |
 | UI-only                  | component state                                                                        |
 
-No global store library until a real need appears.
+No global store library until a real need appears, as in the backend's
+web app: server data is TanStack Query's (realtime events update its cache),
+the session lives outside React because the API client reads it. Reach for
+one (Zustand is small) only for client-only state that several screens
+share and the server doesn't own: offline drafts, a cart, a multi-screen
+wizard.
 
 ## Navigation
 

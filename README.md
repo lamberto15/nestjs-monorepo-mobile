@@ -17,7 +17,7 @@ right (secure storage, refresh before expiry, one refresh at a time: the
 backend revokes a reused refresh token's family), sign-in with two-factor
 and a tenant picker, sign-up, forgot password, tabs, profile and language
 saved on the account, browser sessions, notifications with a live unread
-badge (realtime), five languages (Arabic right to left), tests, CI.
+badge (realtime), notification settings and quiet hours, five languages (Arabic right to left), tests, CI.
 
 Planned:
 
