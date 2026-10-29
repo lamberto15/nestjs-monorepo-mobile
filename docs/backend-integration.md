@@ -15,40 +15,41 @@ private and not published. This app **copies it** from a pinned commit of
 template itself by default):
 
 ```bash
-pnpm client:sync            # (planned) copy the client at the pinned commit
-pnpm client:sync <sha>      # move the pin to another commit
+pnpm client:sync            # copy the client at the pinned commit
+pnpm client:sync <ref>      # pin another commit (a branch or tag resolves to its sha)
+pnpm client:check           # fail when the copy differs from the pin (CI)
 ```
 
-The source repository and commit are configured in one place (planned:
-next to the copy), so a project points it at its own backend once. Your
-backend's own routes then come typed with the rest.
+`client-sync.json` names the source repository and the pinned commit: a
+project points `repo` at its own backend once, and its own routes then come
+typed with the rest. A private backend repository needs `GITHUB_TOKEN`.
 
-- The copy lives in `src/api/client/` with the pinned commit recorded next
-  to it. Never edit it: change the backend and sync again.
+- The copy lives in `src/api/client/` (`scripts/client-sync.mjs`). Never
+  edit it: change the backend and sync again.
+- Its relative imports end in `.js` (written for Node's resolution);
+  `metro.config.js` resolves them to the `.ts` files, so the copy stays
+  byte-for-byte the backend's.
 - Sync deliberately, in its own PR (`build(client): sync to <sha>`), and
   fix whatever TypeScript then reports: that is the point of the types.
 - The client's `CHANGELOG.md` (backend repo) says what changed.
 
 ## Calling the API
 
-```ts
-import { createApiClient } from '@/api/client';
-import * as Crypto from 'expo-crypto';
+Two clients, both in `src/api/`:
 
-export const api = createApiClient({
-  baseUrl: process.env.EXPO_PUBLIC_API_URL!,
-  credentials: { token: () => session.accessToken() }, // asked before every request
-  lang: i18n.language, // a value: recreate the client when the language changes
-  idempotencyKey: () => Crypto.randomUUID(), // React Native has no crypto.randomUUID
-});
-```
+- `publicApi` (`public-api.ts`): no credentials, for sign-in, sign-up,
+  `GET /v1/auth/methods` and the token refresh itself.
+- `api` (`api.ts`): the session's access token on every request
+  (`credentials: { token: () => session.accessToken() }`).
 
-Check the client's README at the pinned commit for the exact option names.
-What the client does for you (backend `api-conventions`):
+Both send the device language (`Accept-Language`, used while the user saved
+none) and make `Idempotency-Key`s with `expo-crypto` (React Native has no
+`crypto.randomUUID`). What the client does for you (backend
+`api-conventions`):
 
-- **Errors** (RFC 9457) are **thrown** as `ApiError { status, code, detail,
-  errors?, requestId }`; `unwrap(call)` returns the data. Show
-  `errors[].message` next to the field at `errors[].path` (already in the
+- **Errors** (RFC 9457) are **thrown** as
+  `ApiError { status, code, detail, errors?, requestId }`; `unwrap(call)`
+  returns the data. Show `errors[].message` next to the field at `errors[].path` (already in the
   user's language).
 - **Idempotency:** every `POST` gets an `Idempotency-Key`. To retry an
   operation safely (a flaky network), send the same key again.
@@ -59,11 +60,11 @@ What the client does for you (backend `api-conventions`):
 
 ## Tokens (backend `auth`, "Mobile apps")
 
-| Step | Route |
-| --- | --- |
-| Sign in | `POST /v1/auth/token { email, password, code?, recoveryCode?, tenantId? }` → `{ accessToken, refreshToken, expiresIn }` |
-| Renew | `POST /v1/auth/token/refresh { refreshToken }` → a new pair |
-| Sign out | `POST /v1/auth/token/revoke { refreshToken }` |
+| Step     | Route                                                                                                                   |
+| -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Sign in  | `POST /v1/auth/token { email, password, code?, recoveryCode?, tenantId? }` → `{ accessToken, refreshToken, expiresIn }` |
+| Renew    | `POST /v1/auth/token/refresh { refreshToken }` → a new pair                                                             |
+| Sign out | `POST /v1/auth/token/revoke { refreshToken }`                                                                           |
 
 - The access token lives **15 minutes** (`expiresIn`); keep it in memory and
   renew it a minute before it expires, and on a 401.
@@ -75,21 +76,32 @@ What the client does for you (backend `api-conventions`):
 - Store the refresh token in `expo-secure-store` only. Write the new one
   **before** using the new access token, so a crash can't leave the old,
   already-spent one stored.
-- A refresh that fails with 401 ends the session: clear storage, go to
-  sign-in.
+- A refresh the API refuses (a 4xx) ends the session: clear storage, go to
+  sign-in. A network error or a 5xx keeps it for the next attempt (offline
+  at launch stays signed in).
+- Implemented in `src/api/session.ts`; `useSessionStatus()` gives screens
+  `restoring`, `signedIn` or `signedOut`, and the root layout guards the
+  routes with `Stack.Protected`.
 
 ## Sign-in methods
 
-| Method | Status | How |
-| --- | --- | --- |
-| Password | first release | `POST /v1/auth/token` |
-| Two-factor | first release | the first `/token` answers the problem `mfa_required`; ask for the code and send the same request with `code` (or `recoveryCode`) |
-| Sign-up | first release | `POST /v1/auth/sign-up` when `GET /v1/auth/methods` says it's on; then verify the email, then `/token` |
-| Passkeys | first release | `POST /v1/auth/passkeys/sign-in/options` → the platform's passkey API → `POST /v1/auth/passkeys/token { response, code?, tenantId? }`. Needs a dev build, and on the backend `PASSKEY_APPLE_APPS` (`TEAMID.bundle.id`) and `PASSKEY_ANDROID_APPS` (package and signing SHA-256), which it serves as `apple-app-site-association` and `assetlinks.json` on the RP ID's host |
-| Google, Microsoft, GitHub | **blocked on the backend** | see below |
-| Magic link | **blocked on the backend** | see below |
+| Method                    | Status                     | How                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Password                  | first release              | `POST /v1/auth/token`                                                                                                                                                                                                                                                                                                                                                      |
+| Two-factor                | first release              | the first `/token` answers the problem `mfa_required`; ask for the code and send the same request with `code` (or `recoveryCode`)                                                                                                                                                                                                                                          |
+| Sign-up                   | first release              | `POST /v1/auth/sign-up` when `GET /v1/auth/methods` says it's on; then verify the email, then `/token`                                                                                                                                                                                                                                                                     |
+| Passkeys                  | first release              | `POST /v1/auth/passkeys/sign-in/options` → the platform's passkey API → `POST /v1/auth/passkeys/token { response, code?, tenantId? }`. Needs a dev build, and on the backend `PASSKEY_APPLE_APPS` (`TEAMID.bundle.id`) and `PASSKEY_ANDROID_APPS` (package and signing SHA-256), which it serves as `apple-app-site-association` and `assetlinks.json` on the RP ID's host |
+| Google, Microsoft, GitHub | **blocked on the backend** | see below                                                                                                                                                                                                                                                                                                                                                                  |
+| Magic link                | **blocked on the backend** | see below                                                                                                                                                                                                                                                                                                                                                                  |
 
 `GET /v1/auth/methods` says what this backend offers: show only those.
+
+**Bot protection.** When `methods.captcha` is set (Turnstile), sign-in, its
+two-factor step, sign-up and forgot-password want a widget token in
+`X-Captcha-Token`, always or after a 403 `captcha_required`
+(`captcha.mode`). An app renders Turnstile in a WebView with
+`captcha.siteKey`; outside production the backend's `stub` provider stands
+in. Decide this with the sign-in screens.
 
 **Blocked: provider sign-in and magic links.** Today both end in the web
 app: the OIDC callback sets the session cookie and redirects to `WEB_URL`,
@@ -98,14 +110,17 @@ instead, e.g. the provider flow opened with `expo-web-browser`'s auth
 session and redirecting to the app's scheme with a one-time code the app
 exchanges for tokens, and the magic link opening the app (universal/app
 links) and verifying into tokens. That's a backend change, tracked as
-[backend #952](https://github.com/lamberto15/nestjs-monorepo-template/issues/952); the app's screens wait for it.
+[backend #952](https://github.com/lamberto15/nestjs-monorepo-template/issues/952);
+the app's screens wait for it.
 
 ## Tenants (backend `tenancy`)
 
 Tokens act in **one tenant** (`tenantId` at sign-in). After sign-in:
 `GET /v1/auth/tenants`; with one, use it; with several, show the picker.
 Switching tenants means a **new token sign-in** with the other `tenantId`
-(the cookie route `POST /v1/auth/tenant` is for browsers). Clear the query
+(the cookie route `POST /v1/auth/tenant` is for browsers, and
+`/v1/auth/token/refresh` takes no `tenantId`), so today it asks for the
+credentials again. Clear the query
 cache on a switch: every cached answer belongs to the old tenant. With
 `TENANCY=single` the list has one entry and the picker never shows.
 
@@ -134,7 +149,10 @@ One socket for the app's life, with the token asked on every
 (re)connection:
 
 ```ts
-createRealtime({ url: process.env.EXPO_PUBLIC_API_URL!, token: () => session.accessToken() });
+createRealtime({
+  url: process.env.EXPO_PUBLIC_API_URL!,
+  token: () => session.accessToken(),
+});
 ```
 
 Events are typed (`notification`, `notifications.unread-count`, …: the
