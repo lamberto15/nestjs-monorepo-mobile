@@ -66,7 +66,10 @@
   "errors": {
     "network": "Can't reach the server. Check your connection and try again.",
     "unknown": "Something went wrong. Try again.",
-    "captcha": "This server asks for a bot check that the app can't show yet. Ask its administrator, or sign in on the web."
+    "captcha": "This server asks for a bot check that the app can't show yet. Ask its administrator, or sign in on the web.",
+    "offline": "You're offline. Changes are sent when you're back.",
+    "timeout": "The server took too long to answer. Try again.",
+    "retry": "Try again"
   },
   "tabs": {
     "home": "Home",

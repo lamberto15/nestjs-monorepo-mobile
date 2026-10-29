@@ -3,6 +3,7 @@ import { ActivityIndicator, Alert, Pressable } from 'react-native';
 
 import { Button } from '@/components/button';
 import { ListRow } from '@/components/list-row';
+import { ErrorState } from '@/components/error-state';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import {
@@ -64,7 +65,10 @@ export default function SessionsScreen() {
           }
         />
       ))}
-      {[sessions.error, revoke.error, everywhere.error].map(
+      {sessions.isError && (
+        <ErrorState error={sessions.error} onRetry={() => sessions.refetch()} />
+      )}
+      {[revoke.error, everywhere.error].map(
         (error, index) =>
           error && (
             <ThemedText

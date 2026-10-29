@@ -14,6 +14,10 @@ export type ListRowProps = {
   leading?: ReactNode;
   onPress?: () => void;
   disabled?: boolean;
+  /** The chosen one of a list (a check mark, announced as selected). */
+  selected?: boolean;
+  /** What a screen reader says, when the visible text isn't enough (e.g. "Unread"). */
+  accessibilityLabel?: string;
 };
 
 /** A tappable row of a list or a settings screen. */
@@ -24,10 +28,14 @@ export function ListRow({
   leading,
   onPress,
   disabled,
+  selected,
+  accessibilityLabel,
 }: ListRowProps) {
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={selected === undefined ? undefined : { selected }}
       onPress={onPress}
       disabled={disabled || !onPress}
     >
@@ -45,6 +53,7 @@ export function ListRow({
               </ThemedText>
             ) : null}
           </View>
+          {selected && <ThemedText themeColor="link">✓</ThemedText>}
           {typeof detail === 'string' ? (
             <ThemedText type="small" themeColor="textSecondary">
               {detail}

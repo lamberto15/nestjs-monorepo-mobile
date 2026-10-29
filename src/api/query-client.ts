@@ -1,4 +1,9 @@
-import { focusManager, QueryClient } from '@tanstack/react-query';
+import {
+  focusManager,
+  onlineManager,
+  QueryClient,
+} from '@tanstack/react-query';
+import * as Network from 'expo-network';
 import { AppState, Platform } from 'react-native';
 
 import { isApiError } from '@/api/client';
@@ -26,6 +31,22 @@ export const queryClient = new QueryClient({
     mutations: { retry: false },
   },
 });
+
+// Online is the phone's network state: offline, queries and saves pause
+// and continue once it's back (TanStack Query's React Native guide). Unknown
+// counts as online, so a missing state never blocks requests.
+if (Platform.OS !== 'web') {
+  onlineManager.setEventListener((setOnline) => {
+    void Network.getNetworkStateAsync().then(
+      (state) => setOnline(state.isConnected !== false),
+      () => setOnline(true),
+    );
+    const subscription = Network.addNetworkStateListener((state) =>
+      setOnline(state.isConnected !== false),
+    );
+    return () => subscription.remove();
+  });
+}
 
 // "Window focus" on a phone is the app coming to the foreground: refetch
 // stale queries then (TanStack Query's React Native guide). The web build

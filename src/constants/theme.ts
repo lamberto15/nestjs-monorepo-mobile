@@ -15,8 +15,10 @@ export const Colors = {
     backgroundSelected: '#E0E1E6',
     textSecondary: '#60646C',
     border: '#D9D9E0',
-    primary: '#208AEF',
+    // Contrast (WCAG AA, 4.5:1): white on primary 5.3; link on background 5.3.
+    primary: '#0B6BCB',
     onPrimary: '#ffffff',
+    link: '#0B6BCB',
     danger: '#CE2C31',
   },
   dark: {
@@ -26,8 +28,10 @@ export const Colors = {
     backgroundSelected: '#2E3135',
     textSecondary: '#B0B4BA',
     border: '#3A3F42',
-    primary: '#3D9CF5',
+    // White on primary 5.3; link on background 9.6.
+    primary: '#0B6BCB',
     onPrimary: '#ffffff',
+    link: '#6CB4FF',
     danger: '#FF6369',
   },
 } as const;

@@ -66,7 +66,10 @@
   "errors": {
     "network": "Tidak dapat mencapai pelayan. Semak sambungan anda dan cuba lagi.",
     "unknown": "Sesuatu tidak kena. Cuba lagi.",
-    "captcha": "Pelayan ini meminta semakan bot yang belum dapat dipaparkan oleh aplikasi. Hubungi pentadbirnya, atau log masuk melalui web."
+    "captcha": "Pelayan ini meminta semakan bot yang belum dapat dipaparkan oleh aplikasi. Hubungi pentadbirnya, atau log masuk melalui web.",
+    "offline": "Anda di luar talian. Perubahan dihantar apabila anda kembali dalam talian.",
+    "timeout": "Pelayan mengambil masa terlalu lama untuk menjawab. Cuba lagi.",
+    "retry": "Cuba lagi"
   },
   "tabs": {
     "home": "Utama",

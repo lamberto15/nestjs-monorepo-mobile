@@ -14,6 +14,9 @@ export function apiErrorMessage(error: unknown, t: TFunction): string {
   if (error instanceof TypeError) {
     return t('errors.network'); // fetch failed: offline, or the API is down
   }
+  if (error instanceof Error && error.name === 'AbortError') {
+    return t('errors.timeout'); // appFetch gave up waiting
+  }
   return t('errors.unknown');
 }
 

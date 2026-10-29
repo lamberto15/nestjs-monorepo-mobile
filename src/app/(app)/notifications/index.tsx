@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 
 import { WEB_URL } from '@/api/public-api';
+import { ErrorState } from '@/components/error-state';
 import { ListRow } from '@/components/list-row';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
-import { apiErrorMessage } from '@/features/auth/errors';
 import {
   useMarkAllRead,
   useMarkRead,
@@ -68,11 +68,13 @@ export default function NotificationsScreen() {
             subtitle={[item.body, formatDateTime(item.createdAt)]
               .filter(Boolean)
               .join('\n')}
+            accessibilityLabel={
+              item.read
+                ? undefined
+                : `${t('notifications.unread')}, ${item.title}, ${item.body}`
+            }
             leading={
               <View
-                accessibilityLabel={
-                  item.read ? undefined : t('notifications.unread')
-                }
                 style={[
                   styles.dot,
                   {
@@ -111,9 +113,7 @@ export default function NotificationsScreen() {
           list.isPending ? (
             <ActivityIndicator />
           ) : list.isError ? (
-            <ThemedText themeColor="danger">
-              {apiErrorMessage(list.error, t)}
-            </ThemedText>
+            <ErrorState error={list.error} onRetry={() => list.refetch()} />
           ) : (
             <ThemedText themeColor="textSecondary">
               {t('notifications.empty')}

@@ -66,7 +66,10 @@
   "errors": {
     "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
     "unknown": "Etwas ist schiefgelaufen. Versuche es erneut.",
-    "captcha": "Dieser Server verlangt eine Bot-Prüfung, die die App noch nicht anzeigen kann. Wende dich an die Administration oder melde dich im Web an."
+    "captcha": "Dieser Server verlangt eine Bot-Prüfung, die die App noch nicht anzeigen kann. Wende dich an die Administration oder melde dich im Web an.",
+    "offline": "Du bist offline. Änderungen werden gesendet, sobald du wieder online bist.",
+    "timeout": "Der Server hat zu lange nicht geantwortet. Versuche es erneut.",
+    "retry": "Erneut versuchen"
   },
   "tabs": {
     "home": "Start",
