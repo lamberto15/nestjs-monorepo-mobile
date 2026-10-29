@@ -254,6 +254,20 @@ zone to the phone's when they differ.
   `record.attachments.changed` refreshes it for watchers.
 - Not built: presigned and resumable uploads (S3), file versions.
 
+## Work surfaces (backend `work-surfaces`)
+
+Home shows the **inbox** (`GET /v1/inbox`: approvals to decide or revise,
+unread mentions; dismiss what allows it), **favorites** and **recently
+opened** (`/v1/recents`: a record's title only, never its content); no
+realtime event covers the inbox, so it reads again when Home is focused.
+**Search** (`GET /v1/search`) lists hits by kind; a snippet's `<b>…</b>`
+marks matches and is split into text, never rendered as HTML.
+**Presence** (`PUT /v1/presence/{subject}/{id}` every 15 s, only while the
+screen is focused and the app in front; `DELETE` on leaving) says who else
+views or edits a record: advisory, saving is still guarded by the ETag.
+Everything opens through one resolver (`openTarget`): a subject with a
+screen in `RECORD_ROUTES`, else an app path, else the web app.
+
 ## User-Agent
 
 Every call sends `User-Agent: <name>/<version> (<model>; <OS> <version>)`

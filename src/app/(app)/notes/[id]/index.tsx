@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
 
@@ -19,6 +20,9 @@ import { Attachments } from '@/features/records/attachments-list';
 import { Comments } from '@/features/records/comments';
 import { CustomFieldsView } from '@/features/records/custom-fields';
 import { useListMetadata } from '@/features/records/list';
+import { useRecordRecent } from '@/features/work/hooks';
+import { usePresence } from '@/features/work/presence';
+import { PresenceLine } from '@/features/work/presence-line';
 import { TagsEditor, WatchAndFavorite } from '@/features/records/record-addons';
 import { formatDateTime } from '@/i18n/format';
 
@@ -32,6 +36,16 @@ export default function NoteScreen() {
   // What this record type supports (tags, comments…), and its custom fields.
   const metadata = useListMetadata('Note');
   const capabilities = metadata.data?.capabilities;
+  const others = usePresence('Note', id, 'viewing');
+  const recordRecent = useRecordRecent();
+  const title = query.data?.note.title;
+  // Opened: first in "Recently opened" (its title only, never its content).
+  useEffect(() => {
+    if (title) {
+      recordRecent.mutate({ subject: 'Note', recordId: id, label: title });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once per note and title
+  }, [id, title]);
 
   if (!query.data) {
     return (
@@ -71,6 +85,7 @@ export default function NoteScreen() {
           t('notes.updated', { time: formatDateTime(note.updatedAt) }),
         ].join(' · ')}
       </ThemedText>
+      <PresenceLine others={others} />
       <ThemedText>{note.body || t('notes.noBody')}</ThemedText>
       <CustomFieldsView metadata={metadata.data} values={note.custom} />
       <WatchAndFavorite

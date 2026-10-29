@@ -1,4 +1,22 @@
 /**
+ * The app's detail screen per record subject: what inbox items, recents,
+ * favorites and search results open. Add a feature's here.
+ */
+const RECORD_ROUTES: Record<string, (id: string) => string> = {
+  Note: (id) => `/notes/${id}`,
+};
+
+/** A record's screen in this app, if it has one. */
+export function recordRoute(
+  subject: string | null | undefined,
+  id: string | null | undefined,
+): string | undefined {
+  return subject && id
+    ? RECORD_ROUTES[subject]?.(encodeURIComponent(id))
+    : undefined;
+}
+
+/**
  * The app's own screens a link may open, as web app paths: the web app and
  * this app share them (`/notes/{id}`). Add a feature's detail route here.
  */

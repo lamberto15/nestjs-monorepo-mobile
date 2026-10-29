@@ -333,5 +333,33 @@
     "uploading": "Memuat naik…",
     "tooLarge": "Fail ini terlalu besar: maksimum {{max}}.",
     "noCamera": "Kamera tidak dibenarkan. Benarkan dalam Tetapan."
+  },
+  "search": {
+    "title": "Cari",
+    "hint": "Perkataan, \"frasa\", -kecuali",
+    "none": "Tiada yang sepadan."
+  },
+  "inbox": {
+    "title": "Menunggu anda",
+    "empty": "Tiada apa yang menunggu anda.",
+    "dismiss": "Abaikan",
+    "more": "Lagi",
+    "due": "tarikh akhir {{date}}",
+    "kinds": {
+      "approval.decide": "Kelulusan untuk diputuskan",
+      "approval.revise": "Perubahan diminta pada permintaan anda",
+      "mention": "Anda disebut"
+    }
+  },
+  "favorites": {
+    "title": "Kegemaran"
+  },
+  "recents": {
+    "title": "Dibuka baru-baru ini",
+    "clear": "Kosongkan sejarah"
+  },
+  "presence": {
+    "viewing": "Turut di sini: {{names}}",
+    "editing": "{{names}} sedang menyunting"
   }
 }

@@ -8,6 +8,8 @@ import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { isConflict, useNote, useUpdateNote } from '@/features/notes/hooks';
 import { NoteForm } from '@/features/notes/note-form';
+import { usePresence } from '@/features/work/presence';
+import { PresenceLine } from '@/features/work/presence-line';
 
 /**
  * Edits the version that was read: its ETag goes as `If-Match`, so if
@@ -19,6 +21,7 @@ export default function EditNoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const query = useNote(id);
   const update = useUpdateNote(id);
+  const others = usePresence('Note', id, 'editing');
 
   if (!query.data) {
     return (
@@ -35,6 +38,7 @@ export default function EditNoteScreen() {
   const { note, etag } = query.data;
   return (
     <Screen>
+      <PresenceLine others={others} />
       {isConflict(update.error) && (
         <>
           <ThemedText themeColor="danger" accessibilityRole="alert">
