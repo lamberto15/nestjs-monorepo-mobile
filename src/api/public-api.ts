@@ -9,7 +9,7 @@ import { createApiClient, type ApiClientOptions } from '@/api/client';
 const url = process.env.EXPO_PUBLIC_API_URL;
 if (!url) {
   throw new Error(
-    'EXPO_PUBLIC_API_URL is not set: copy .env.example to .env (docs/development.md).',
+    'EXPO_PUBLIC_API_URL is not set: copy .env.example to .env.local (docs/development.md).',
   );
 }
 

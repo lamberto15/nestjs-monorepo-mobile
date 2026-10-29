@@ -3,7 +3,7 @@
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 /**
- * The iOS bundle identifier and Android package: `APP_ID` in `.env` (or the
+ * The iOS bundle identifier and Android package: `APP_ID` in `.env.local` (or the
  * EAS environment), e.g. `dev.lamby.nestjsmobile`. Permanent once an app is
  * in a store. Without it the template's placeholder stays.
  */
