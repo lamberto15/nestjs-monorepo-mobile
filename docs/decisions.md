@@ -17,6 +17,7 @@ here, with the reason.
 | Push | Native APNs/FCM tokens to `PUT /v1/devices` | The backend sends through APNs/FCM, not Expo's push service |
 | App identity | Placeholders (name, bundle ID, package), by design | Each project sets its own ([Make it yours](development.md#make-it-yours)) |
 | Package manager | pnpm | As the backend |
+| License | PolyForm Noncommercial 1.0.0 | As the backend; the copied client already carries it |
 
 ## Roadmap
 
@@ -34,9 +35,4 @@ here, with the reason.
 
 ## Open
 
-- This repo's license (`LICENSE` is still the Expo template's MIT, copyright
-  Expo); the copied client is PolyForm Noncommercial 1.0.0, as the backend.
-  Matching the backend's license is the simplest choice.
-- `.env.example` (`EXPO_PUBLIC_API_URL`): agents may not write `.env*`
-  files, so the owner adds it.
 - Where the backend is deployed for passkey testing (needs `https`).

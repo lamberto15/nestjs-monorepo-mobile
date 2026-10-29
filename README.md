@@ -54,6 +54,4 @@ Prerequisites: Node 24 and pnpm (as the backend), and the backend running
 
 ## License
 
-Not decided yet: `LICENSE` is still the Expo template's
-([decisions](docs/decisions.md#open)). The copied API client in
-`src/api/client/` keeps the backend's license (PolyForm Noncommercial 1.0.0).
+[PolyForm Noncommercial 1.0.0](LICENSE), as the backend template.
