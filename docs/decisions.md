@@ -48,8 +48,12 @@ here, with the reason.
   [backend #956](https://github.com/lamberto15/nestjs-monorepo-template/issues/956).
 
 - Where the backend is deployed for passkey testing (needs `https`).
-- Bot protection for apps: app attestation,
-  [backend #953](https://github.com/lamberto15/nestjs-monorepo-template/issues/953);
-  meanwhile `CAPTCHA_MODE` unset.
-- Switching tenants after sign-in:
-  [backend #954](https://github.com/lamberto15/nestjs-monorepo-template/issues/954).
+- App attestation (backend done, #953): the app side waits for a
+  development build with a paid Apple team or Android; meanwhile
+  `CAPTCHA_MODE` unset.
+- Provider sign-in and magic links (backend done, #952): provider sign-in
+  waits for a provider on the test server; magic links for universal/app
+  links.
+- Notification preferences GET/PUT mismatch:
+  [backend #957](https://github.com/lamberto15/nestjs-monorepo-template/issues/957)
+  (worked around by `saveBody`).
