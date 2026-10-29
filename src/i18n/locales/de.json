@@ -60,7 +60,8 @@
     "email": "Gib eine gültige E-Mail-Adresse ein.",
     "required": "Pflichtfeld.",
     "code": "Gib die 6 Ziffern ein.",
-    "passwordLength": "Verwende mindestens 12 Zeichen."
+    "passwordLength": "Verwende mindestens 12 Zeichen.",
+    "time": "Format HH:MM, z. B. 22:00."
   },
   "errors": {
     "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
@@ -86,7 +87,8 @@
     "saved": "Gespeichert.",
     "language": "Sprache",
     "sessions": "Sitzungen",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "notifications": "Mitteilungen"
   },
   "language": {
     "title": "Sprache",
@@ -112,5 +114,29 @@
       "sso": "Anmeldung der Organisation",
       "impersonation": "Identitätswechsel"
     }
+  },
+  "notificationSettings": {
+    "title": "Mitteilungen",
+    "hint": "In der App bekommst du immer alle Mitteilungen. Wähle, was zusätzlich per E-Mail kommt und wie oft.",
+    "mandatory": "Erforderlich: E-Mails lassen sich bündeln, nicht abschalten.",
+    "emailLabel": "E-Mail für {{type}}",
+    "email": {
+      "off": "Aus",
+      "immediate": "Sofort",
+      "hourly": "Stündlich",
+      "daily": "Täglich"
+    },
+    "push": "Push-Mitteilungen",
+    "sms": "SMS"
+  },
+  "quietHours": {
+    "title": "Ruhezeiten",
+    "on": "Push und SMS warten von {{start}} bis {{end}} ({{timezone}}), außer dringende.",
+    "off": "Aus: Push und SMS kommen jederzeit.",
+    "start": "Von",
+    "end": "Bis",
+    "save": "Ruhezeiten speichern",
+    "turnOff": "Ausschalten",
+    "useDeviceZone": "Zeitzone dieses Telefons verwenden ({{zone}})"
   }
 }

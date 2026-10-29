@@ -60,7 +60,8 @@
     "email": "Masukkan alamat e-mel yang sah.",
     "required": "Wajib.",
     "code": "Masukkan 6 digit.",
-    "passwordLength": "Gunakan sekurang-kurangnya 12 aksara."
+    "passwordLength": "Gunakan sekurang-kurangnya 12 aksara.",
+    "time": "Gunakan HH:MM, cth. 22:00."
   },
   "errors": {
     "network": "Tidak dapat mencapai pelayan. Semak sambungan anda dan cuba lagi.",
@@ -86,7 +87,8 @@
     "saved": "Disimpan.",
     "language": "Bahasa",
     "sessions": "Sesi",
-    "signOut": "Log keluar"
+    "signOut": "Log keluar",
+    "notifications": "Pemberitahuan"
   },
   "language": {
     "title": "Bahasa",
@@ -112,5 +114,29 @@
       "sso": "Log masuk organisasi",
       "impersonation": "Penyamaran"
     }
+  },
+  "notificationSettings": {
+    "title": "Pemberitahuan",
+    "hint": "Dalam aplikasi anda sentiasa menerima semua pemberitahuan. Pilih yang turut dihantar melalui e-mel, dan berapa kerap.",
+    "mandatory": "Wajib: e-mel boleh digabungkan, tidak boleh dimatikan.",
+    "emailLabel": "E-mel untuk {{type}}",
+    "email": {
+      "off": "Mati",
+      "immediate": "Serta-merta",
+      "hourly": "Setiap jam",
+      "daily": "Harian"
+    },
+    "push": "Pemberitahuan tolak",
+    "sms": "Mesej teks"
+  },
+  "quietHours": {
+    "title": "Waktu senyap",
+    "on": "Pemberitahuan tolak dan mesej teks menunggu dari {{start}} hingga {{end}} ({{timezone}}), kecuali yang segera.",
+    "off": "Mati: pemberitahuan tolak dan mesej teks tiba pada bila-bila masa.",
+    "start": "Dari",
+    "end": "Hingga",
+    "save": "Simpan waktu senyap",
+    "turnOff": "Matikan",
+    "useDeviceZone": "Guna zon waktu telefon ini ({{zone}})"
   }
 }

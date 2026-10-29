@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -9,6 +10,7 @@ import {
   View,
 } from 'react-native';
 
+import { WEB_URL } from '@/api/public-api';
 import { ListRow } from '@/components/list-row';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -19,6 +21,7 @@ import {
   useMarkRead,
   useNotifications,
 } from '@/features/notifications/hooks';
+import { linkUrl } from '@/features/notifications/link';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDateTime } from '@/i18n/format';
 
@@ -78,7 +81,19 @@ export default function NotificationsScreen() {
                 ]}
               />
             }
-            onPress={item.read ? undefined : () => markRead.mutate(item.id)}
+            onPress={
+              item.read && !linkUrl(item.link, WEB_URL)
+                ? undefined
+                : () => {
+                    if (!item.read) {
+                      markRead.mutate(item.id);
+                    }
+                    const url = linkUrl(item.link, WEB_URL);
+                    if (url) {
+                      void WebBrowser.openBrowserAsync(url);
+                    }
+                  }
+            }
           />
         )}
         onEndReached={() => {

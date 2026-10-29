@@ -60,7 +60,8 @@
     "email": "Enter a valid email address.",
     "required": "Required.",
     "code": "Enter the 6 digits.",
-    "passwordLength": "Use at least 12 characters."
+    "passwordLength": "Use at least 12 characters.",
+    "time": "Use HH:MM, e.g. 22:00."
   },
   "errors": {
     "network": "Can't reach the server. Check your connection and try again.",
@@ -86,7 +87,8 @@
     "saved": "Saved.",
     "language": "Language",
     "sessions": "Sessions",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "notifications": "Notifications"
   },
   "language": {
     "title": "Language",
@@ -112,5 +114,29 @@
       "sso": "Organization sign-on",
       "impersonation": "Impersonation"
     }
+  },
+  "notificationSettings": {
+    "title": "Notifications",
+    "hint": "In the app you always get every notification. Choose what also comes by email, and how often.",
+    "mandatory": "Required: email can be bundled, not switched off.",
+    "emailLabel": "Email for {{type}}",
+    "email": {
+      "off": "Off",
+      "immediate": "At once",
+      "hourly": "Hourly",
+      "daily": "Daily"
+    },
+    "push": "Push notifications",
+    "sms": "Text message"
+  },
+  "quietHours": {
+    "title": "Quiet hours",
+    "on": "Push and text messages wait from {{start}} to {{end}} ({{timezone}}), except urgent ones.",
+    "off": "Off: push and text messages arrive at any time.",
+    "start": "From",
+    "end": "Until",
+    "save": "Save quiet hours",
+    "turnOff": "Turn off",
+    "useDeviceZone": "Use this phone's time zone ({{zone}})"
   }
 }

@@ -16,6 +16,12 @@ if (!url) {
 /** The API's origin, from `EXPO_PUBLIC_API_URL`. */
 export const API_URL = url;
 
+/**
+ * The web app's origin (`EXPO_PUBLIC_WEB_URL`), where links from the API
+ * (a notification's `link`) open; undefined when there is none.
+ */
+export const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL || undefined;
+
 /** The device's language, sent while the user has saved none. */
 export const deviceLanguage = getLocales()[0]?.languageTag;
 
