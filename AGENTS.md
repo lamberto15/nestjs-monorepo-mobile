@@ -118,6 +118,7 @@ Everything is in `docs/`. Read the one the task needs.
 - `development`: setup, env, running against a local backend, builds, git
   workflow.
 - `decisions`: what was chosen and why.
+- `adding-a-feature`: the Notes example and the rules a new feature follows.
 
 Backend docs (read on GitHub, `docs/<name>.md` in the backend repo): `auth`,
 `api-conventions`, `tenancy`, `notifications`, `webhooks-and-realtime`,
