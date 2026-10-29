@@ -257,5 +257,45 @@
     "cancelHint": "Ketik untuk membatalkan.",
     "pendingHint": "Log masuk anda yang lain telah dilog keluar. Sehingga itu anda boleh membatalkan.",
     "cancel": "Batalkan pemadaman"
+  },
+  "comments": {
+    "title": "Komen",
+    "empty": "Belum ada komen.",
+    "more": "Komen lebih lama",
+    "someone": "Seseorang",
+    "edited": "disunting",
+    "resolved": "selesai",
+    "reply": "Balas",
+    "edit": "Sunting",
+    "resolve": "Selesaikan",
+    "reopen": "Buka semula",
+    "delete": "Padam",
+    "deleteTitle": "Padam komen ini?",
+    "deleteThread": "Balasannya turut dipadam.",
+    "save": "Simpan",
+    "new": "Tambah komen",
+    "yourReply": "Balasan anda",
+    "send": "Komen",
+    "sendReply": "Balas",
+    "text": "Komen"
+  },
+  "records": {
+    "watch": "Ikuti",
+    "unwatch": "Berhenti mengikuti",
+    "star": "Tambah ke kegemaran",
+    "unstar": "Buang dari kegemaran",
+    "tags": "Tag",
+    "editTags": "Sunting tag",
+    "done": "Selesai",
+    "noTags": "Tiada tag.",
+    "noTagsDefined": "Belum ada tag untuk jenis rekod ini."
+  },
+  "revisions": {
+    "history": "Sejarah",
+    "number": "Versi {{number}}",
+    "created": "Dicipta.",
+    "restore": "Pulihkan versi ini",
+    "restoreTitle": "Pulihkan versi {{number}}?",
+    "restoreBody": "Nilainya menjadi nilai semasa; sejarah menyimpan setiap versi."
   }
 }

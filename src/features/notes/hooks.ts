@@ -12,8 +12,16 @@ import {
 
 import { api } from '@/api/api';
 import { etagOf, isApiError, unwrap, type GetResponse } from '@/api/client';
+import type { RecordRef } from '@/features/records/hooks';
 
 export type Note = GetResponse<'/v1/notes/{id}'>;
+
+/** A note as the record add-ons (comments, tags, revisions…) see it. */
+export const noteRecord = (id: string): RecordRef => ({
+  base: '/v1/notes',
+  subject: 'Note',
+  id,
+});
 export type NoteStatus = Note['status'];
 export interface NoteInput {
   title: string;
@@ -64,7 +72,7 @@ export function useNote(id: string) {
     queryKey: noteKeys.detail(id),
     queryFn: async ({ signal }) => {
       const result = await api.GET('/v1/notes/{id}', {
-        params: { path: { id }, query: { include: 'can' } },
+        params: { path: { id }, query: { include: 'can,watching' } },
         signal,
       });
       return {

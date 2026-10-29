@@ -257,5 +257,45 @@
     "cancelHint": "Tap to cancel.",
     "pendingHint": "Your other sign-ins were signed out. Until then you can cancel.",
     "cancel": "Cancel the deletion"
+  },
+  "comments": {
+    "title": "Comments",
+    "empty": "No comments yet.",
+    "more": "Older comments",
+    "someone": "Someone",
+    "edited": "edited",
+    "resolved": "resolved",
+    "reply": "Reply",
+    "edit": "Edit",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteTitle": "Delete this comment?",
+    "deleteThread": "Its replies are deleted too.",
+    "save": "Save",
+    "new": "Add a comment",
+    "yourReply": "Your reply",
+    "send": "Comment",
+    "sendReply": "Reply",
+    "text": "Comment"
+  },
+  "records": {
+    "watch": "Watch",
+    "unwatch": "Stop watching",
+    "star": "Add to favorites",
+    "unstar": "Remove from favorites",
+    "tags": "Tags",
+    "editTags": "Edit tags",
+    "done": "Done",
+    "noTags": "No tags.",
+    "noTagsDefined": "No tags exist for this kind of record yet."
+  },
+  "revisions": {
+    "history": "History",
+    "number": "Version {{number}}",
+    "created": "Created.",
+    "restore": "Restore this version",
+    "restoreTitle": "Restore version {{number}}?",
+    "restoreBody": "Its values become the current ones; the history keeps every version."
   }
 }

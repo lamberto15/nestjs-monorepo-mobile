@@ -41,6 +41,14 @@ export function useRealtimeNotifications() {
         updateList(queryClient, (data) => removeItem(data, id)),
     });
     realtime.socket.on('connect', refetch);
+    // A comment on a watched record: its open conversation reloads.
+    const stopComments = realtime.on(
+      'record.commented',
+      ({ subject, recordId }) =>
+        queryClient.invalidateQueries({
+          queryKey: ['records', subject, recordId, 'comments'],
+        }),
+    );
 
     const appState = AppState.addEventListener('change', (state) => {
       if (state === 'active') {
@@ -54,6 +62,7 @@ export function useRealtimeNotifications() {
       appState.remove();
       realtime.socket.off('connect', refetch);
       stopWatching();
+      stopComments();
       realtime.close();
     };
   }, [queryClient]);
