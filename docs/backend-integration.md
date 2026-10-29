@@ -97,8 +97,8 @@ and email links open `WEB_URL` pages. An app needs a way to get **tokens**
 instead, e.g. the provider flow opened with `expo-web-browser`'s auth
 session and redirecting to the app's scheme with a one-time code the app
 exchanges for tokens, and the magic link opening the app (universal/app
-links) and verifying into tokens. That's a backend change, tracked as an
-issue on the backend repo; the app's screens wait for it.
+links) and verifying into tokens. That's a backend change, tracked as
+[backend #952](https://github.com/lamberto15/nestjs-monorepo-template/issues/952); the app's screens wait for it.
 
 ## Tenants (backend `tenancy`)
 
