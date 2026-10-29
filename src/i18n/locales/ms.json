@@ -320,5 +320,18 @@
     "saveCurrent": "Simpan penapis ini",
     "delete": "Padam paparan",
     "deleteTitle": "Padam paparan ini?"
+  },
+  "attachments": {
+    "title": "Fail",
+    "empty": "Belum ada fail.",
+    "checking": "Sedang disemak…",
+    "delete": "Padam",
+    "deleteTitle": "Padam {{name}}?",
+    "camera": "Kamera",
+    "photo": "Foto",
+    "file": "Fail",
+    "uploading": "Memuat naik…",
+    "tooLarge": "Fail ini terlalu besar: maksimum {{max}}.",
+    "noCamera": "Kamera tidak dibenarkan. Benarkan dalam Tetapan."
   }
 }

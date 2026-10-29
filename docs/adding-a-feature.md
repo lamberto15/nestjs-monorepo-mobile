@@ -58,7 +58,8 @@ every record type, so they are built once (`src/features/records/`) for a
 `RecordRef` (`{ base: '/v1/notes', subject: 'Note', id }`). A feature
 exports one (`noteRecord(id)`) and mounts what it uses on its detail:
 `<Comments>`, `<TagsEditor>`, `<WatchAndFavorite>`, and `<Revisions>` on a
-history screen. Ask the record with `include=can,watching`. Comments of
+history screen, and `<Attachments>` when the type's `capabilities.attachments`
+(limits from `attachmentLimits`). Ask the record with `include=can,watching`. Comments of
 watched records stay live through the realtime `record.commented` event.
 
 ### Lists from the metadata

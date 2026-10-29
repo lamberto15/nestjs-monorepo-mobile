@@ -15,6 +15,7 @@ import {
   useDeleteNote,
   useNote,
 } from '@/features/notes/hooks';
+import { Attachments } from '@/features/records/attachments-list';
 import { Comments } from '@/features/records/comments';
 import { CustomFieldsView } from '@/features/records/custom-fields';
 import { useListMetadata } from '@/features/records/list';
@@ -113,6 +114,14 @@ export default function NoteScreen() {
           variant="danger"
           loading={remove.isPending}
           onPress={confirmDelete}
+        />
+      )}
+      {me.data && capabilities?.attachments && (
+        <Attachments
+          record={record}
+          maxBytes={metadata.data?.attachmentLimits?.maxBytes}
+          canChange={Boolean(note.can?.update)}
+          userId={me.data.user.id}
         />
       )}
       {me.data && capabilities?.comments !== false && (

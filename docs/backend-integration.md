@@ -238,6 +238,22 @@ zone to the phone's when they differ.
 - **Avatar:** `PUT /v1/account/avatar` (multipart `file`, the picked photo
   as an `expo-file-system` `File`), `DELETE` to remove.
 
+## Files (backend `attachments`)
+
+- **Upload:** multipart, the field `file` (`expo-file-system` `File` from
+  the camera, photo library or files app), checked against the type's
+  `attachmentLimits.maxBytes` before sending; the API reads the type from
+  the bytes (415 for one not allowed).
+- **Download:** `GET /v1/attachments/{id}/download` needs the token and
+  answers 302 to a signed link valid 5 minutes. `signedLink()`
+  (`src/api/signed-link.ts`) reads the redirect without following it
+  (`redirect: 'manual'`), so the browser, an image (`?rendition=thumb`) or
+  the share sheet gets a link that needs no credentials.
+- A new file is `pending` while scanned and rendered (its download: 409):
+  the list looks again every few seconds until it's ready, and the realtime
+  `record.attachments.changed` refreshes it for watchers.
+- Not built: presigned and resumable uploads (S3), file versions.
+
 ## User-Agent
 
 Every call sends `User-Agent: <name>/<version> (<model>; <OS> <version>)`

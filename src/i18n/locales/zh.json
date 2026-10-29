@@ -320,5 +320,18 @@
     "saveCurrent": "保存这些筛选条件",
     "delete": "删除视图",
     "deleteTitle": "删除此视图？"
+  },
+  "attachments": {
+    "title": "文件",
+    "empty": "暂无文件。",
+    "checking": "检查中…",
+    "delete": "删除",
+    "deleteTitle": "删除 {{name}}？",
+    "camera": "相机",
+    "photo": "照片",
+    "file": "文件",
+    "uploading": "上传中…",
+    "tooLarge": "文件过大：最多 {{max}}。",
+    "noCamera": "未允许使用相机，请在设置中允许。"
   }
 }
