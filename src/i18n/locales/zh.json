@@ -88,7 +88,8 @@
     "language": "语言",
     "sessions": "会话",
     "signOut": "退出登录",
-    "notifications": "通知"
+    "notifications": "通知",
+    "organization": "组织"
   },
   "language": {
     "title": "语言",
@@ -138,5 +139,8 @@
     "save": "保存免打扰时段",
     "turnOff": "关闭",
     "useDeviceZone": "使用此手机的时区（{{zone}}）"
+  },
+  "organization": {
+    "title": "组织"
   }
 }

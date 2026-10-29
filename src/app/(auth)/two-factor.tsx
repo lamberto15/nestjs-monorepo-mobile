@@ -1,5 +1,4 @@
 import { useForm } from '@tanstack/react-form';
-import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
@@ -13,11 +12,10 @@ import { apiErrorMessage, firstError } from '@/features/auth/errors';
 import { useSecondFactor } from '@/features/auth/hooks';
 import { goToStep } from '@/features/auth/navigation';
 
-/** The second factor, for a sign-in or for signing in again in another tenant (`tenantId`). */
+/** The second factor of a sign-in. */
 export default function TwoFactorScreen() {
   const { t } = useTranslation();
-  const { tenantId } = useLocalSearchParams<{ tenantId?: string }>();
-  const verify = useSecondFactor(tenantId);
+  const verify = useSecondFactor();
   const [recovery, setRecovery] = useState(false);
 
   const schema = z.object({

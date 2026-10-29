@@ -36,10 +36,9 @@ export function useSignIn() {
   });
 }
 
-export function useSecondFactor(tenantId?: string) {
+export function useSecondFactor() {
   return useMutation({
-    mutationFn: (second: SecondFactor) =>
-      continueWithSecondFactor(second, tenantId),
+    mutationFn: (second: SecondFactor) => continueWithSecondFactor(second),
   });
 }
 

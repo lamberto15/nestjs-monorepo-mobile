@@ -4781,6 +4781,63 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/auth/magic-link/handoff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * A native app's sign-in with the link's token: a one-time code
+         * @description For an app that opens the link itself (a universal / app link on WEB_URL/magic-link) and asked for it with POST /auth/magic-link, keeping that response's cookie (the link works only where it was asked for). Spends the link, starts no session, and answers a code for POST /auth/token/exchange, bound to `codeChallenge` (PKCE).
+         */
+        post: operations["MagicLinkController_handoff_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/app-attestation/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** A one-time challenge for an app attestation */
+        post: operations["AppAttestationController_challenge_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/app-attestation/keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Register an iOS install's App Attest key
+         * @description Once per key, with an attestation made over a challenge: Apple vouches that the key belongs to a genuine build of an app of PASSKEY_APPLE_APPS. Its assertions then go in `X-App-Attestation`.
+         */
+        post: operations["AppAttestationController_register_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/auth/oidc/{provider}/login": {
         parameters: {
             query?: never;
@@ -4869,6 +4926,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/auth/token/exchange": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sign in a native app with a sign-in's handoff code
+         * @description The code of a provider's or SSO sign-in started with `redirectUri` and `codeChallenge`, or of POST /auth/magic-link/handoff, with its PKCE verifier. Two-factor and `tenantId` as for POST /auth/token: without a code from the app, 401 `mfa_required` and the handoff code still works (for its minute); a wrong one spends it. A tenant SSO sign-in acts in its tenant.
+         */
+        post: operations["TokensController_exchange_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/auth/token/refresh": {
         parameters: {
             query?: never;
@@ -4878,7 +4955,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Renew the access token (rotates the refresh token) */
+        /**
+         * Renew the access token (rotates the refresh token)
+         * @description With `tenantId`, the new pair acts in that tenant, as POST /auth/tenant does for a session: realtime connections reconnect, and a step-up is asked again there.
+         */
         post: operations["TokensController_refresh_v1"];
         delete?: never;
         options?: never;
@@ -23656,6 +23736,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `public-form`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -23695,7 +23777,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -29166,6 +29248,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `sign-in`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -29200,7 +29284,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -29222,6 +29306,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `sign-up`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -29276,7 +29362,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -29298,6 +29384,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `sign-in`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -29331,7 +29419,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -29563,6 +29651,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `forgot-password`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -29587,7 +29677,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -29794,6 +29884,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `resend-verification`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -29818,7 +29910,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -30075,6 +30167,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `magic-link`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -30101,7 +30195,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -30147,6 +30241,115 @@ export interface operations {
             };
         };
     };
+    MagicLinkController_handoff_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    token: string;
+                    /** @description PKCE (RFC 7636, S256): the base64url SHA-256 of a `codeVerifier` the app keeps for POST /auth/token/exchange. */
+                    codeChallenge: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description One-time, for a minute: POST /auth/token/exchange with the `codeVerifier`. */
+                        code: string;
+                    };
+                };
+            };
+            /** @description Unknown, used or expired link, or asked for elsewhere. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AppAttestationController_challenge_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description One-time: bind one proof to it (App Attest: its SHA-256 as clientDataHash; Play Integrity: the nonce). */
+                        challenge: string;
+                        /** @description Seconds until it expires. */
+                        expiresIn: number;
+                    };
+                };
+            };
+            /** @description App attestation is off. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AppAttestationController_register_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description App Attest's key id (`generateKey()`), base64url. */
+                    keyId: string;
+                    /** @description `attestKey()`'s attestation object, base64url. */
+                    attestation: string;
+                    challenge: string;
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description `attestation_invalid` (`reason`: `challenge`, `format`, `certificate`, `nonce`, `key`, `app`, `authenticator`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description App attestation is off. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     OidcController_login_v1: {
         parameters: {
             query?: {
@@ -30156,6 +30359,10 @@ export interface operations {
                 link?: string;
                 /** @description `true`: re-authenticate the signed-in user through the provider (step-up), with a fresh login there. */
                 reauthenticate?: string;
+                /** @description A native app's: one of NATIVE_REDIRECT_URIS, where the sign-in ends with `?code=` (for POST /auth/token/exchange) or `?error=`, instead of a session in the browser. With `codeChallenge`. */
+                redirectUri?: string;
+                /** @description PKCE (RFC 7636, S256): the base64url SHA-256 of a `codeVerifier` the app keeps for POST /auth/token/exchange. */
+                codeChallenge?: string;
             };
             header?: never;
             path: {
@@ -30190,7 +30397,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description To the web app; a refused step-up (`reauthenticate=true`) with `?error=reauthentication_failed`. */
+            /** @description To the web app; a refused step-up (`reauthenticate=true`) with `?error=reauthentication_failed`. A native login: to its `redirectUri` with `?code=`, or `?error=sign_in_failed`. */
             302: {
                 headers: {
                     [name: string]: unknown;
@@ -30264,6 +30471,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `sign-in`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -30279,7 +30488,7 @@ export interface operations {
                     recoveryCode?: string;
                     /**
                      * Format: uuid
-                     * @description The tenant the tokens act in (one of GET /auth/tenants); left out: the last one chosen. To act in another, sign in again with it.
+                     * @description The tenant the tokens act in (one of GET /auth/tenants); left out: the last one chosen. To act in another, refresh with it.
                      */
                     tenantId?: string;
                 };
@@ -30308,7 +30517,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -30317,7 +30526,7 @@ export interface operations {
             };
         };
     };
-    TokensController_refresh_v1: {
+    TokensController_exchange_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -30327,7 +30536,18 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    refreshToken: string;
+                    /** @description The `code` a native sign-in handed over: the `redirectUri`'s, or POST /auth/magic-link/handoff's. */
+                    handoffCode: string;
+                    /** @description The PKCE verifier of its `codeChallenge`. */
+                    codeVerifier: string;
+                    /** @description With two-factor on: a code from the app. */
+                    code?: string;
+                    recoveryCode?: string;
+                    /**
+                     * Format: uuid
+                     * @description The tenant the tokens act in (one of GET /auth/tenants); left out: the last one chosen. To act in another, refresh with it.
+                     */
+                    tenantId?: string;
                 };
             };
         };
@@ -30347,7 +30567,51 @@ export interface operations {
                     };
                 };
             };
-            /** @description Unknown, expired or reused refresh token. */
+            /** @description Unknown, used or expired code or another verifier; a second factor required or wrong; `tenantId` not one of yours. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    TokensController_refresh_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    refreshToken: string;
+                    /**
+                     * Format: uuid
+                     * @description Another of your tenants (GET /auth/tenants): the new pair, and the ones after it, act there. Not a member: 401, the refresh token unspent.
+                     */
+                    tenantId?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description A JWT: `Authorization: Bearer …`. */
+                        accessToken: string;
+                        /** @description Single use: POST /auth/token/refresh. */
+                        refreshToken: string;
+                        /** @description Seconds until the access token expires. */
+                        expiresIn: number;
+                    };
+                };
+            };
+            /** @description Unknown, expired or reused refresh token; or `tenantId` not one of yours. */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -30862,6 +31126,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `sign-in`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -30914,7 +31180,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -30936,6 +31202,8 @@ export interface operations {
             header?: {
                 /** @description The challenge token (Cloudflare Turnstile, widget action `sign-in`), when GET /auth/methods lists a captcha: always, or once a 403 `captcha_required` asked for one. */
                 "X-Captcha-Token"?: string;
+                /** @description A native app's proof instead (APP_ATTESTATION): `ios <challenge> <keyId> <assertion>` (App Attest) or `android <challenge> <token>` (Play Integrity), the challenge from POST /auth/app-attestation/challenge. */
+                "X-App-Attestation"?: string;
             };
             path?: never;
             cookie?: never;
@@ -30997,7 +31265,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
+            /** @description `captcha_required`: solve the challenge (the problem names `provider`, `siteKey` and `action`) and send its token in `X-Captcha-Token`. `captcha_invalid`: the token was refused (`reason`: `invalid`, `duplicate`, `hostname`, `action`); render the widget again. `attestation_invalid`: the `X-App-Attestation` proof was refused (`reason`). Provider down: 503 `captcha_unavailable` (fail-closed), or 429 `rate_limited` past the fail-open allowance. */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -35908,6 +36176,10 @@ export interface operations {
             query?: {
                 /** @description A path of the web app to land on (one leading `/`, printable ASCII, no `\`); anything else is ignored. */
                 redirectTo?: string;
+                /** @description A native app's: one of NATIVE_REDIRECT_URIS, where the sign-in ends with `?code=` (for POST /auth/token/exchange) or `?error=`, instead of a session in the browser. With `codeChallenge`. */
+                redirectUri?: string;
+                /** @description PKCE (RFC 7636, S256): the base64url SHA-256 of a `codeVerifier` the app keeps for POST /auth/token/exchange. */
+                codeChallenge?: string;
             };
             header?: never;
             path?: never;

@@ -35,7 +35,7 @@ export default function ChooseTenantScreen() {
           onPress={async () => {
             const step = await choose.mutateAsync(tenant.id).catch(() => null);
             if (step) {
-              goToStep(step, tenant.id);
+              goToStep(step);
             }
           }}
         >

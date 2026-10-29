@@ -44,6 +44,11 @@ export default function AccountScreen() {
     <Screen>
       <ProfileForm name={me.data.user.name} email={me.data.user.email} />
       <ListRow
+        title={t('account.organization')}
+        detail={me.data.tenant?.name}
+        onPress={() => router.push('/account/organization')}
+      />
+      <ListRow
         title={t('account.language')}
         detail={language?.name}
         onPress={() => router.push('/account/language')}

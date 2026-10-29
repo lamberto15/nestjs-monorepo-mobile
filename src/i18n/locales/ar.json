@@ -88,7 +88,8 @@
     "language": "اللغة",
     "sessions": "الجلسات",
     "signOut": "تسجيل الخروج",
-    "notifications": "الإشعارات"
+    "notifications": "الإشعارات",
+    "organization": "المؤسسة"
   },
   "language": {
     "title": "اللغة",
@@ -138,5 +139,8 @@
     "save": "حفظ ساعات الهدوء",
     "turnOff": "إيقاف",
     "useDeviceZone": "استخدام المنطقة الزمنية لهذا الهاتف ({{zone}})"
+  },
+  "organization": {
+    "title": "المؤسسة"
   }
 }

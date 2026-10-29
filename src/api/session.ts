@@ -105,6 +105,26 @@ function refresh(): Promise<string> {
   return refreshing;
 }
 
+/**
+ * Re-issues the pair in another tenant (`POST /v1/auth/token/refresh
+ * { tenantId }`). A tenant the person isn't a member of is refused with the
+ * refresh token left unspent, so a refusal keeps the session as it was.
+ */
+async function moveTo(tenantId: string): Promise<string> {
+  const refreshToken = await storage.get(REFRESH_TOKEN_KEY);
+  if (!refreshToken) {
+    await forget();
+    throw new Error('Not signed in');
+  }
+  const tokens = await unwrap(
+    publicApi.POST('/v1/auth/token/refresh', {
+      body: { refreshToken, tenantId },
+    }),
+  );
+  await keep(tokens);
+  return tokens.accessToken;
+}
+
 export const session = {
   status: () => status,
 
@@ -139,6 +159,24 @@ export const session = {
       return accessToken;
     }
     return refresh();
+  },
+
+  /**
+   * Acts in another tenant from now on. Waits for a refresh in flight (the
+   * family's current refresh token is the one to present), and takes the
+   * refresh slot itself so no other refresh spends the token meanwhile.
+   * The caller resets cached data: it belonged to the old tenant.
+   */
+  async switchTenant(tenantId: string): Promise<void> {
+    // Another refresh may start while one is awaited: wait until none runs,
+    // then claim the slot in the same tick.
+    while (refreshing) {
+      await refreshing.catch(() => undefined);
+    }
+    refreshing = moveTo(tenantId).finally(() => {
+      refreshing = null;
+    });
+    await refreshing;
   },
 
   /** The API answered 401 to a token we thought valid: renew on next use. */

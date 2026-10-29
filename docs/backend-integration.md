@@ -106,22 +106,23 @@ Passkeys come with the account phase (a development build).
 **Bot protection.** When `methods.captcha` is set (Turnstile), sign-in, its
 two-factor step, sign-up and forgot-password want a widget token in
 `X-Captcha-Token`, always or after a 403 `captcha_required`
-(`captcha.mode`). **Decided:** no widget in the app; the safe exemption is
-app attestation (App Attest, Play Integrity), tracked as
-[backend #953](https://github.com/lamberto15/nestjs-monorepo-template/issues/953).
-Until it lands, run the backend with `CAPTCHA_MODE` unset (the default);
-when a captcha is required the app says so (`errors.captcha`) instead of
-failing silently.
+(`captcha.mode`). **Decided:** no widget in the app; app attestation
+instead. The backend has it (`APP_ATTESTATION=on`: `X-App-Attestation` with
+App Attest or Play Integrity, challenges from
+`POST /v1/auth/app-attestation/challenge`; backend `auth`, "App
+attestation"); the app side needs a development build and a paid Apple team
+or Android, so it waits. Meanwhile run with `CAPTCHA_MODE` unset (the
+default); when a captcha is required the app says so (`errors.captcha`).
 
-**Blocked: provider sign-in and magic links.** Today both end in the web
-app: the OIDC callback sets the session cookie and redirects to `WEB_URL`,
-and email links open `WEB_URL` pages. An app needs a way to get **tokens**
-instead, e.g. the provider flow opened with `expo-web-browser`'s auth
-session and redirecting to the app's scheme with a one-time code the app
-exchanges for tokens, and the magic link opening the app (universal/app
-links) and verifying into tokens. That's a backend change, tracked as
-[backend #952](https://github.com/lamberto15/nestjs-monorepo-template/issues/952);
-the app's screens wait for it.
+**Next: provider sign-in and magic links.** The backend hands tokens to
+apps now: a provider or tenant-SSO login started with `redirectUri` (one of
+`NATIVE_REDIRECT_URIS`) and a PKCE `codeChallenge` ends at
+`redirectUri?code=…`, and `POST /v1/auth/token/exchange { handoffCode,
+codeVerifier, code?, recoveryCode?, tenantId? }` answers tokens;
+`POST /v1/auth/magic-link/handoff` does the same for a link the app opens
+(a universal/app link, so a paid Apple team or Android). Provider sign-in
+fits `expo-web-browser`'s auth session in Expo Go; it waits for a provider
+configured on the test server.
 
 ## Tenants (backend `tenancy`)
 
@@ -129,15 +130,14 @@ Tokens act in **one tenant**: `tenantId` at sign-in, else the last one
 chosen. After sign-in the app reads `GET /v1/auth/tenants` with the new
 tokens (before the session holds them); with one it starts the session,
 with several it shows the picker (`choose-tenant`), the `current` one first.
-Choosing the current one keeps the tokens; another means a **new token
-sign-in** with its `tenantId` (the cookie route `POST /v1/auth/tenant` is
-for browsers, and `/v1/auth/token/refresh` takes no `tenantId`), with a
-fresh two-factor code when the account has two-factor; the first pair is
-revoked only after the new one arrives. Switching later, from inside the
-app, waits for
-[backend #954](https://github.com/lamberto15/nestjs-monorepo-template/issues/954)
-(`tenantId` on refresh). Clear the query cache on a switch: every cached
-answer belongs to the old tenant. With
+Choosing the current one keeps the tokens; another re-issues them there
+with `POST /v1/auth/token/refresh { refreshToken, tenantId }`: no password
+or code again. Later, Account → Organization does the same
+(`session.switchTenant`): it waits for any refresh in flight and holds the
+refresh slot itself (two refreshes would spend one token), and a refusal
+(not a member: 401, the token left unspent) keeps the session as it was.
+Every cached answer belonged to the old tenant, so all queries reset; the
+realtime socket reconnects with the new token. With
 `TENANCY=single` the list has one entry and the picker never shows.
 
 `GET /v1/auth/me` (with `can`: every allowed `Subject.action`) and

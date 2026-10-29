@@ -88,7 +88,8 @@
     "language": "Language",
     "sessions": "Sessions",
     "signOut": "Sign out",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "organization": "Organization"
   },
   "language": {
     "title": "Language",
@@ -138,5 +139,8 @@
     "save": "Save quiet hours",
     "turnOff": "Turn off",
     "useDeviceZone": "Use this phone's time zone ({{zone}})"
+  },
+  "organization": {
+    "title": "Organization"
   }
 }

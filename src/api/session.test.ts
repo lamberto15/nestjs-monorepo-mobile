@@ -84,3 +84,46 @@ test('sign-out waits for a refresh in flight and revokes the newest token', asyn
   expect(session.status()).toBe('signedOut');
   expect(await store.getItemAsync(KEY)).toBeNull();
 });
+
+test('switching tenant re-issues the pair there, after a refresh in flight', async () => {
+  const answer = deferred<Response>();
+  const { session, store } = await load('r1');
+  const calls = fakeApi({
+    'POST /v1/auth/token/refresh': (call) =>
+      (call.body as { tenantId?: string }).tenantId
+        ? reply(tokens(3))
+        : answer.promise,
+  });
+
+  const request = session.accessToken();
+  const switching = session.switchTenant('t2');
+  answer.resolve(reply(tokens(2)));
+  await request;
+  await switching;
+
+  expect(calls.map((call) => call.body)).toEqual([
+    { refreshToken: 'r1' },
+    { refreshToken: 'r2', tenantId: 't2' },
+  ]);
+  expect(await session.accessToken()).toBe('a3');
+  expect(await store.getItemAsync(KEY)).toBe('r3');
+});
+
+test('a refused switch (not a member) keeps the session as it was', async () => {
+  const { session, store } = await load('r1');
+  fakeApi({
+    'POST /v1/auth/token/refresh': (call) =>
+      (call.body as { tenantId?: string }).tenantId
+        ? problem(401, 'unauthorized')
+        : reply(tokens(2)),
+  });
+  await session.restore();
+
+  await expect(session.switchTenant('t9')).rejects.toMatchObject({
+    status: 401,
+  });
+
+  expect(session.status()).toBe('signedIn');
+  expect(await store.getItemAsync(KEY)).toBe('r2');
+  expect(await session.accessToken()).toBe('a2');
+});
