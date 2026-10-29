@@ -118,6 +118,17 @@ layout must work: Arabic is one of the backend's languages.
   (`expo-sqlite`'s `useSQLCipher`, a development build), only queries that
   opt in, keyed by user and tenant, cleared on sign-out.
 
+## Telemetry
+
+Off by default. A project plugs its analytics in once
+(`telemetry.use({ track(event, props) {…} })`, e.g. in the root layout);
+events then go out only while the account has the backend's `analytics`
+consent at its current version (declare that kind in the backend's
+`CONSENT_KINDS`; Account → Your data shows it). `telemetry.track()` drops
+personal keys and cuts emails and tokens; screen views carry routes with
+ids removed. Crash reporting (#14) follows the same consent. Tracking
+across apps is not done, so no App Tracking Transparency prompt.
+
 ## Accessibility
 
 - Colours meet WCAG AA: text on `primary` and `dangerFill` and `link` on
