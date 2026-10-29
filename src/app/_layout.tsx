@@ -8,6 +8,7 @@ import { useColorScheme } from 'react-native';
 
 import { queryClient } from '@/api/query-client';
 import { session } from '@/api/session';
+import { OfflineBanner } from '@/components/offline-banner';
 import { useSessionStatus } from '@/hooks/use-session-status';
 
 SplashScreen.preventAutoHideAsync();
@@ -44,13 +45,16 @@ function RootNavigator() {
 
   const signedIn = status === 'signedIn';
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={signedIn} redirectTo="/sign-in">
-        <Stack.Screen name="(app)" />
-      </Stack.Protected>
-      <Stack.Protected guard={!signedIn} redirectTo="/">
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-    </Stack>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={signedIn} redirectTo="/sign-in">
+          <Stack.Screen name="(app)" />
+        </Stack.Protected>
+        <Stack.Protected guard={!signedIn} redirectTo="/">
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+      </Stack>
+      <OfflineBanner />
+    </>
   );
 }

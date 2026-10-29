@@ -34,11 +34,10 @@ export default function LanguageScreen() {
         <ListRow
           key={language.code}
           title={language.name}
+          selected={i18n.resolvedLanguage === language.code}
           detail={
             update.isPending && update.variables?.locale === language.code ? (
               <ActivityIndicator />
-            ) : i18n.resolvedLanguage === language.code ? (
-              '✓'
             ) : undefined
           }
           disabled={update.isPending}

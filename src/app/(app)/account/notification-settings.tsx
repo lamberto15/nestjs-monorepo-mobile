@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { Button } from '@/components/button';
 import { ChoiceChips } from '@/components/choice-chips';
+import { ErrorState } from '@/components/error-state';
 import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
@@ -41,9 +42,13 @@ export default function NotificationSettingsScreen() {
     return (
       <Screen>
         {error ? (
-          <ThemedText themeColor="danger">
-            {apiErrorMessage(error, t)}
-          </ThemedText>
+          <ErrorState
+            error={error}
+            onRetry={() => {
+              void types.refetch();
+              void preferences.refetch();
+            }}
+          />
         ) : (
           <ActivityIndicator />
         )}
@@ -125,13 +130,13 @@ export default function NotificationSettingsScreen() {
 const time = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 function QuietHours() {
-  const { t } = useTranslation();
   const quietHours = useQuietHours();
   if (!quietHours.data) {
     return quietHours.error ? (
-      <ThemedText themeColor="danger">
-        {apiErrorMessage(quietHours.error, t)}
-      </ThemedText>
+      <ErrorState
+        error={quietHours.error}
+        onRetry={() => quietHours.refetch()}
+      />
     ) : (
       <ActivityIndicator />
     );

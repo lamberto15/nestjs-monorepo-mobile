@@ -78,6 +78,25 @@ Deep links use the `scheme` in `app.json`.
 the themed components, and `@expo/ui` for native controls. Right-to-left
 layout must work: Arabic is one of the backend's languages.
 
+## Loading, errors, offline
+
+- A screen's failed load shows `ErrorState` (the API's message, or ours,
+  with "Try again"); a failed action shows its message where it happened.
+- Requests time out after 20 s (`appFetch` in `src/api/public-api.ts`).
+- Offline (`expo-network` drives TanStack Query's `onlineManager`), queries
+  and saves pause and continue when the network is back; `OfflineBanner`
+  says so at the top.
+
+## Accessibility
+
+- Colours meet WCAG AA: text on `primary` and `link` on the background are
+  at least 4.5:1 in both themes (the values in `theme.ts` say their ratio).
+  Check a new colour pair before using it.
+- `ThemedText` announces `title` and `subtitle` as headings; a chosen row
+  passes `selected` to `ListRow`; a row whose look carries meaning (an
+  unread dot) gets an `accessibilityLabel` that says it.
+- Text scales with the system font size: don't fix heights around text.
+
 ## Performance
 
 The React Compiler is on (`experiments.reactCompiler`): don't add

@@ -23,10 +23,18 @@ export function ThemedText({
   ...rest
 }: ThemedTextProps) {
   const theme = useTheme();
+  const color =
+    type === 'linkPrimary' && !themeColor
+      ? theme.link
+      : theme[themeColor ?? 'text'];
 
   return (
     <Text
-      style={[{ color: theme[themeColor ?? 'text'] }, styles[type], style]}
+      // Screen readers announce titles as headings, to jump between them.
+      accessibilityRole={
+        type === 'title' || type === 'subtitle' ? 'header' : undefined
+      }
+      style={[{ color }, styles[type], style]}
       {...rest}
     />
   );
@@ -65,7 +73,6 @@ const styles = StyleSheet.create({
   linkPrimary: {
     lineHeight: 30,
     fontSize: 14,
-    color: '#3c87f7',
   },
   code: {
     fontFamily: Fonts.mono,

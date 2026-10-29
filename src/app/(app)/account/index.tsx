@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { session } from '@/api/session';
 import { Button } from '@/components/button';
 import { ListRow } from '@/components/list-row';
+import { ErrorState } from '@/components/error-state';
 import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
@@ -27,9 +28,7 @@ export default function AccountScreen() {
     return (
       <Screen>
         {me.isError ? (
-          <ThemedText themeColor="danger">
-            {apiErrorMessage(me.error, t)}
-          </ThemedText>
+          <ErrorState error={me.error} onRetry={() => me.refetch()} />
         ) : (
           <ActivityIndicator />
         )}

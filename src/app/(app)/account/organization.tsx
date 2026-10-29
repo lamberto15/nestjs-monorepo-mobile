@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
 import { ListRow } from '@/components/list-row';
+import { ErrorState } from '@/components/error-state';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { useSwitchTenant, useTenants } from '@/features/account/hooks';
@@ -21,11 +22,10 @@ export default function OrganizationScreen() {
         <ListRow
           key={tenant.id}
           title={tenant.name}
+          selected={tenant.current}
           detail={
             switchTenant.isPending && switchTenant.variables === tenant.id ? (
               <ActivityIndicator />
-            ) : tenant.current ? (
-              '✓'
             ) : undefined
           }
           disabled={switchTenant.isPending}
@@ -39,7 +39,10 @@ export default function OrganizationScreen() {
           }
         />
       ))}
-      {[tenants.error, switchTenant.error].map(
+      {tenants.isError && (
+        <ErrorState error={tenants.error} onRetry={() => tenants.refetch()} />
+      )}
+      {[switchTenant.error].map(
         (error, index) =>
           error && (
             <ThemedText

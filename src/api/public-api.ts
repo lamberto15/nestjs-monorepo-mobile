@@ -39,17 +39,38 @@ export const USER_AGENT =
     Device.osVersion ?? ''
   })`.replace(' )', ')');
 
-/** What every client of the app shares: the API, language, idempotency keys, user agent. */
+/** A request still unanswered after this fails, instead of spinning forever. */
+export const REQUEST_TIMEOUT_MS = 20_000;
+
+/**
+ * The app's fetch: its User-Agent, and a timeout. A request the caller
+ * cancels (a query left behind) still aborts: its signal is followed.
+ */
+export function appFetch(
+  input: RequestInfo | URL,
+  init?: RequestInit,
+): Promise<Response> {
+  const request = new Request(input, init);
+  request.headers.set('User-Agent', USER_AGENT);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const cancel = () => controller.abort();
+  request.signal?.addEventListener('abort', cancel);
+  return globalThis
+    .fetch(request, { signal: controller.signal })
+    .finally(() => {
+      clearTimeout(timer);
+      request.signal?.removeEventListener('abort', cancel);
+    });
+}
+
+/** What every client of the app shares: the API, language, idempotency keys, fetch. */
 export const clientOptions: ApiClientOptions = {
   baseUrl: API_URL,
   language: deviceLanguage,
   // React Native has no crypto.randomUUID.
   idempotencyKey: Crypto.randomUUID,
-  fetch: (input, init) => {
-    const request = new Request(input, init);
-    request.headers.set('User-Agent', USER_AGENT);
-    return globalThis.fetch(request);
-  },
+  fetch: appFetch,
 };
 
 /**
