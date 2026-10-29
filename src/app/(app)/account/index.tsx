@@ -49,6 +49,10 @@ export default function AccountScreen() {
         onPress={() => router.push('/account/language')}
       />
       <ListRow
+        title={t('account.notifications')}
+        onPress={() => router.push('/account/notification-settings')}
+      />
+      <ListRow
         title={t('account.sessions')}
         onPress={() => router.push('/account/sessions')}
       />

@@ -20,6 +20,8 @@ export function Screen({ children }: { children: ReactNode }) {
       >
         <SafeAreaView style={styles.fill} edges={['bottom', 'left', 'right']}>
           <ScrollView
+            // Below a translucent header and above the tab bar (iOS).
+            contentInsetAdjustmentBehavior="automatic"
             contentContainerStyle={styles.content}
             keyboardShouldPersistTaps="handled"
           >

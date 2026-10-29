@@ -178,7 +178,18 @@ the tab's badge from `GET /v1/notifications/unread-count` (`99+` above 99
 or when capped). Tapping an unread one marks it read
 (`POST /v1/notifications/{id}/read`); "Mark all read" sends `before` = the
 newest one shown, so what arrives meanwhile stays unread. A notification's
-`link` (a web app path) is not opened yet.
+`link` opens in the in-app browser: an absolute URL as it is, a web app path
+on `EXPO_PUBLIC_WEB_URL` (unset: not opened; `features/notifications/link.ts`).
+
+**Settings** (Account → Notifications): per type, email `false` /
+`immediate` / `hourly` / `daily` and the push and SMS switches the server
+offers (`GET /v1/notifications/types`: a channel appears once its provider
+is configured; mandatory types can't be switched off).
+`PUT /v1/notifications/preferences` **replaces** the whole set, so the app
+sends every choice with the one changed (`withChannel`). Quiet hours
+(`/v1/notifications/quiet-hours`, `HH:MM` on the clock of the account's time
+zone) hold push and SMS back; the screen offers to set the account's time
+zone to the phone's when they differ.
 
 ## Account (backend `auth`)
 

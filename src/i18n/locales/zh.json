@@ -60,7 +60,8 @@
     "email": "请输入有效的电子邮件地址。",
     "required": "必填。",
     "code": "请输入 6 位数字。",
-    "passwordLength": "请至少使用 12 个字符。"
+    "passwordLength": "请至少使用 12 个字符。",
+    "time": "请使用 HH:MM 格式，例如 22:00。"
   },
   "errors": {
     "network": "无法连接到服务器。请检查网络连接后重试。",
@@ -86,7 +87,8 @@
     "saved": "已保存。",
     "language": "语言",
     "sessions": "会话",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "notifications": "通知"
   },
   "language": {
     "title": "语言",
@@ -112,5 +114,29 @@
       "sso": "组织登录",
       "impersonation": "模拟登录"
     }
+  },
+  "notificationSettings": {
+    "title": "通知",
+    "hint": "你在应用内总能收到所有通知。选择哪些还通过电子邮件发送，以及发送频率。",
+    "mandatory": "必需：电子邮件可以合并发送，但不能关闭。",
+    "emailLabel": "{{type}} 的电子邮件",
+    "email": {
+      "off": "关闭",
+      "immediate": "立即",
+      "hourly": "每小时",
+      "daily": "每天"
+    },
+    "push": "推送通知",
+    "sms": "短信"
+  },
+  "quietHours": {
+    "title": "免打扰时段",
+    "on": "推送和短信会在 {{start}} 至 {{end}}（{{timezone}}）期间等待，紧急通知除外。",
+    "off": "关闭：推送和短信随时送达。",
+    "start": "从",
+    "end": "到",
+    "save": "保存免打扰时段",
+    "turnOff": "关闭",
+    "useDeviceZone": "使用此手机的时区（{{zone}}）"
   }
 }
