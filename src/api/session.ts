@@ -12,7 +12,7 @@ import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
 import { isApiError, unwrap } from '@/api/client';
-import { publicApi } from '@/api/public-api';
+import { clientWithToken, publicApi } from '@/api/public-api';
 
 export type SessionStatus = 'restoring' | 'signedIn' | 'signedOut';
 
@@ -125,6 +125,52 @@ async function moveTo(tenantId: string): Promise<string> {
   return tokens.accessToken;
 }
 
+/** The proof of a step-up (`POST /v1/auth/reauthenticate`). */
+export interface Proof {
+  password?: string;
+  code?: string;
+  recoveryCode?: string;
+}
+
+/**
+ * Proves the person again for a sensitive action. A token client sends its
+ * refresh token with the proof: the API revokes that family and answers a
+ * new pair whose sign-in time is now.
+ */
+async function prove(proof: Proof): Promise<string> {
+  // Inside the refresh slot: renew directly when the access token is spent.
+  const current =
+    accessToken && Date.now() < expiresAt - EARLY_MS
+      ? accessToken
+      : await renew();
+  const refreshToken = await storage.get(REFRESH_TOKEN_KEY);
+  const answer = await unwrap(
+    clientWithToken(current).POST('/v1/auth/reauthenticate', {
+      body: { ...proof, ...(refreshToken && { refreshToken }) },
+    }),
+  );
+  if (answer.tokens) {
+    await keep(answer.tokens);
+    return answer.tokens.accessToken;
+  }
+  return current;
+}
+
+/**
+ * Runs a task that spends the refresh token, alone: waits until no refresh
+ * runs (another may start while one is awaited), then claims the slot in
+ * the same tick, so nothing else presents the token meanwhile.
+ */
+async function exclusive(task: () => Promise<string>): Promise<void> {
+  while (refreshing) {
+    await refreshing.catch(() => undefined);
+  }
+  refreshing = task().finally(() => {
+    refreshing = null;
+  });
+  await refreshing;
+}
+
 export const session = {
   status: () => status,
 
@@ -167,16 +213,16 @@ export const session = {
    * refresh slot itself so no other refresh spends the token meanwhile.
    * The caller resets cached data: it belonged to the old tenant.
    */
-  async switchTenant(tenantId: string): Promise<void> {
-    // Another refresh may start while one is awaited: wait until none runs,
-    // then claim the slot in the same tick.
-    while (refreshing) {
-      await refreshing.catch(() => undefined);
-    }
-    refreshing = moveTo(tenantId).finally(() => {
-      refreshing = null;
-    });
-    await refreshing;
+  switchTenant(tenantId: string): Promise<void> {
+    return exclusive(() => moveTo(tenantId));
+  },
+
+  /**
+   * A step-up: proves the person again (`reauthentication_required`). A
+   * wrong proof (403 `reauthentication_failed`) leaves the session as it was.
+   */
+  reauthenticate(proof: Proof): Promise<void> {
+    return exclusive(() => prove(proof));
   },
 
   /** The API answered 401 to a token we thought valid: renew on next use. */

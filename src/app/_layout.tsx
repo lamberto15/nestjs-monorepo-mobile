@@ -49,6 +49,10 @@ function RootNavigator() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={signedIn} redirectTo="/sign-in">
           <Stack.Screen name="(app)" />
+          <Stack.Screen
+            name="reauthenticate"
+            options={{ presentation: 'modal' }}
+          />
         </Stack.Protected>
         <Stack.Protected guard={!signedIn} redirectTo="/">
           <Stack.Screen name="(auth)" />

@@ -93,7 +93,14 @@
     "sessions": "Sesi",
     "signOut": "Log keluar",
     "notifications": "Pemberitahuan",
-    "organization": "Organisasi"
+    "organization": "Organisasi",
+    "security": "Keselamatan",
+    "twoFactorOn": "Dua faktor dihidupkan",
+    "yourData": "Data anda",
+    "delete": "Padam akaun",
+    "unverified": "Sahkan alamat e-mel anda",
+    "unverifiedHint": "Ketik untuk menghantar pautan semula.",
+    "verificationSent": "Dihantar. Semak e-mel anda."
   },
   "language": {
     "title": "Bahasa",
@@ -178,5 +185,77 @@
     "deleteBody": "\"{{title}}\" dipindahkan ke nota yang dipadam; pentadbir boleh memulihkannya.",
     "conflict": "Orang lain telah menukar nota ini sejak anda membukanya. Muatkan versi mereka, kemudian buat perubahan anda semula.",
     "loadLatest": "Muatkan versi terkini"
+  },
+  "avatar": {
+    "change": "Tukar gambar",
+    "remove": "Buang gambar"
+  },
+  "reauth": {
+    "title": "Sahkan ini anda",
+    "hint": "Ini memerlukan log masuk baru-baru ini.",
+    "confirm": "Sahkan",
+    "signInAgain": "Akaun anda log masuk dengan pautan atau penyedia lain, yang tidak boleh diminta oleh aplikasi di sini. Log keluar dan log masuk semula, kemudian cuba lagi."
+  },
+  "security": {
+    "title": "Keselamatan"
+  },
+  "password": {
+    "change": "Tukar kata laluan",
+    "set": "Tetapkan kata laluan",
+    "current": "Kata laluan semasa",
+    "new": "Kata laluan baharu",
+    "save": "Simpan kata laluan",
+    "changed": "Kata laluan ditukar",
+    "signInAgain": "Anda telah dilog keluar di semua tempat. Log masuk dengan kata laluan baharu."
+  },
+  "mfa": {
+    "title": "Dua faktor",
+    "on": "Hidup",
+    "off": "Mati",
+    "offHint": "Dua faktor meminta kod daripada aplikasi pengesah semasa log masuk, jadi kata laluan yang dicuri tidak mencukupi.",
+    "turnOn": "Hidupkan dua faktor",
+    "addHint": "Tambah akaun ini ke aplikasi pengesah anda, kemudian masukkan kod yang dipaparkan.",
+    "openApp": "Buka dalam aplikasi pengesah",
+    "noApp": "Tiada aplikasi pengesah dibuka. Salin kunci sebaliknya.",
+    "orKey": "Atau masukkan kunci ini dalam aplikasi:",
+    "copyKey": "Salin kunci",
+    "firstCode": "Kod daripada aplikasi",
+    "confirm": "Hidupkan",
+    "recoveryTitle": "Kod pemulihan",
+    "recoveryHint": "Setiap kod melog masuk anda sekali jika telefon hilang. Simpan di tempat selamat: ia dipaparkan sekarang sahaja.",
+    "copyCodes": "Salin kod",
+    "savedCodes": "Saya sudah menyimpannya",
+    "enabled": "Dua faktor dihidupkan.",
+    "remaining": "Kod pemulihan yang tinggal: {{count}}",
+    "newCodes": "Jana kod pemulihan baharu",
+    "turnOff": "Matikan dua faktor",
+    "turnOffTitle": "Matikan dua faktor?",
+    "turnOffBody": "Log masuk hanya akan meminta kata laluan."
+  },
+  "yourData": {
+    "title": "Data anda",
+    "exportTitle": "Salinan data anda",
+    "exportHint": "Semua yang disimpan oleh akaun anda, sebagai fail. Ia mengambil sedikit masa; pautan sah selama 30 minit.",
+    "request": "Minta salinan",
+    "download": "Muat turun",
+    "status": {
+      "queued": "Menunggu",
+      "running": "Sedang dibuat",
+      "completed": "Sedia",
+      "failed": "Gagal"
+    },
+    "consentsTitle": "Apa yang anda persetujui",
+    "agreed": "Dipersetujui {{date}}",
+    "newVersion": "Versi baharu: sila setuju semula."
+  },
+  "deleteAccount": {
+    "title": "Padam akaun",
+    "hint": "Akaun dan data anda dipadam secara kekal.",
+    "graceHint": "Tiada apa berlaku serta-merta: anda boleh membatalkan dalam tempoh menunggu, di sini atau daripada e-mel yang kami hantar.",
+    "confirm": "Padam akaun saya",
+    "scheduled": "Akaun anda akan dipadam pada {{date}}.",
+    "cancelHint": "Ketik untuk membatalkan.",
+    "pendingHint": "Log masuk anda yang lain telah dilog keluar. Sehingga itu anda boleh membatalkan.",
+    "cancel": "Batalkan pemadaman"
   }
 }

@@ -5,6 +5,12 @@ import { ActivityIndicator } from 'react-native';
 import { z } from 'zod';
 
 import { session } from '@/api/session';
+import { AvatarPicker } from '@/features/account/avatar-picker';
+import {
+  useAccount,
+  useResendVerification,
+} from '@/features/account/lifecycle';
+import { formatDateTime } from '@/i18n/format';
 import { Button } from '@/components/button';
 import { ListRow } from '@/components/list-row';
 import { ErrorState } from '@/components/error-state';
@@ -41,6 +47,12 @@ export default function AccountScreen() {
   );
   return (
     <Screen>
+      <DeletionBanner />
+      {!me.data.user.emailVerified && <VerifyEmailBanner />}
+      <AvatarPicker
+        name={me.data.user.name}
+        avatarUrl={me.data.user.avatarUrl ?? null}
+      />
       <ProfileForm name={me.data.user.name} email={me.data.user.email} />
       <ListRow
         title={t('account.organization')}
@@ -57,15 +69,66 @@ export default function AccountScreen() {
         onPress={() => router.push('/account/notification-settings')}
       />
       <ListRow
+        title={t('account.security')}
+        detail={me.data.mfaEnabled ? t('account.twoFactorOn') : undefined}
+        onPress={() => router.push('/account/security')}
+      />
+      <ListRow
         title={t('account.sessions')}
         onPress={() => router.push('/account/sessions')}
+      />
+      <ListRow
+        title={t('account.yourData')}
+        onPress={() => router.push('/account/your-data')}
       />
       <Button
         title={t('account.signOut')}
         variant="secondary"
         onPress={() => session.signOut()}
       />
+      <ListRow
+        title={t('account.delete')}
+        onPress={() => router.push('/account/delete-account')}
+      />
     </Screen>
+  );
+}
+
+/** A deletion is scheduled: when, and a way to cancel it from here. */
+function DeletionBanner() {
+  const { t } = useTranslation();
+  const account = useAccount();
+  const deletion = account.data?.deletion;
+  if (!deletion) {
+    return null;
+  }
+  return (
+    <ListRow
+      title={t('deleteAccount.scheduled', {
+        date: formatDateTime(deletion.scheduledFor),
+      })}
+      subtitle={t('deleteAccount.cancelHint')}
+      onPress={() => router.push('/account/delete-account')}
+    />
+  );
+}
+
+function VerifyEmailBanner() {
+  const { t } = useTranslation();
+  const resend = useResendVerification();
+  return (
+    <ListRow
+      title={t('account.unverified')}
+      subtitle={
+        resend.isSuccess
+          ? t('account.verificationSent')
+          : resend.error
+            ? apiErrorMessage(resend.error, t)
+            : t('account.unverifiedHint')
+      }
+      onPress={resend.isSuccess ? undefined : () => resend.mutate()}
+      disabled={resend.isPending}
+    />
   );
 }
 

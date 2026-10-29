@@ -19,6 +19,8 @@ export const Colors = {
     primary: '#0B6BCB',
     onPrimary: '#ffffff',
     link: '#0B6BCB',
+    // White on dangerFill 5.2: a destructive button.
+    dangerFill: '#CE2C31',
     danger: '#CE2C31',
   },
   dark: {
@@ -32,6 +34,7 @@ export const Colors = {
     primary: '#0B6BCB',
     onPrimary: '#ffffff',
     link: '#6CB4FF',
+    dangerFill: '#CE2C31',
     danger: '#FF6369',
   },
 } as const;
