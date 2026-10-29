@@ -1,5 +1,6 @@
 import {
   channelValue,
+  saveBody,
   withChannel,
   type NotificationType,
 } from '@/features/notifications/settings';
@@ -35,4 +36,17 @@ test('changing one channel keeps every other choice (PUT replaces the set)', () 
       'note.deleted': { email: false },
     },
   );
+});
+
+test('a mandatory type is saved without the `false` values the API reports for it', () => {
+  const mandatory = { ...type('security.mfaChanged'), mandatory: true };
+  const preferences = {
+    'security.mfaChanged': { email: 'daily' as const, push: false },
+    'note.published': { email: false as const, push: false },
+  };
+
+  expect(saveBody(preferences, [mandatory, type('note.published')])).toEqual({
+    'security.mfaChanged': { email: 'daily' },
+    'note.published': { email: false, push: false },
+  });
 });
