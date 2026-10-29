@@ -9,7 +9,8 @@
 src/
   app/                 routes only (Expo Router): screens and _layout.tsx
     _layout.tsx        providers, session restore, Stack.Protected guards
-    sign-in.tsx        signed-out entry (for now: checks the API is reachable)
+    (auth)/            signed-out: sign-in, two-factor, choose-tenant, sign-up,
+                       forgot-password, check-email
     (app)/             signed-in screens, guarded by the session
   api/
     client/            the backend's typed client, copied by `pnpm client:sync`; never edit
@@ -18,12 +19,15 @@ src/
     session.ts         tokens: secure storage, single-flight refresh, sign-out
     query-client.ts    TanStack Query defaults (retries per error kind)
     realtime.ts        the one `createRealtime()` connection          (planned)
-  features/<name>/     a feature's hooks, components and queries      (planned)
-  components/          shared components (themed-text, themed-view)
+  features/<name>/     a feature's hooks, flow logic and tests (auth: sign-in-flow,
+                       hooks, errors, navigation)
+  components/          shared components (themed-text, themed-view, screen,
+                       text-field, button)
   hooks/               shared hooks (theme, color scheme, session status)
   constants/theme.ts   design tokens: colors, spacing, typography
   i18n/                i18next setup and locales/<lang>.json
   types/               ambient types
+  test/                Jest setup and the fake API for tests
 assets/                icons, splash
 scripts/               client-sync.mjs
 ```

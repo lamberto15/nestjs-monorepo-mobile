@@ -1,0 +1,71 @@
+{
+  "app": {
+    "name": "NestJS Mobile"
+  },
+  "server": {
+    "connected": "Verbunden mit {{url}}",
+    "unreachable": "{{url}} ist nicht erreichbar",
+    "retry": "Erneut versuchen"
+  },
+  "signIn": {
+    "title": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "forgot": "Passwort vergessen?",
+    "signUp": "Konto erstellen"
+  },
+  "twoFactor": {
+    "title": "Bestätigungscode",
+    "hint": "Gib den 6-stelligen Code aus deiner Authenticator-App ein.",
+    "recoveryHint": "Gib einen deiner Wiederherstellungscodes ein. Jeder funktioniert nur einmal.",
+    "code": "Code",
+    "recoveryCode": "Wiederherstellungscode",
+    "useRecovery": "Wiederherstellungscode verwenden",
+    "useCode": "Code aus der App verwenden",
+    "submit": "Weiter"
+  },
+  "chooseTenant": {
+    "title": "Organisation wählen",
+    "hint": "Du gehörst zu mehreren. In welcher möchtest du arbeiten?",
+    "current": "Zuletzt verwendet"
+  },
+  "signUp": {
+    "title": "Konto erstellen",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 12 Zeichen.",
+    "tenantName": "Name der Organisation",
+    "submit": "Konto erstellen",
+    "haveAccount": "Ich habe bereits ein Konto"
+  },
+  "forgot": {
+    "title": "Passwort zurücksetzen",
+    "hint": "Wir senden dir einen Link, um ein neues Passwort zu wählen.",
+    "email": "E-Mail",
+    "submit": "Link senden"
+  },
+  "checkEmail": {
+    "title": "Prüfe deine E-Mails",
+    "signUp": "Wir haben einen Link an {{email}} gesendet. Öffne ihn, um deine Adresse zu bestätigen, und melde dich dann hier an.",
+    "forgot": "Falls ein Konto für {{email}} existiert, haben wir einen Link zum Wählen eines neuen Passworts gesendet. Er öffnet sich im Browser; melde dich danach hier an.",
+    "back": "Zurück zur Anmeldung"
+  },
+  "home": {
+    "signedInAs": "Angemeldet als {{name}}",
+    "tenant": "Organisation: {{name}}",
+    "signOut": "Abmelden"
+  },
+  "validation": {
+    "email": "Gib eine gültige E-Mail-Adresse ein.",
+    "required": "Pflichtfeld.",
+    "code": "Gib die 6 Ziffern ein.",
+    "passwordLength": "Verwende mindestens 12 Zeichen."
+  },
+  "errors": {
+    "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
+    "unknown": "Etwas ist schiefgelaufen. Versuche es erneut.",
+    "captcha": "Dieser Server verlangt eine Bot-Prüfung, die die App noch nicht anzeigen kann. Wende dich an die Administration oder melde dich im Web an."
+  }
+}

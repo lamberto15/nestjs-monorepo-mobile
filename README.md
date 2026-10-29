@@ -14,14 +14,13 @@ template.
 
 Built: the typed API client synced from your backend, token sessions done
 right (secure storage, refresh before expiry, one refresh at a time: the
-backend revokes a reused refresh token's family), signed-in and signed-out
-route guards, TanStack Query, i18n, CI.
+backend revokes a reused refresh token's family), sign-in with two-factor
+and a tenant picker, sign-up, forgot password, five languages (Arabic right
+to left), tests, CI.
 
 Planned:
 
-- Sign in with email and password, two-factor (TOTP or a recovery code), and
-  passkeys; sign-up when the backend allows it.
-- Tenant picker and switching.
+- Passkeys, and switching tenants after sign-in (backend #954).
 - Profile, language (incl. right to left), sessions and devices.
 - Notifications: the in-app list kept live over realtime, and push
   (APNs/FCM, as the backend sends).
