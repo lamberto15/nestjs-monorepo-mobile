@@ -53,6 +53,7 @@ Prerequisites: Node 24 and pnpm (as the backend), and the backend running
 | [docs/architecture.md](docs/architecture.md)               | Folders, layers, state, navigation, styling                          |
 | [docs/backend-integration.md](docs/backend-integration.md) | API client sync, tokens, sign-in, tenants, errors, push, realtime    |
 | [docs/development.md](docs/development.md)                 | Setup, make it yours, env, dev builds, EAS, git workflow             |
+| [docs/adding-a-feature.md](docs/adding-a-feature.md)       | Adding a feature: the Notes example and its rules                    |
 | [docs/decisions.md](docs/decisions.md)                     | Decisions and the roadmap                                            |
 
 ## License

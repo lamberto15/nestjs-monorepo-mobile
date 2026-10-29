@@ -9,6 +9,7 @@ export interface Call {
   path: string;
   body: unknown;
   authorization: string | null;
+  headers: Headers;
 }
 
 type Handler = (call: Call) => Response | Promise<Response>;
@@ -36,6 +37,7 @@ export function fakeApi(routes: Record<string, Handler>) {
         path: new URL(request.url).pathname,
         body: text ? JSON.parse(text) : undefined,
         authorization: request.headers.get('Authorization'),
+        headers: request.headers,
       };
       calls.push(call);
       const handler = routes[`${call.method} ${call.path}`];

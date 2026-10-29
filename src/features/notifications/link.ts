@@ -1,5 +1,19 @@
 /**
- * Where a notification's `link` opens: an absolute http(s) URL as it is, a
+ * The app's own screens a link may open, as web app paths: the web app and
+ * this app share them (`/notes/{id}`). Add a feature's detail route here.
+ */
+const APP_ROUTES = [/^\/notes\/[\w-]+$/];
+
+/** A link's path when this app has the screen for it. */
+export function appRoute(link: string | null | undefined): string | undefined {
+  const path = link?.split(/[?#]/)[0];
+  return path && APP_ROUTES.some((route) => route.test(path))
+    ? path
+    : undefined;
+}
+
+/**
+ * Where a notification's `link` opens in the browser: an absolute http(s) URL as it is, a
  * web app path (`/notes/123`) on `webUrl`. Nothing without a web app, or for
  * anything else (no `javascript:` or custom schemes from the API).
  */

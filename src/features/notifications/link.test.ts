@@ -1,4 +1,4 @@
-import { linkUrl } from '@/features/notifications/link';
+import { appRoute, linkUrl } from '@/features/notifications/link';
 
 test('a web app path opens on the web app; an absolute URL as it is', () => {
   expect(linkUrl('/notes/1', 'https://app.test/')).toBe(
@@ -14,4 +14,12 @@ test('nothing opens without a web app, or for other schemes', () => {
   expect(linkUrl('//evil.test/x', 'https://app.test')).toBeUndefined();
   expect(linkUrl('javascript:alert(1)', 'https://app.test')).toBeUndefined();
   expect(linkUrl(null, 'https://app.test')).toBeUndefined();
+});
+
+test('a link to a screen of this app opens it in the app', () => {
+  expect(appRoute('/notes/0194-abc')).toBe('/notes/0194-abc');
+  expect(appRoute('/notes/0194-abc?tab=comments')).toBe('/notes/0194-abc');
+  expect(appRoute('/notes')).toBeUndefined();
+  expect(appRoute('/reports/1')).toBeUndefined();
+  expect(appRoute('https://app.test/notes/1')).toBeUndefined();
 });

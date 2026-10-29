@@ -74,7 +74,8 @@
   "tabs": {
     "home": "Utama",
     "notifications": "Pemberitahuan",
-    "account": "Akaun"
+    "account": "Akaun",
+    "notes": "Nota"
   },
   "notifications": {
     "title": "Pemberitahuan",
@@ -149,5 +150,33 @@
   },
   "organization": {
     "title": "Organisasi"
+  },
+  "notes": {
+    "list": "Nota",
+    "note": "Nota",
+    "new": "Nota baharu",
+    "add": "Baharu",
+    "edit": "Sunting",
+    "create": "Cipta nota",
+    "save": "Simpan",
+    "delete": "Padam",
+    "title": "Tajuk",
+    "body": "Teks",
+    "search": "Cari",
+    "searchHint": "Tajuk atau teks",
+    "status": "Status",
+    "statuses": {
+      "all": "Semua",
+      "draft": "Draf",
+      "published": "Diterbitkan"
+    },
+    "empty": "Belum ada nota.",
+    "noMatch": "Tiada nota yang sepadan.",
+    "noBody": "Tiada teks.",
+    "updated": "dikemas kini {{time}}",
+    "deleteTitle": "Padam nota ini?",
+    "deleteBody": "\"{{title}}\" dipindahkan ke nota yang dipadam; pentadbir boleh memulihkannya.",
+    "conflict": "Orang lain telah menukar nota ini sejak anda membukanya. Muatkan versi mereka, kemudian buat perubahan anda semula.",
+    "loadLatest": "Muatkan versi terkini"
   }
 }

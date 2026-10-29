@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { router, Stack, type Href } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,7 +21,7 @@ import {
   useMarkRead,
   useNotifications,
 } from '@/features/notifications/hooks';
-import { linkUrl } from '@/features/notifications/link';
+import { appRoute, linkUrl } from '@/features/notifications/link';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDateTime } from '@/i18n/format';
 
@@ -84,14 +84,18 @@ export default function NotificationsScreen() {
               />
             }
             onPress={
-              item.read && !linkUrl(item.link, WEB_URL)
+              item.read && !appRoute(item.link) && !linkUrl(item.link, WEB_URL)
                 ? undefined
                 : () => {
                     if (!item.read) {
                       markRead.mutate(item.id);
                     }
+                    // A screen of this app opens here; anything else in the browser.
+                    const route = appRoute(item.link);
                     const url = linkUrl(item.link, WEB_URL);
-                    if (url) {
+                    if (route) {
+                      router.push(route as Href);
+                    } else if (url) {
                       void WebBrowser.openBrowserAsync(url);
                     }
                   }

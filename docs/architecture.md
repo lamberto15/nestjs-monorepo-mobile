@@ -13,6 +13,7 @@ src/
                        forgot-password, check-email
     (app)/             signed-in, guarded by the session: native tabs, each a stack
       (home)/          the starting point of your own features
+      notes/           the example feature: list, [id], [id]/edit, new
       notifications/   the list; the tab's badge is the unread count
       account/         profile, language, sessions, sign out
   api/
