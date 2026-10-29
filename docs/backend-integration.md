@@ -6,6 +6,26 @@ Its docs are the source of truth; this page says how the app uses them.
 Backend doc names below (`auth`, `api-conventions`…) are `docs/<name>.md`
 there.
 
+## Coverage
+
+What the backend offers, and where it is on mobile (backend docs are
+`docs/<name>.md` there). "Web" means admin or setup work left to the web
+app.
+
+| Backend                                                                                                                                                                                       | Mobile                                                     |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| auth: sign-in, two-factor, sign-up, password reset, tenants, sessions, step-up, account deletion, export, consents, avatar                                                                    | yes                                                        |
+| auth: provider and tenant SSO sign-in, magic links                                                                                                                                            | planned (#12)                                              |
+| auth: passkeys, app attestation                                                                                                                                                               | planned (#13)                                              |
+| notifications: list, realtime, preferences, quiet hours                                                                                                                                       | yes                                                        |
+| notifications: push                                                                                                                                                                           | planned (#13)                                              |
+| comments, tags, favorites, watching, revisions, saved views, custom fields                                                                                                                    | yes (on any record, #17)                                   |
+| attachments                                                                                                                                                                                   | yes; presigned/resumable uploads and file versions not yet |
+| work-surfaces: inbox, recents, search, presence                                                                                                                                               | yes                                                        |
+| approvals (decide, request), acknowledgments                                                                                                                                                  | yes; policies and delegations: web                         |
+| documents (PDF), data-transfer (export), branding, settings and feature flags                                                                                                                 | planned (#24)                                              |
+| permissions, access, identity, tenancy (operators), automations, retention, data quality, reports, forms, sequences, merging, bulk operations, templates, choices, computed fields, money, AI | web (admin), or a feature's own work                       |
+
 ## The typed client
 
 The backend's `packages/api-client` (openapi-fetch on types generated from
@@ -24,6 +44,11 @@ pnpm client:check           # fail when the copy differs from the pin (CI)
 project points `repo` at its own backend once, and its own routes then come
 typed with the rest. A private backend repository needs `GITHUB_TOKEN`.
 
+- A weekly workflow (`.github/workflows/client-drift.yml`, also run by
+  hand) syncs to the backend's latest commit when its client moved and
+  opens a draft PR with the typecheck's result. Repository settings must
+  allow Actions to create pull requests; a private backend needs a
+  `BACKEND_TOKEN` secret.
 - The copy lives in `src/api/client/` (`scripts/client-sync.mjs`). Never
   edit it: change the backend and sync again.
 - Its relative imports end in `.js` (written for Node's resolution);

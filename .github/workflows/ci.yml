@@ -39,6 +39,8 @@ jobs:
         run: pnpm i18n:check
       - name: Tests
         run: pnpm test --ci
+      - name: Script tests
+        run: pnpm test:scripts
       - name: API client matches its pinned commit
         run: pnpm client:check
         env:

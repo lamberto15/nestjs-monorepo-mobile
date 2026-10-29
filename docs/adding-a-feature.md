@@ -14,7 +14,19 @@ pnpm client:sync main
 pnpm typecheck        # the new paths exist; anything that changed shows here
 ```
 
-## 2. The files
+## 2. Generate it
+
+```bash
+pnpm feature:add Invoice            # /v1/invoices, screens under /invoices
+pnpm feature:add Person people      # an irregular plural
+```
+
+It copies the Notes example under the new names (code, screens, a tab, the
+record route, texts in every language: English renamed, the others for a
+translator), then `pnpm typecheck` names every field that differs from
+Notes (`title`, `body`, `status`): change those to yours.
+
+## The files
 
 | File                                 | What it holds (Notes)                                                                                                           |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
