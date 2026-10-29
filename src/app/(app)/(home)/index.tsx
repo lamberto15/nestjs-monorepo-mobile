@@ -66,6 +66,12 @@ export default function HomeScreen() {
       </View>
       <Favorites />
       <Recents />
+      {__DEV__ && (
+        <ListRow
+          title="UI catalogue (development)"
+          onPress={() => router.push('/catalogue')}
+        />
+      )}
     </Screen>
   );
 }

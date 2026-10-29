@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -31,6 +31,10 @@ export function ListRow({
   selected,
   accessibilityLabel,
 }: ListRowProps) {
+  // At the largest text sizes a row stacks: the title gets the full width
+  // instead of breaking mid-word beside its detail.
+  const { fontScale } = useWindowDimensions();
+  const stacked = fontScale >= STACK_AT;
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
@@ -42,7 +46,7 @@ export function ListRow({
       {({ pressed }) => (
         <ThemedView
           type={pressed ? 'backgroundSelected' : 'backgroundElement'}
-          style={styles.row}
+          style={[styles.row, stacked && styles.stacked]}
         >
           {leading}
           <View style={styles.text}>
@@ -67,7 +71,14 @@ export function ListRow({
   );
 }
 
+/** The system text size from which rows stack. */
+const STACK_AT = 1.6;
+
 const styles = StyleSheet.create({
+  stacked: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

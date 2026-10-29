@@ -7,6 +7,7 @@ export default function HomeLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ title: t('tabs.home') }} />
       <Stack.Screen name="search" options={{ title: t('search.title') }} />
+      <Stack.Screen name="catalogue" options={{ title: 'UI catalogue' }} />
       <Stack.Screen
         name="approvals/index"
         options={{ title: t('approvals.title') }}

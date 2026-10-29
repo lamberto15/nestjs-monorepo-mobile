@@ -1,8 +1,8 @@
-import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
+import { ApiImage } from '@/components/api-image';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { useRemoveAvatar, useUploadAvatar } from '@/features/account/lifecycle';
@@ -52,7 +52,7 @@ export function AvatarPicker({
         {busy ? (
           <ActivityIndicator />
         ) : avatarUrl ? (
-          <Image source={avatarUrl} style={styles.image} contentFit="cover" />
+          <ApiImage path={avatarUrl} style={styles.image} contentFit="cover" />
         ) : (
           <ThemedText type="subtitle">
             {name.trim().charAt(0).toUpperCase()}

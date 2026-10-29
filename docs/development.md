@@ -103,6 +103,31 @@ fixes), not one per small change.
 
 Update a branch with `git merge origin/main`; never rebase or force-push.
 
+## QA pass
+
+Before a release, and after a change to shared components: open the UI
+catalogue (Home → "UI catalogue", development builds only) and the changed
+screens with the simulator in each of:
+
+```bash
+xcrun simctl ui booted appearance dark            # and light
+xcrun simctl ui booted content_size accessibility-extra-large   # and large (default)
+```
+
+and once in Arabic (Account → Language, then reopen the app: right to
+left). Look for text that clips or breaks mid-word, contrast (the
+accessibility rules in docs/architecture.md), and controls a screen reader
+can't name. Found by the first pass: a picture served by the API needs
+the token (`ApiImage`); rows stack at the largest text sizes.
+
+## End-to-end and preview builds
+
+- **Maestro flows** in `.maestro/` (sign in, create and delete a note,
+  sign out); see its README. Not yet run in this repository.
+- **Preview builds:** label a pull request `preview` (or run the "Preview
+  build" workflow) to build the preview profile with EAS; it needs an
+  `EXPO_TOKEN` secret and `eas init` done, and is skipped without them.
+
 ## Store privacy answers
 
 What the template itself collects, for App Store "App Privacy" and Google
