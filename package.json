@@ -60,15 +60,11 @@
   },
   "private": true,
   "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "12.16.1",
-      "onFail": "download"
-    },
     "runtime": {
       "name": "node",
       "version": "^24.0.0",
       "onFail": "download"
     }
-  }
+  },
+  "packageManager": "pnpm@12.16.1"
 }
