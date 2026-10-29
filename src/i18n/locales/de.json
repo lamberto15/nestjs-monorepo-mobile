@@ -100,9 +100,9 @@
   },
   "sessions": {
     "title": "Sitzungen",
-    "hint": "Wo du in einem Browser angemeldet bist. Die Anmeldung dieser App wird nicht aufgeführt.",
-    "none": "Keine Browser-Sitzungen.",
-    "current": "Diese",
+    "hint": "Wo dein Konto angemeldet ist: Browser und Apps.",
+    "none": "Keine Sitzungen.",
+    "current": "Dieses Gerät",
     "unknownDevice": "Unbekanntes Gerät",
     "lastActive": "zuletzt aktiv {{time}}",
     "signOut": "Abmelden",
@@ -117,6 +117,10 @@
       "oidc": "Single Sign-on",
       "sso": "Anmeldung der Organisation",
       "impersonation": "Identitätswechsel"
+    },
+    "kinds": {
+      "browser": "Browser",
+      "app": "App"
     }
   },
   "notificationSettings": {

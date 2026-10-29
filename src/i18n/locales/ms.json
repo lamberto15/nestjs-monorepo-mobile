@@ -100,9 +100,9 @@
   },
   "sessions": {
     "title": "Sesi",
-    "hint": "Tempat anda log masuk melalui pelayar. Log masuk aplikasi ini sendiri tidak disenaraikan.",
-    "none": "Tiada sesi pelayar.",
-    "current": "Yang ini",
+    "hint": "Tempat akaun anda log masuk: pelayar dan aplikasi.",
+    "none": "Tiada sesi.",
+    "current": "Peranti ini",
     "unknownDevice": "Peranti tidak diketahui",
     "lastActive": "aktif terakhir {{time}}",
     "signOut": "Log keluar",
@@ -117,6 +117,10 @@
       "oidc": "Log masuk tunggal",
       "sso": "Log masuk organisasi",
       "impersonation": "Penyamaran"
+    },
+    "kinds": {
+      "browser": "Pelayar",
+      "app": "Aplikasi"
     }
   },
   "notificationSettings": {

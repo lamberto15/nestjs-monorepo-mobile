@@ -100,9 +100,9 @@
   },
   "sessions": {
     "title": "会话",
-    "hint": "你在浏览器中登录的位置。此应用自身的登录不在此列。",
-    "none": "没有浏览器会话。",
-    "current": "当前",
+    "hint": "你的账户登录的位置：浏览器和应用。",
+    "none": "没有会话。",
+    "current": "此设备",
     "unknownDevice": "未知设备",
     "lastActive": "最近活动于 {{time}}",
     "signOut": "退出",
@@ -117,6 +117,10 @@
       "oidc": "单点登录",
       "sso": "组织登录",
       "impersonation": "模拟登录"
+    },
+    "kinds": {
+      "browser": "浏览器",
+      "app": "应用"
     }
   },
   "notificationSettings": {

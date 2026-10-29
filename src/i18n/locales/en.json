@@ -100,9 +100,9 @@
   },
   "sessions": {
     "title": "Sessions",
-    "hint": "Where you are signed in with a browser. This app's own sign-in isn't listed.",
-    "none": "No browser sessions.",
-    "current": "This one",
+    "hint": "Where your account is signed in: browsers and apps.",
+    "none": "No sessions.",
+    "current": "This device",
     "unknownDevice": "Unknown device",
     "lastActive": "last active {{time}}",
     "signOut": "Sign out",
@@ -117,6 +117,10 @@
       "oidc": "Single sign-on",
       "sso": "Organization sign-on",
       "impersonation": "Impersonation"
+    },
+    "kinds": {
+      "browser": "Browser",
+      "app": "App"
     }
   },
   "notificationSettings": {

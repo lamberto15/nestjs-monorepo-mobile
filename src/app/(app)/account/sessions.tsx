@@ -14,7 +14,7 @@ import {
 import { apiErrorMessage } from '@/features/auth/errors';
 import { formatDateTime } from '@/i18n/format';
 
-/** Browser sessions (this app's sign-in is not one of them), and "sign out everywhere". */
+/** Browsers and apps signed in to the account, this device first; and "sign out everywhere". */
 export default function SessionsScreen() {
   const { t } = useTranslation();
   const sessions = useSessions();
@@ -38,33 +38,38 @@ export default function SessionsScreen() {
       {sessions.data?.items.length === 0 && (
         <ThemedText themeColor="textSecondary">{t('sessions.none')}</ThemedText>
       )}
-      {sessions.data?.items.map((item) => (
-        <ListRow
-          key={item.id}
-          title={item.device ?? t('sessions.unknownDevice')}
-          subtitle={[
-            t(`sessions.methods.${item.method}`, { defaultValue: item.method }),
-            t('sessions.lastActive', {
-              time: formatDateTime(item.lastActiveAt),
-            }),
-          ].join(' · ')}
-          detail={
-            item.current ? (
-              t('sessions.current')
-            ) : (
-              <Pressable
-                accessibilityRole="button"
-                disabled={revoke.isPending}
-                onPress={() => revoke.mutate(item.id)}
-              >
-                <ThemedText type="linkPrimary">
-                  {t('sessions.signOut')}
-                </ThemedText>
-              </Pressable>
-            )
-          }
-        />
-      ))}
+      {[...(sessions.data?.items ?? [])]
+        .sort((a, b) => Number(b.current) - Number(a.current))
+        .map((item) => (
+          <ListRow
+            key={item.id}
+            title={item.device ?? t('sessions.unknownDevice')}
+            subtitle={[
+              t(`sessions.kinds.${item.kind}`),
+              t(`sessions.methods.${item.method}`, {
+                defaultValue: item.method,
+              }),
+              t('sessions.lastActive', {
+                time: formatDateTime(item.lastActiveAt),
+              }),
+            ].join(' · ')}
+            detail={
+              item.current ? (
+                t('sessions.current')
+              ) : (
+                <Pressable
+                  accessibilityRole="button"
+                  disabled={revoke.isPending}
+                  onPress={() => revoke.mutate(item.id)}
+                >
+                  <ThemedText type="linkPrimary">
+                    {t('sessions.signOut')}
+                  </ThemedText>
+                </Pressable>
+              )
+            }
+          />
+        ))}
       {sessions.isError && (
         <ErrorState error={sessions.error} onRetry={() => sessions.refetch()} />
       )}
