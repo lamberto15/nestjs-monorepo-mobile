@@ -15,15 +15,14 @@ template.
 Built: the typed API client synced from your backend, token sessions done
 right (secure storage, refresh before expiry, one refresh at a time: the
 backend revokes a reused refresh token's family), sign-in with two-factor
-and a tenant picker, sign-up, forgot password, five languages (Arabic right
-to left), tests, CI.
+and a tenant picker, sign-up, forgot password, tabs, profile and language
+saved on the account, browser sessions, notifications with a live unread
+badge (realtime), five languages (Arabic right to left), tests, CI.
 
 Planned:
 
 - Passkeys, and switching tenants after sign-in (backend #954).
-- Profile, language (incl. right to left), sessions and devices.
-- Notifications: the in-app list kept live over realtime, and push
-  (APNs/FCM, as the backend sends).
+- Push (APNs/FCM, as the backend sends) and notification preferences.
 
 No product features: add yours on top.
 

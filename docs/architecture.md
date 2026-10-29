@@ -11,7 +11,10 @@ src/
     _layout.tsx        providers, session restore, Stack.Protected guards
     (auth)/            signed-out: sign-in, two-factor, choose-tenant, sign-up,
                        forgot-password, check-email
-    (app)/             signed-in screens, guarded by the session
+    (app)/             signed-in, guarded by the session: native tabs, each a stack
+      (home)/          the starting point of your own features
+      notifications/   the list; the tab's badge is the unread count
+      account/         profile, language, sessions, sign out
   api/
     client/            the backend's typed client, copied by `pnpm client:sync`; never edit
     public-api.ts      API_URL and `publicApi`: calls without a session
@@ -19,7 +22,8 @@ src/
     session.ts         tokens: secure storage, single-flight refresh, sign-out
     query-client.ts    TanStack Query defaults (retries per error kind)
     realtime.ts        the one `createRealtime()` connection          (planned)
-  features/<name>/     a feature's hooks, flow logic and tests (auth: sign-in-flow,
+  features/<name>/     a feature's hooks, flow logic and tests (auth, account,
+                       notifications; auth: sign-in-flow,
                        hooks, errors, navigation)
   components/          shared components (themed-text, themed-view, screen,
                        text-field, button)

@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
-import { session } from '@/api/session';
-import { Button } from '@/components/button';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { apiErrorMessage } from '@/features/auth/errors';
 import { useMe } from '@/features/auth/hooks';
 
+/** The starting point of a project's own features. */
 export default function HomeScreen() {
   const { t } = useTranslation();
   const me = useMe();
@@ -32,11 +31,6 @@ export default function HomeScreen() {
           {apiErrorMessage(me.error, t)}
         </ThemedText>
       )}
-      <Button
-        title={t('home.signOut')}
-        variant="secondary"
-        onPress={() => session.signOut()}
-      />
     </Screen>
   );
 }

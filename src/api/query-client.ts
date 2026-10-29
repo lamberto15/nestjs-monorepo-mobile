@@ -1,4 +1,5 @@
-import { QueryClient } from '@tanstack/react-query';
+import { focusManager, QueryClient } from '@tanstack/react-query';
+import { AppState, Platform } from 'react-native';
 
 import { isApiError } from '@/api/client';
 import { session } from '@/api/session';
@@ -25,3 +26,15 @@ export const queryClient = new QueryClient({
     mutations: { retry: false },
   },
 });
+
+// "Window focus" on a phone is the app coming to the foreground: refetch
+// stale queries then (TanStack Query's React Native guide). The web build
+// keeps the browser's own focus events.
+if (Platform.OS !== 'web') {
+  focusManager.setEventListener((setFocused) => {
+    const subscription = AppState.addEventListener('change', (state) =>
+      setFocused(state === 'active'),
+    );
+    return () => subscription.remove();
+  });
+}
