@@ -26,3 +26,16 @@ export const publicApi = createApiClient({
   // React Native has no crypto.randomUUID.
   idempotencyKey: Crypto.randomUUID,
 });
+
+/**
+ * A client acting with tokens the session doesn't hold yet: the sign-in
+ * flow reads the person's tenants before it starts the session.
+ */
+export function clientWithToken(token: string) {
+  return createApiClient({
+    baseUrl: API_URL,
+    credentials: { token },
+    language: deviceLanguage,
+    idempotencyKey: Crypto.randomUUID,
+  });
+}

@@ -1,5 +1,6 @@
 allowBuilds:
   lefthook: true
+  '@parcel/watcher': false
   unrs-resolver: false
 minimumReleaseAgeExclude:
   - '@expo/cli@58.1.17'

@@ -1,0 +1,71 @@
+{
+  "app": {
+    "name": "NestJS Mobile"
+  },
+  "server": {
+    "connected": "已连接到 {{url}}",
+    "unreachable": "无法连接到 {{url}}",
+    "retry": "重试"
+  },
+  "signIn": {
+    "title": "登录",
+    "email": "电子邮件",
+    "password": "密码",
+    "submit": "登录",
+    "forgot": "忘记密码？",
+    "signUp": "创建账户"
+  },
+  "twoFactor": {
+    "title": "验证码",
+    "hint": "请输入身份验证器应用中的 6 位验证码。",
+    "recoveryHint": "请输入一个恢复码。每个恢复码只能使用一次。",
+    "code": "验证码",
+    "recoveryCode": "恢复码",
+    "useRecovery": "使用恢复码",
+    "useCode": "使用应用中的验证码",
+    "submit": "继续"
+  },
+  "chooseTenant": {
+    "title": "选择组织",
+    "hint": "你属于多个组织。要在哪个组织中工作？",
+    "current": "上次使用"
+  },
+  "signUp": {
+    "title": "创建账户",
+    "name": "姓名",
+    "email": "电子邮件",
+    "password": "密码",
+    "passwordHint": "至少 12 个字符。",
+    "tenantName": "组织名称",
+    "submit": "创建账户",
+    "haveAccount": "我已有账户"
+  },
+  "forgot": {
+    "title": "重置密码",
+    "hint": "我们会通过电子邮件发送一个用于设置新密码的链接。",
+    "email": "电子邮件",
+    "submit": "发送链接"
+  },
+  "checkEmail": {
+    "title": "查看你的邮箱",
+    "signUp": "我们已向 {{email}} 发送了一个链接。打开它以确认你的邮箱地址，然后在此登录。",
+    "forgot": "如果 {{email}} 有对应的账户，我们已向其发送设置新密码的链接。链接会在浏览器中打开；之后请在此登录。",
+    "back": "返回登录"
+  },
+  "home": {
+    "signedInAs": "已登录为 {{name}}",
+    "tenant": "组织：{{name}}",
+    "signOut": "退出登录"
+  },
+  "validation": {
+    "email": "请输入有效的电子邮件地址。",
+    "required": "必填。",
+    "code": "请输入 6 位数字。",
+    "passwordLength": "请至少使用 12 个字符。"
+  },
+  "errors": {
+    "network": "无法连接到服务器。请检查网络连接后重试。",
+    "unknown": "出现问题，请重试。",
+    "captcha": "此服务器要求进行人机验证，但应用暂时无法显示。请联系管理员，或在网页上登录。"
+  }
+}

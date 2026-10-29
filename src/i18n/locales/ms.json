@@ -1,0 +1,71 @@
+{
+  "app": {
+    "name": "NestJS Mobile"
+  },
+  "server": {
+    "connected": "Disambungkan ke {{url}}",
+    "unreachable": "Tidak dapat mencapai {{url}}",
+    "retry": "Cuba lagi"
+  },
+  "signIn": {
+    "title": "Log masuk",
+    "email": "E-mel",
+    "password": "Kata laluan",
+    "submit": "Log masuk",
+    "forgot": "Lupa kata laluan?",
+    "signUp": "Cipta akaun"
+  },
+  "twoFactor": {
+    "title": "Kod pengesahan",
+    "hint": "Masukkan kod 6 digit daripada aplikasi pengesah anda.",
+    "recoveryHint": "Masukkan salah satu kod pemulihan anda. Setiap kod hanya boleh digunakan sekali.",
+    "code": "Kod",
+    "recoveryCode": "Kod pemulihan",
+    "useRecovery": "Gunakan kod pemulihan",
+    "useCode": "Gunakan kod daripada aplikasi",
+    "submit": "Teruskan"
+  },
+  "chooseTenant": {
+    "title": "Pilih organisasi",
+    "hint": "Anda ahli beberapa organisasi. Di organisasi mana anda mahu bekerja?",
+    "current": "Terakhir digunakan"
+  },
+  "signUp": {
+    "title": "Cipta akaun",
+    "name": "Nama",
+    "email": "E-mel",
+    "password": "Kata laluan",
+    "passwordHint": "Sekurang-kurangnya 12 aksara.",
+    "tenantName": "Nama organisasi",
+    "submit": "Cipta akaun",
+    "haveAccount": "Saya sudah mempunyai akaun"
+  },
+  "forgot": {
+    "title": "Tetapkan semula kata laluan",
+    "hint": "Kami akan menghantar pautan melalui e-mel untuk memilih kata laluan baharu.",
+    "email": "E-mel",
+    "submit": "Hantar pautan"
+  },
+  "checkEmail": {
+    "title": "Semak e-mel anda",
+    "signUp": "Kami telah menghantar pautan ke {{email}}. Bukanya untuk mengesahkan alamat anda, kemudian log masuk di sini.",
+    "forgot": "Jika akaun wujud untuk {{email}}, kami telah menghantar pautan untuk memilih kata laluan baharu. Ia dibuka dalam pelayar; kemudian log masuk di sini.",
+    "back": "Kembali ke log masuk"
+  },
+  "home": {
+    "signedInAs": "Log masuk sebagai {{name}}",
+    "tenant": "Organisasi: {{name}}",
+    "signOut": "Log keluar"
+  },
+  "validation": {
+    "email": "Masukkan alamat e-mel yang sah.",
+    "required": "Wajib.",
+    "code": "Masukkan 6 digit.",
+    "passwordLength": "Gunakan sekurang-kurangnya 12 aksara."
+  },
+  "errors": {
+    "network": "Tidak dapat mencapai pelayan. Semak sambungan anda dan cuba lagi.",
+    "unknown": "Sesuatu tidak kena. Cuba lagi.",
+    "captcha": "Pelayan ini meminta semakan bot yang belum dapat dipaparkan oleh aplikasi. Hubungi pentadbirnya, atau log masuk melalui web."
+  }
+}

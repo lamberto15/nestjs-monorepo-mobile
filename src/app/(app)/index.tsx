@@ -1,38 +1,42 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ActivityIndicator } from 'react-native';
 
 import { session } from '@/api/session';
+import { Button } from '@/components/button';
+import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { MaxContentWidth, Spacing } from '@/constants/theme';
+import { apiErrorMessage } from '@/features/auth/errors';
+import { useMe } from '@/features/auth/hooks';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const me = useMe();
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.content}>
-        <ThemedText type="subtitle">{t('app.name')}</ThemedText>
-        <ThemedText>{t('home.signedIn')}</ThemedText>
-        <Pressable accessibilityRole="button" onPress={() => session.signOut()}>
-          <ThemedText type="linkPrimary">{t('home.signOut')}</ThemedText>
-        </Pressable>
-      </SafeAreaView>
-    </ThemedView>
+    <Screen>
+      <ThemedText type="subtitle">{t('app.name')}</ThemedText>
+      {me.isPending && <ActivityIndicator />}
+      {me.data && (
+        <>
+          <ThemedText>
+            {t('home.signedInAs', { name: me.data.user.name })}
+          </ThemedText>
+          {me.data.tenant && (
+            <ThemedText themeColor="textSecondary">
+              {t('home.tenant', { name: me.data.tenant.name })}
+            </ThemedText>
+          )}
+        </>
+      )}
+      {me.isError && (
+        <ThemedText themeColor="danger">
+          {apiErrorMessage(me.error, t)}
+        </ThemedText>
+      )}
+      <Button
+        title={t('home.signOut')}
+        variant="secondary"
+        onPress={() => session.signOut()}
+      />
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: Spacing.three,
-    paddingHorizontal: Spacing.four,
-    width: '100%',
-    maxWidth: MaxContentWidth,
-  },
-});

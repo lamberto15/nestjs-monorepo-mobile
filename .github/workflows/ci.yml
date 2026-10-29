@@ -35,6 +35,10 @@ jobs:
         run: pnpm lint
       - name: Typecheck
         run: pnpm typecheck
+      - name: Translations match en.json
+        run: pnpm i18n:check
+      - name: Tests
+        run: pnpm test --ci
       - name: API client matches its pinned commit
         run: pnpm client:check
         env:

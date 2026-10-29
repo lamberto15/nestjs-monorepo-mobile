@@ -3,20 +3,69 @@
     "name": "NestJS Mobile"
   },
   "server": {
-    "connecting": "Connecting to {{url}}…",
     "connected": "Connected to {{url}}",
     "unreachable": "Can't reach {{url}}",
-    "retry": "Try again",
-    "methods": "Sign-in methods: {{methods}}"
+    "retry": "Try again"
   },
-  "methods": {
-    "password": "password",
-    "passkeys": "passkeys",
-    "magicLink": "email link",
-    "signUp": "sign-up"
+  "signIn": {
+    "title": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "forgot": "Forgot password?",
+    "signUp": "Create an account"
+  },
+  "twoFactor": {
+    "title": "Two-factor code",
+    "hint": "Enter the 6-digit code from your authenticator app.",
+    "recoveryHint": "Enter one of your recovery codes. Each works once.",
+    "code": "Code",
+    "recoveryCode": "Recovery code",
+    "useRecovery": "Use a recovery code",
+    "useCode": "Use a code from the app",
+    "submit": "Continue"
+  },
+  "chooseTenant": {
+    "title": "Choose an organization",
+    "hint": "You belong to several. Which one do you want to work in?",
+    "current": "Last used"
+  },
+  "signUp": {
+    "title": "Create an account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 12 characters.",
+    "tenantName": "Organization name",
+    "submit": "Create account",
+    "haveAccount": "I already have an account"
+  },
+  "forgot": {
+    "title": "Reset password",
+    "hint": "We'll email you a link to choose a new password.",
+    "email": "Email",
+    "submit": "Send link"
+  },
+  "checkEmail": {
+    "title": "Check your email",
+    "signUp": "We sent a link to {{email}}. Open it to confirm your address, then sign in here.",
+    "forgot": "If an account exists for {{email}}, we sent it a link to choose a new password. It opens in your browser; then sign in here.",
+    "back": "Back to sign in"
   },
   "home": {
-    "signedIn": "You're signed in.",
+    "signedInAs": "Signed in as {{name}}",
+    "tenant": "Organization: {{name}}",
     "signOut": "Sign out"
+  },
+  "validation": {
+    "email": "Enter a valid email address.",
+    "required": "Required.",
+    "code": "Enter the 6 digits.",
+    "passwordLength": "Use at least 12 characters."
+  },
+  "errors": {
+    "network": "Can't reach the server. Check your connection and try again.",
+    "unknown": "Something went wrong. Try again.",
+    "captcha": "This server asks for a bot check that the app can't show yet. Ask its administrator, or sign in on the web."
   }
 }
