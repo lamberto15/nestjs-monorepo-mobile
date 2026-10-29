@@ -206,6 +206,38 @@ zone to the phone's when they differ.
   with it); this device signs out from Account. "Sign out everywhere" ends
   this one too.
 
+## Step-up and the account's lifecycle (backend `auth`)
+
+- **Step-up.** Sensitive routes answer 403 `reauthentication_required`
+  when the sign-in isn't recent. `withStepUp(call)`
+  (`src/features/account/step-up.ts`) opens the "Confirm it's you" modal
+  (`src/app/reauthenticate.tsx`: the methods from
+  `GET /v1/auth/reauthenticate`), then runs the call again; closing it
+  rejects with `StepUpCancelled`, which screens don't show as an error.
+  `session.reauthenticate(proof)` sends the refresh token with the proof:
+  the API revokes that family and answers a new pair, so it runs in the
+  refresh slot like a tenant switch. An account that signs in only by link
+  or provider can't prove it here: sign out and in again (provider step-up
+  comes with #12).
+- **Delete account** (an App Store and Google Play requirement):
+  `POST /v1/account/deletion { password? }` (the password when
+  `hasPassword`), after the grace period; this device stays signed in to
+  cancel (`DELETE /v1/account/deletion`), every other sign-in ends. The
+  pending deletion is `GET /v1/account` → `deletion`; Account shows it.
+- **Your data:** `POST /v1/account/export` (JSON), `GET /v1/account/exports`
+  polled while one is being made; a completed one's link lasts 30 minutes,
+  so it is read again before opening. Consents: `GET /v1/account/consent-kinds`
+  and `/consents`; an acceptance of an older version is asked for again; a
+  required kind can be accepted, not withdrawn.
+- **Two-factor:** enroll (the secret and its `otpauth://` link: "Open in
+  authenticator app", or copy the key; a QR on the same phone can't be
+  scanned), confirm with the first code, recovery codes shown once, new
+  codes, turn off.
+- **Password change** signs out every token client, this app included: it
+  says so and signs out.
+- **Avatar:** `PUT /v1/account/avatar` (multipart `file`, the picked photo
+  as an `expo-file-system` `File`), `DELETE` to remove.
+
 ## User-Agent
 
 Every call sends `User-Agent: <name>/<version> (<model>; <OS> <version>)`
