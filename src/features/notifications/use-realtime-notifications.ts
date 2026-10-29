@@ -49,6 +49,16 @@ export function useRealtimeNotifications() {
           queryKey: ['records', subject, recordId, 'attachments'],
         }),
     );
+    // An approval assigned, decided or applied: lists, detail and inbox reload.
+    const reloadApprovals = () => {
+      void queryClient.invalidateQueries({ queryKey: ['approvals'] });
+      void queryClient.invalidateQueries({ queryKey: ['inbox'] });
+    };
+    const stopApprovals = [
+      realtime.on('approval.assigned', reloadApprovals),
+      realtime.on('approval.decided', reloadApprovals),
+      realtime.on('approval.applied', reloadApprovals),
+    ];
     // A comment on a watched record: its open conversation reloads.
     const stopComments = realtime.on(
       'record.commented',
@@ -71,6 +81,7 @@ export function useRealtimeNotifications() {
       realtime.socket.off('connect', refetch);
       stopWatching();
       stopComments();
+      stopApprovals.forEach((stop) => stop());
       stopFiles();
       realtime.close();
     };

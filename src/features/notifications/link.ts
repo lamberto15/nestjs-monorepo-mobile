@@ -4,6 +4,7 @@
  */
 const RECORD_ROUTES: Record<string, (id: string) => string> = {
   Note: (id) => `/notes/${id}`,
+  Approval: (id) => `/approvals/${id}`,
 };
 
 /** A record's screen in this app, if it has one. */
@@ -20,7 +21,7 @@ export function recordRoute(
  * The app's own screens a link may open, as web app paths: the web app and
  * this app share them (`/notes/{id}`). Add a feature's detail route here.
  */
-const APP_ROUTES = [/^\/notes\/[\w-]+$/];
+const APP_ROUTES = [/^\/notes\/[\w-]+$/, /^\/approvals\/[\w-]+$/];
 
 /** A link's path when this app has the screen for it. */
 export function appRoute(link: string | null | undefined): string | undefined {

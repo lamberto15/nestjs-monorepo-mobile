@@ -54,6 +54,16 @@ export default function HomeScreen() {
         <ErrorState error={me.error} onRetry={() => me.refetch()} />
       )}
       <Inbox />
+      <View style={styles.links}>
+        <ListRow
+          title={t('approvals.title')}
+          onPress={() => router.push('/approvals')}
+        />
+        <ListRow
+          title={t('acknowledgments.title')}
+          onPress={() => router.push('/acknowledgments')}
+        />
+      </View>
       <Favorites />
       <Recents />
     </Screen>
@@ -209,6 +219,9 @@ function Recents() {
 }
 
 const styles = StyleSheet.create({
+  links: {
+    gap: Spacing.two,
+  },
   section: {
     gap: Spacing.two,
     marginTop: Spacing.two,

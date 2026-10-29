@@ -268,6 +268,19 @@ views or edits a record: advisory, saving is still guarded by the ETag.
 Everything opens through one resolver (`openTarget`): a subject with a
 screen in `RECORD_ROUTES`, else an app path, else the web app.
 
+## Approvals and acknowledgments (backend `approvals`, `acknowledgments`)
+
+Home → Approvals lists requests to decide (`?assignedToMe=true&status=pending`),
+your own (`requestedByMe`) and what you decided (`decidedByMe`). A request
+shows its payload, stage and timeline; the decisions offered are its `can`
+(approve, request changes, reject, resubmit, cancel), each sending the
+request's ETag as `If-Match` (412: someone decided meanwhile, it reloads).
+Reject and request changes need a reason. The realtime `approval.assigned`,
+`approval.decided` and `approval.applied` reload lists and the inbox.
+Approval policies and delegations are admin work, left to the web app.
+Home → Documents to acknowledge: open the document (signed link), then
+`POST /v1/attachments/{id}/acknowledge`.
+
 ## User-Agent
 
 Every call sends `User-Agent: <name>/<version> (<model>; <OS> <version>)`

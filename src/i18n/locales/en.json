@@ -361,5 +361,58 @@
   "presence": {
     "viewing": "Also here: {{names}}",
     "editing": "{{names}} editing"
+  },
+  "approvals": {
+    "title": "Approvals",
+    "request": "Request",
+    "empty": "Nothing here.",
+    "scopes": {
+      "toDecide": "To decide",
+      "mine": "My requests",
+      "decided": "Decided by me"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "changes_requested": "Changes requested",
+      "cancelled": "Cancelled",
+      "expired": "Expired",
+      "failed": "Failed"
+    },
+    "stage": "Stage {{current}} of {{count}} {{name}}",
+    "openRecord": "Open the record",
+    "conflict": "Someone decided on this request meanwhile. It now shows as it is.",
+    "comment": "Comment (optional)",
+    "commentRequired": "Why? (required)",
+    "history": "History",
+    "decisions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "request-changes": "Request changes",
+      "cancel": "Cancel request",
+      "resubmit": "Resubmit"
+    },
+    "events": {
+      "requested": "Requested",
+      "stage_started": "Stage started",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "changes_requested": "Changes requested",
+      "resubmitted": "Resubmitted",
+      "cancelled": "Cancelled",
+      "expired": "Expired",
+      "escalated": "Escalated",
+      "applied": "Applied"
+    }
+  },
+  "acknowledgments": {
+    "title": "Documents to acknowledge",
+    "pending": "To acknowledge",
+    "done": "Acknowledged",
+    "empty": "Nothing to acknowledge.",
+    "on": "acknowledged {{date}}",
+    "overdue": "overdue",
+    "confirm": "I have read it"
   }
 }
