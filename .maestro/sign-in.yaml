@@ -2,6 +2,8 @@
 appId: host.exp.Exponent
 ---
 - launchApp
+# Expo Go opens on its own home screen: load the project from Metro.
+- openLink: ${APP_URL || 'exp://127.0.0.1:8081'}
 - tapOn: Email
 - inputText: ${EMAIL}
 - tapOn: Password

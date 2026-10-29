@@ -12,8 +12,32 @@
 
 Expo Go works until the first library with native code that it doesn't
 bundle (passkeys, push credentials); from then on, use a development build:
-`pnpm expo run:ios` / `run:android`, or
+`pnpm ios` / `pnpm android` (`expo run:*`, [on your own
+iPhone](#on-your-own-iphone-free)), or
 `pnpm dlx eas-cli build --profile development`.
+
+## On your own iPhone, free
+
+A development build on your phone with a free Apple ID (no paid Developer
+Program). Once, on the Mac and the phone:
+
+1. Xcode → Settings → Accounts → **+** → Apple ID (a "Personal Team"). If
+   a build later says the login was rejected, sign in there again.
+2. iPhone: Settings → Privacy & Security → **Developer Mode** on (it
+   restarts); connect it by cable and **Trust** the Mac. Afterwards Xcode
+   reaches it over the same Wi-Fi (Window → Devices and Simulators).
+3. The first build creates the signing profile, which `expo run` doesn't
+   allow on its own: `pnpm ios --device` once to generate `ios/`, then
+   open `ios/*.xcworkspace`, target → Signing & Capabilities →
+   **Automatically manage signing**, your Personal Team, and run it from
+   Xcode (or `pnpm ios --device` again).
+4. iPhone: Settings → General → **VPN & Device Management** → your Apple
+   ID → **Trust**, then open the app. It loads the code from `pnpm start`.
+
+`pnpm ios` / `pnpm android` build and install (`expo run:*`); `pnpm start`
+alone serves Expo Go or a build already installed. The free signature
+expires after **7 days** (build again). A free team can't sign Push or
+Associated Domains, so no push, passkeys or universal links (#13).
 
 ## Make it yours
 
@@ -123,7 +147,7 @@ the token (`ApiImage`); rows stack at the largest text sizes.
 ## End-to-end and preview builds
 
 - **Maestro flows** in `.maestro/` (sign in, create and delete a note,
-  sign out); see its README. Not yet run in this repository.
+  sign out); see its README. Maestro needs Java (`brew install openjdk`).
 - **Preview builds:** label a pull request `preview` (or run the "Preview
   build" workflow) to build the preview profile with EAS; it needs an
   `EXPO_TOKEN` secret and `eas init` done, and is skipped without them.
