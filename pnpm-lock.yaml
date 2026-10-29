@@ -291,8 +291,8 @@ importers:
         specifier: 30.5.2
         version: 30.5.2(@types/node@26.6.5)(supports-color@8.1.1)
       jest-expo:
-        specifier: 58.0.12
-        version: 58.0.12(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(expo@58.0.21)(jest@30.5.2(@types/node@26.6.5)(supports-color@8.1.1))(react-native@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1)
+        specifier: 58.0.13
+        version: 58.0.13(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(expo@58.0.21)(jest@30.5.2(@types/node@26.6.5)(supports-color@8.1.1))(react-native@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1)
       lefthook:
         specifier: 2.2.2
         version: 2.2.2
@@ -3691,11 +3691,11 @@ packages:
     resolution: {integrity: sha512-Ciz4KgTGIbojxSKpuFImgWJj5EyqfE8xMq9NxWmOXnQywHHS03H9Mv+vaCB29J5pr3JBrY27WbRV18rBdjh8Dg==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  jest-expo@58.0.12:
-    resolution: {integrity: sha512-JkFTMxtSCBTewlbPn+ZbEKp11nmNYNFpRdMeFGQfVFG75rqOasLimlE/r+lIQ1eI1vZoWlszQEJNa66pIcpkkA==}
+  jest-expo@58.0.13:
+    resolution: {integrity: sha512-gmQUfdG83oiOSasPRP0Qp0WcEEihVBkqr3fd5kT5nHDBEH7liw/e4s0+UhdV7LoOLLtgPIgYd4ksEhdy97oWqQ==}
     hasBin: true
     peerDependencies:
-      '@react-native/jest-preset': ^0.88.0
+      '@react-native/jest-preset': ^0.88.1
       expo: '*'
       jest: ^29.0.0 || ^30.0.0
       react-native: '*'
@@ -9762,7 +9762,7 @@ snapshots:
       jest-util: 30.5.1
       jest-validate: 30.5.1
 
-  jest-expo@58.0.12(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(expo@58.0.21)(jest@30.5.2(@types/node@26.6.5)(supports-color@8.1.1))(react-native@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1):
+  jest-expo@58.0.13(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(expo@58.0.21)(jest@30.5.2(@types/node@26.6.5)(supports-color@8.1.1))(react-native@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1):
     dependencies:
       '@jest/create-cache-key-function': 30.5.1
       '@jest/globals': 30.5.2(supports-color@8.1.1)
