@@ -27,6 +27,8 @@ import {
 } from '@/features/notes/hooks';
 import { Attachments } from '@/features/records/attachments-list';
 import { Comments } from '@/features/records/comments';
+import { Documents } from '@/features/records/documents-list';
+import { useFeatures } from '@/features/tenant/features';
 import { CustomFieldsView } from '@/features/records/custom-fields';
 import { useListMetadata } from '@/features/records/list';
 import { useRecordRecent } from '@/features/work/hooks';
@@ -45,6 +47,7 @@ export default function NoteScreen() {
   // What this record type supports (tags, comments…), and its custom fields.
   const metadata = useListMetadata('Note');
   const capabilities = metadata.data?.capabilities;
+  const features = useFeatures();
   const others = usePresence('Note', id, 'viewing');
   const recordRecent = useRecordRecent();
   const title = query.data?.note.title;
@@ -159,6 +162,9 @@ export default function NoteScreen() {
           loading={remove.isPending}
           onPress={confirmDelete}
         />
+      )}
+      {capabilities?.pdf && features.data?.documents && (
+        <Documents record={record} />
       )}
       {me.data && capabilities?.attachments && (
         <Attachments

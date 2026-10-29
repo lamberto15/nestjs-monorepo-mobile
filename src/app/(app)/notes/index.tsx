@@ -19,6 +19,7 @@ import { Spacing } from '@/constants/theme';
 import { useMe } from '@/features/auth/hooks';
 import { useNotes } from '@/features/notes/hooks';
 import { useListMetadata, type ListQuery } from '@/features/records/list';
+import { ExportButton } from '@/features/records/export-button';
 import { ListFilters, ViewsBar } from '@/features/records/list-filters';
 import { useDebounced } from '@/hooks/use-debounced';
 import { formatDateTime } from '@/i18n/format';
@@ -80,6 +81,10 @@ export default function NotesScreen() {
                 setViewId(id);
                 setFilters(query);
               }}
+            />
+            <ExportButton
+              subject="Note"
+              query={{ ...filters, ...(q && { q }) }}
             />
             <ListFilters
               metadata={metadata.data}

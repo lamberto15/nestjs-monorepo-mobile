@@ -427,5 +427,28 @@
     "body": "What you changed here is not saved.",
     "keep": "Keep editing",
     "discard": "Discard"
+  },
+  "documents": {
+    "title": "PDFs",
+    "make": "Make a PDF",
+    "failed": "Could not be made.",
+    "status": {
+      "queued": "Waiting",
+      "rendering": "Being made",
+      "completed": "Ready: tap to open",
+      "failed": "Failed"
+    }
+  },
+  "export": {
+    "start": "Export as CSV",
+    "working": "Being made…",
+    "open": "Open the file ({{rows}} rows)"
+  },
+  "branding": {
+    "logo": "Logo",
+    "mode": {
+      "read-only": "The service is read-only for now: changes are not saved.",
+      "maintenance": "The service is in maintenance."
+    }
   }
 }

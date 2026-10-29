@@ -59,6 +59,22 @@ export function useRealtimeNotifications() {
       realtime.on('approval.decided', reloadApprovals),
       realtime.on('approval.applied', reloadApprovals),
     ];
+    // A PDF made, or an export ready: their lists reload.
+    const stopFiles2 = [
+      realtime.on('document.ready', ({ subject, recordId }) =>
+        queryClient.invalidateQueries({
+          queryKey: ['records', subject, recordId, 'documents'],
+        }),
+      ),
+      realtime.on('document.failed', ({ subject, recordId }) =>
+        queryClient.invalidateQueries({
+          queryKey: ['records', subject, recordId, 'documents'],
+        }),
+      ),
+      realtime.on('data.export-ready', ({ id }) =>
+        queryClient.invalidateQueries({ queryKey: ['transfers', id] }),
+      ),
+    ];
     // A comment on a watched record: its open conversation reloads.
     const stopComments = realtime.on(
       'record.commented',
@@ -81,6 +97,7 @@ export function useRealtimeNotifications() {
       realtime.socket.off('connect', refetch);
       stopWatching();
       stopComments();
+      stopFiles2.forEach((stop) => stop());
       stopApprovals.forEach((stop) => stop());
       stopFiles();
       realtime.close();
