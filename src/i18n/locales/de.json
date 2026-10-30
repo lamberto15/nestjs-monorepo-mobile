@@ -332,9 +332,17 @@
     "camera": "Kamera",
     "photo": "Foto",
     "file": "Datei",
-    "uploading": "Wird hochgeladen…",
     "tooLarge": "Diese Datei ist zu groß: höchstens {{max}}.",
-    "noCamera": "Die Kamera ist nicht erlaubt. Erlaube sie in den Einstellungen."
+    "noCamera": "Die Kamera ist nicht erlaubt. Erlaube sie in den Einstellungen.",
+    "more": "Mehr",
+    "newVersion": "Neue Version",
+    "versions": "Versionen",
+    "version": "Version {{n}}",
+    "current": "Aktuell",
+    "restore": "Wiederherstellen",
+    "progress": "Wird hochgeladen… {{percent}} %",
+    "cancelUpload": "Hochladen abbrechen",
+    "changed": "Diese Datei wurde geändert, seit du sie geöffnet hast. Sieh noch einmal nach und versuche es erneut."
   },
   "search": {
     "title": "Suche",

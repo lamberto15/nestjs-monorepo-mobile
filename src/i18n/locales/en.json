@@ -332,9 +332,17 @@
     "camera": "Camera",
     "photo": "Photo",
     "file": "File",
-    "uploading": "Uploading…",
     "tooLarge": "This file is too large: at most {{max}}.",
-    "noCamera": "The camera is not allowed. Allow it in Settings."
+    "noCamera": "The camera is not allowed. Allow it in Settings.",
+    "more": "More",
+    "newVersion": "New version",
+    "versions": "Versions",
+    "version": "Version {{n}}",
+    "current": "Current",
+    "restore": "Restore",
+    "progress": "Uploading… {{percent}}%",
+    "cancelUpload": "Cancel upload",
+    "changed": "This file changed since you opened it. Look again, then try once more."
   },
   "search": {
     "title": "Search",

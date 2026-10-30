@@ -1,7 +1,8 @@
 /**
- * Files on a record (backend `attachments`): list, upload (multipart, the
- * field `file`), open through a signed link, delete. Uploads are scanned
- * and get renditions (thumbnails) after they land: until then the file is
+ * Files on a record (backend `attachments`): list, upload (resumable, in
+ * chunks: `upload.ts`), open through a signed link, delete, and versions
+ * (a new file, the earlier ones, restore). Uploads are scanned and get
+ * renditions (thumbnails) after they land: until then the file is
  * `pending` and its download answers 409.
  */
 import {
@@ -11,11 +12,16 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { File } from 'expo-file-system';
+import { useRef, useState } from 'react';
 
 import { api } from '@/api/api';
-import { unwrap, type GetResponse } from '@/api/client';
+import { ApiError, etagOf, unwrap, type GetResponse } from '@/api/client';
 import { signedLink } from '@/api/signed-link';
 import type { RecordRef } from '@/features/records/hooks';
+import {
+  uploadInChunks,
+  type UploadTransport,
+} from '@/features/records/upload';
 
 export type Attachment =
   GetResponse<'/v1/notes/{id}/attachments'>['items'][number];
@@ -25,7 +31,12 @@ export interface PickedFile {
   uri: string;
   name: string;
   size?: number | null;
+  /** What the picker says it is; the server checks it against the bytes. */
+  mimeType?: string | null;
 }
+
+export type AttachmentVersion =
+  GetResponse<'/v1/attachments/{id}/versions'>['items'][number];
 
 const key = (ref: RecordRef) =>
   ['records', ref.subject, ref.id, 'attachments'] as const;
@@ -65,25 +76,188 @@ export function useAttachments(ref: RecordRef) {
   });
 }
 
+// The record type's paths, typed by the Notes ones (same shape on every type).
+const SESSIONS = '/v1/notes/{id}/attachments/sessions';
+const SESSION = '/v1/notes/{id}/attachments/sessions/{uploadId}';
+const COMPLETE = '/v1/notes/{id}/attachments/complete';
+const typed = <Path extends string>(ref: RecordRef, path: Path) =>
+  path.replace('/v1/notes', ref.base) as Path;
+
+/** The API's side of a resumable upload of `picked` to `ref`. */
+function sessionTransport(
+  ref: RecordRef,
+  picked: PickedFile,
+): UploadTransport<Attachment> {
+  const file = new File(picked.uri);
+  const path = { id: ref.id };
+  return {
+    start: () =>
+      unwrap(
+        api.POST(typed(ref, SESSIONS), {
+          params: { path },
+          body: {
+            name: picked.name,
+            size: picked.size ?? file.size,
+            contentType: picked.mimeType ?? 'application/octet-stream',
+          },
+        }),
+      ),
+    async read(offset, length) {
+      const handle = file.open();
+      try {
+        handle.offset = offset;
+        return await handle.readBytes(length);
+      } finally {
+        handle.close();
+      }
+    },
+    send: (uploadId, offset, bytes) =>
+      unwrap(
+        api.PUT(typed(ref, SESSION), {
+          params: { path: { ...path, uploadId }, query: { offset } },
+          body: bytes as never, // raw bytes, not JSON
+          bodySerializer: (body) => body,
+          headers: { 'Content-Type': 'application/octet-stream' },
+        }),
+      ),
+    progress: (uploadId) =>
+      unwrap(
+        api.GET(typed(ref, SESSION), {
+          params: { path: { ...path, uploadId } },
+        }),
+      ),
+    complete: (uploadId) =>
+      unwrap(
+        api.POST(typed(ref, COMPLETE), {
+          params: { path },
+          body: { uploadId },
+        }),
+      ),
+    cancel: (uploadId) =>
+      unwrap(
+        api.DELETE(typed(ref, SESSION), {
+          params: { path: { ...path, uploadId } },
+        }),
+      ),
+  };
+}
+
+/** Uploads in chunks, with `progress` (0 to 1, null when idle) and `cancel`. */
 export function useUploadAttachment(ref: RecordRef) {
   const queryClient = useQueryClient();
+  const [progress, setProgress] = useState<number | null>(null);
+  const controller = useRef<AbortController | null>(null);
+  const mutation = useMutation({
+    mutationFn: async (picked: PickedFile) => {
+      controller.current = new AbortController();
+      try {
+        return await uploadInChunks(sessionTransport(ref, picked), {
+          onProgress: setProgress,
+          signal: controller.current.signal,
+        });
+      } finally {
+        setProgress(null);
+      }
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: key(ref) }),
+  });
+  return {
+    ...mutation,
+    progress,
+    cancel: () => controller.current?.abort(),
+  };
+}
+
+/** Cancelled by the person: nothing to report. */
+export const isCancelled = (error: unknown) =>
+  error instanceof Error && error.name === 'AbortError';
+
+/**
+ * The attachment's ETag, if it is still the version on screen: a change
+ * meanwhile (someone else's new version) is a conflict, as a 412 would be.
+ */
+async function currentEtag(attachment: Attachment): Promise<string> {
+  const result = await api.GET('/v1/attachments/{id}', {
+    params: { path: { id: attachment.id } },
+  });
+  const now = await unwrap(Promise.resolve(result));
+  if (now.version !== attachment.version) {
+    throw new ApiError({ status: 412, code: 'precondition_failed' });
+  }
+  return etagOf(result) ?? '*';
+}
+
+export function useVersions(attachment: Attachment, enabled: boolean) {
+  return useQuery({
+    queryKey: ['attachments', attachment.id, 'versions', attachment.version],
+    queryFn: () =>
+      unwrap(
+        api.GET('/v1/attachments/{id}/versions', {
+          params: { path: { id: attachment.id } },
+        }),
+      ),
+    enabled,
+  });
+}
+
+/** A new file for an attachment; the old one stays as a version. */
+export function useNewVersion(ref: RecordRef) {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (picked: PickedFile) => {
+    mutationFn: async ({
+      attachment,
+      picked,
+    }: {
+      attachment: Attachment;
+      picked: PickedFile;
+    }) => {
+      const etag = await currentEtag(attachment);
       const form = new FormData();
       form.append('file', new File(picked.uri), picked.name);
       return unwrap(
         api.POST(
-          `${ref.base}/{id}/attachments` as '/v1/notes/{id}/attachments',
+          typed(ref, '/v1/notes/{id}/attachments/{attachmentId}/versions'),
           {
-            params: { path: { id: ref.id } },
+            params: {
+              path: { id: ref.id, attachmentId: attachment.id },
+              header: { 'If-Match': etag },
+            },
             body: form as never, // multipart: the typed body is the JSON shape
           },
         ),
       );
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: key(ref) }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: key(ref) }),
   });
 }
+
+/** An earlier version becomes the current file again (as a new version). */
+export function useRestoreVersion(ref: RecordRef) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      attachment,
+      version,
+    }: {
+      attachment: Attachment;
+      version: number;
+    }) =>
+      unwrap(
+        api.POST('/v1/attachments/{id}/versions/{version}/restore', {
+          params: {
+            path: { id: attachment.id, version },
+            header: { 'If-Match': await currentEtag(attachment) },
+          },
+          body: {},
+        }),
+      ),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: key(ref) }),
+  });
+}
+
+/** One version's file. */
+export const versionLink = (attachment: Attachment, version: number) =>
+  signedLink(`/v1/attachments/${attachment.id}/versions/${version}/download`);
 
 export function useDeleteAttachment(ref: RecordRef) {
   const queryClient = useQueryClient();

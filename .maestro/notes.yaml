@@ -9,6 +9,12 @@ appId: host.exp.Exponent
 - openLink: ${(APP_URL || 'exp://127.0.0.1:8081') + '/--/notes/new'}
 - tapOn: Title
 - inputText: ${output.title}
+# The keyboard can cover the button (a tenant's custom fields make the form
+# longer), and Maestro counts it visible there: scroll the form up first.
+- swipe:
+    start: 50%, 40%
+    end: 50%, 15%
+    duration: 500
 - tapOn: Create note
 # Saved: the note's own screen (the title field would match too early).
 - extendedWaitUntil:

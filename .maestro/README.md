@@ -19,6 +19,11 @@ What they learned about the screens:
   URL (`exp://127.0.0.1:8081`), e.g. for a development build.
 - The floating tab bar covers the bottom of a screen: scroll with
   `centerElement: true`.
+- The keyboard can cover a form's button while Maestro counts it visible:
+  swipe the form up before tapping it.
+- The notes flow creates a note with a title only: run it in an
+  organization whose notes have no required custom fields (one that has
+  them refuses the note, and the form says which field).
 
 ```bash
 # Expo Go (or a development build) running the app against a test backend

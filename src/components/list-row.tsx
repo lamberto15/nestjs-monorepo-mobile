@@ -35,36 +35,63 @@ export function ListRow({
   // instead of breaking mid-word beside its detail.
   const { fontScale } = useWindowDimensions();
   const stacked = fontScale >= STACK_AT;
+  const content = (
+    <>
+      {leading}
+      <View style={styles.text}>
+        <ThemedText>{title}</ThemedText>
+        {subtitle ? (
+          <ThemedText type="small" themeColor="textSecondary">
+            {subtitle}
+          </ThemedText>
+        ) : null}
+      </View>
+      {selected && <ThemedText themeColor="link">✓</ThemedText>}
+    </>
+  );
+  const pressable = {
+    accessibilityRole: onPress ? ('button' as const) : undefined,
+    accessibilityLabel,
+    accessibilityState: selected === undefined ? undefined : { selected },
+    onPress,
+    disabled: disabled || !onPress,
+  };
+
+  // A control at the end (a button) sits beside the pressable part, not in
+  // it: a screen reader reaches each on its own.
+  if (detail !== undefined && typeof detail !== 'string') {
+    return (
+      <ThemedView
+        type="backgroundElement"
+        style={[styles.row, stacked && styles.stacked]}
+      >
+        <Pressable
+          {...pressable}
+          style={({ pressed }) => [
+            styles.main,
+            stacked && styles.stacked,
+            pressed && styles.pressed,
+          ]}
+        >
+          {content}
+        </Pressable>
+        {detail}
+      </ThemedView>
+    );
+  }
   return (
-    <Pressable
-      accessibilityRole={onPress ? 'button' : undefined}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityState={selected === undefined ? undefined : { selected }}
-      onPress={onPress}
-      disabled={disabled || !onPress}
-    >
+    <Pressable {...pressable}>
       {({ pressed }) => (
         <ThemedView
           type={pressed ? 'backgroundSelected' : 'backgroundElement'}
           style={[styles.row, stacked && styles.stacked]}
         >
-          {leading}
-          <View style={styles.text}>
-            <ThemedText>{title}</ThemedText>
-            {subtitle ? (
-              <ThemedText type="small" themeColor="textSecondary">
-                {subtitle}
-              </ThemedText>
-            ) : null}
-          </View>
-          {selected && <ThemedText themeColor="link">✓</ThemedText>}
-          {typeof detail === 'string' ? (
+          {content}
+          {detail ? (
             <ThemedText type="small" themeColor="textSecondary">
               {detail}
             </ThemedText>
-          ) : (
-            detail
-          )}
+          ) : null}
         </ThemedView>
       )}
     </Pressable>
@@ -75,6 +102,16 @@ export function ListRow({
 const STACK_AT = 1.6;
 
 const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+    alignSelf: 'stretch',
+  },
+  pressed: {
+    opacity: 0.6,
+  },
   stacked: {
     flexDirection: 'column',
     alignItems: 'flex-start',
