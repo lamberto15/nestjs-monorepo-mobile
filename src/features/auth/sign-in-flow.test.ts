@@ -97,3 +97,94 @@ test('one tenant signs straight in; a refused sign-in is thrown as is', async ()
   expect(await flow.signIn(credentials)).toBe('signedIn');
   expect(session.status()).toBe('signedIn');
 });
+
+describe('a provider (GitHub) in the browser', () => {
+  /** The browser: opens the login URL, comes back on the app's scheme with a code. */
+  function browser(back: (loginUrl: URL) => string) {
+    const WebBrowser = require('expo-web-browser');
+    const opened: URL[] = [];
+    WebBrowser.openAuthSessionAsync = jest.fn(async (url: string) => {
+      opened.push(new URL(url));
+      return { type: 'success', url: back(new URL(url)) };
+    });
+    return opened;
+  }
+
+  beforeEach(() => {
+    jest.doMock('expo-constants', () => ({
+      expoConfig: { ios: { bundleIdentifier: 'dev.example.app' } },
+    }));
+    jest.doMock('expo-crypto', () => {
+      const { createHash, randomBytes } = jest.requireActual('crypto');
+      return {
+        CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
+        CryptoEncoding: { BASE64: 'base64' },
+        getRandomBytes: (n: number) => new Uint8Array(randomBytes(n)),
+        digestStringAsync: async (_: string, data: string) =>
+          createHash('sha256').update(data).digest('base64'),
+      };
+    });
+  });
+
+  test('PKCE: the code goes back with the verifier of the challenge sent', async () => {
+    const { flow } = load();
+    const opened = browser(() => 'dev.example.app:/auth?code=h1');
+    const calls = fakeApi({
+      'POST /v1/auth/token/exchange': (call) =>
+        (call.body as { code?: string }).code
+          ? reply(pair('t1'))
+          : problem(401, 'mfa_required'),
+      'GET /v1/auth/tenants': () => reply({ items: [tenants[0]] }),
+    });
+
+    expect(await flow.signInWithProvider('github')).toBe('twoFactor');
+    const login = opened[0];
+    expect(login.pathname).toBe('/v1/auth/oidc/github/login');
+    expect(login.searchParams.get('redirectUri')).toBe('dev.example.app:/auth');
+
+    expect(await flow.continueWithSecondFactor({ code: '123456' })).toBe(
+      'signedIn',
+    );
+    const exchanges = calls.filter(
+      (call) => call.path === '/v1/auth/token/exchange',
+    );
+    expect(exchanges).toHaveLength(2);
+    const { handoffCode, codeVerifier } = exchanges[1].body as {
+      handoffCode: string;
+      codeVerifier: string;
+    };
+    expect(handoffCode).toBe('h1');
+    const { createHash } = jest.requireActual('crypto');
+    expect(createHash('sha256').update(codeVerifier).digest('base64url')).toBe(
+      login.searchParams.get('codeChallenge'),
+    );
+  });
+
+  test('a wrong two-factor code spends the handoff: start again', async () => {
+    const { flow } = load();
+    browser(() => 'dev.example.app:/auth?code=h1');
+    fakeApi({
+      'POST /v1/auth/token/exchange': (call) =>
+        (call.body as { code?: string }).code
+          ? problem(401, 'invalid_code')
+          : problem(401, 'mfa_required'),
+    });
+    expect(await flow.signInWithProvider('github')).toBe('twoFactor');
+    await expect(
+      flow.continueWithSecondFactor({ code: '000000' }),
+    ).rejects.toMatchObject({ code: 'invalid_code' });
+    expect(flow.signInPending()).toBe(false);
+  });
+
+  test('refused by the provider, or closed by the person', async () => {
+    const { flow } = load();
+    browser(() => 'dev.example.app:/auth?error=sign_in_failed');
+    await expect(flow.signInWithProvider('github')).rejects.toBeInstanceOf(
+      flow.ProviderSignInError,
+    );
+
+    const WebBrowser = require('expo-web-browser');
+    WebBrowser.openAuthSessionAsync = jest.fn(async () => ({ type: 'cancel' }));
+    await expect(flow.signInWithProvider('github')).resolves.toBeNull();
+  });
+});

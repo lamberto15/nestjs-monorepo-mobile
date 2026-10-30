@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Alert } from 'react-native';
 import { z } from 'zod';
 
+import { isApiError } from '@/api/client';
 import { session } from '@/api/session';
 import { Button } from '@/components/button';
 import { ErrorState } from '@/components/error-state';
@@ -12,6 +13,10 @@ import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
 import { AppLockSwitch } from '@/features/account/app-lock-switch';
+import {
+  useIdentities,
+  useUnlinkIdentity,
+} from '@/features/account/identities';
 import { useChangePassword } from '@/features/account/lifecycle';
 import { StepUpCancelled } from '@/features/account/step-up';
 import {
@@ -20,8 +25,9 @@ import {
   firstError,
 } from '@/features/auth/errors';
 import { useMe } from '@/features/auth/hooks';
+import { providerName } from '@/features/auth/providers';
 
-/** Two-factor, and the password. */
+/** Two-factor, the app lock, linked providers, and the password. */
 export default function SecurityScreen() {
   const { t } = useTranslation();
   const me = useMe();
@@ -44,8 +50,67 @@ export default function SecurityScreen() {
         onPress={() => router.push('/account/two-factor')}
       />
       <AppLockSwitch />
+      <LinkedProviders />
       <ChangePassword hasPassword={me.data.hasPassword} />
     </Screen>
+  );
+}
+
+/** Providers the account signs in with; disconnecting asks first. */
+function LinkedProviders() {
+  const { t } = useTranslation();
+  const identities = useIdentities();
+  const unlink = useUnlinkIdentity();
+  const items = identities.data?.items ?? [];
+  if (!items.length) {
+    return null;
+  }
+  return (
+    <>
+      <ThemedText type="smallBold" accessibilityRole="header">
+        {t('identities.title')}
+      </ThemedText>
+      {items.map((identity) => (
+        <ListRow
+          key={identity.provider}
+          title={providerName(identity.provider)}
+          subtitle={identity.email ?? undefined}
+          detail={
+            <Button
+              title={t('identities.disconnect')}
+              variant="secondary"
+              loading={
+                unlink.isPending && unlink.variables === identity.provider
+              }
+              onPress={() =>
+                Alert.alert(
+                  t('identities.disconnectTitle', {
+                    provider: providerName(identity.provider),
+                  }),
+                  t('identities.disconnectBody'),
+                  [
+                    { text: t('sessions.cancel'), style: 'cancel' },
+                    {
+                      text: t('identities.disconnect'),
+                      style: 'destructive',
+                      onPress: () => unlink.mutate(identity.provider),
+                    },
+                  ],
+                )
+              }
+            />
+          }
+        />
+      ))}
+      {unlink.error && !(unlink.error instanceof StepUpCancelled) && (
+        <ThemedText type="small" themeColor="danger" accessibilityRole="alert">
+          {isApiError(unlink.error) &&
+          unlink.error.code === 'last_sign_in_method'
+            ? t('identities.last')
+            : apiErrorMessage(unlink.error, t)}
+        </ThemedText>
+      )}
+    </>
   );
 }
 

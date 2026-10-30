@@ -13,7 +13,9 @@
     "password": "Passwort",
     "submit": "Anmelden",
     "forgot": "Passwort vergessen?",
-    "signUp": "Konto erstellen"
+    "signUp": "Konto erstellen",
+    "with": "Weiter mit {{provider}}",
+    "providerFailed": "Diese Anmeldung hat nicht geklappt. Versuche es erneut oder nutze dein Passwort."
   },
   "twoFactor": {
     "title": "Bestätigungscode",
@@ -23,7 +25,8 @@
     "recoveryCode": "Wiederherstellungscode",
     "useRecovery": "Wiederherstellungscode verwenden",
     "useCode": "Code aus der App verwenden",
-    "submit": "Weiter"
+    "submit": "Weiter",
+    "startAgain": "Neu beginnen"
   },
   "chooseTenant": {
     "title": "Organisation wählen",
@@ -459,5 +462,12 @@
       "read-only": "Der Dienst ist gerade schreibgeschützt: Änderungen werden nicht gespeichert.",
       "maintenance": "Der Dienst wird gewartet."
     }
+  },
+  "identities": {
+    "title": "Anmeldung mit",
+    "disconnect": "Trennen",
+    "disconnectTitle": "{{provider}} trennen?",
+    "disconnectBody": "Du kannst dich dann nicht mehr damit anmelden. In der Web-App kannst du es wieder verbinden.",
+    "last": "Das ist deine einzige Anmeldemöglichkeit: Lege zuerst ein Passwort fest."
   }
 }
