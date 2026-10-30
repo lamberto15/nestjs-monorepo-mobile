@@ -9,10 +9,11 @@ import {
   View,
 } from 'react-native';
 
+import { EmptyState } from '@/components/empty-state';
 import { ErrorState } from '@/components/error-state';
 import { ListRow } from '@/components/list-row';
+import { SkeletonRows } from '@/components/skeleton';
 import { TextField } from '@/components/text-field';
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useNotes } from '@/features/notes/hooks';
@@ -105,15 +106,17 @@ export function NotesList() {
         }
         ListEmptyComponent={
           list.isPending ? (
-            <ActivityIndicator />
+            <SkeletonRows count={5} />
           ) : list.isError ? (
             <ErrorState error={list.error} onRetry={() => list.refetch()} />
           ) : (
-            <ThemedText themeColor="textSecondary">
-              {q || Object.keys(filters).length
-                ? t('notes.noMatch')
-                : t('notes.empty')}
-            </ThemedText>
+            <EmptyState
+              title={
+                q || Object.keys(filters).length
+                  ? t('notes.noMatch')
+                  : t('notes.empty')
+              }
+            />
           )
         }
         ListFooterComponent={

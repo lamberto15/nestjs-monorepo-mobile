@@ -7,6 +7,8 @@ export type ThemedTextProps = TextProps & {
   type?:
     | 'default'
     | 'title'
+    | 'headline'
+    | 'section'
     | 'small'
     | 'smallBold'
     | 'subtitle'
@@ -32,7 +34,9 @@ export function ThemedText({
     <Text
       // Screen readers announce titles as headings, to jump between them.
       accessibilityRole={
-        type === 'title' || type === 'subtitle' ? 'header' : undefined
+        type === 'title' || type === 'subtitle' || type === 'headline'
+          ? 'header'
+          : undefined
       }
       style={[{ color }, styles[type], style]}
       {...rest}
@@ -55,6 +59,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontWeight: 500,
+  },
+  // A screen's own heading, below the navigation bar's title.
+  headline: {
+    fontSize: 26,
+    lineHeight: 32,
+    fontWeight: 700,
+    letterSpacing: -0.4,
+  },
+  // A group's label above its rows: small, quiet, not shouted.
+  section: {
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: 600,
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
   },
   title: {
     fontSize: 48,

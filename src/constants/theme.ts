@@ -7,32 +7,40 @@ import '@/global.css';
 
 import { Platform } from 'react-native';
 
+/**
+ * Every text pair below meets WCAG AA (4.5:1) and every border or control
+ * edge 3:1 (`theme.test.ts` checks them). `backgroundElement` is the raised
+ * surface of cards and rows; `backgroundSelected` its pressed state.
+ */
 export const Colors = {
   light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-    border: '#D9D9E0',
-    // Contrast (WCAG AA, 4.5:1): white on primary 5.3; link on background 5.3.
+    text: '#14161B',
+    background: '#FFFFFF',
+    backgroundElement: '#F4F5F7',
+    backgroundSelected: '#E6E8EC',
+    textSecondary: '#5B616E',
+    border: '#D8DCE3',
+    // Controls' edges, the focused field's ring, the switch's track.
+    control: '#8A909C',
+    // White on primary 5.3; link on background 5.3.
     primary: '#0B6BCB',
-    onPrimary: '#ffffff',
+    onPrimary: '#FFFFFF',
     link: '#0B6BCB',
     // White on dangerFill 5.2: a destructive button.
     dangerFill: '#CE2C31',
     danger: '#CE2C31',
   },
   dark: {
-    text: '#ffffff',
+    text: '#F4F5F7',
     background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-    border: '#3A3F42',
+    backgroundElement: '#1C1D21',
+    backgroundSelected: '#2A2C31',
+    textSecondary: '#A9AFB9',
+    border: '#34383F',
+    control: '#5A606B',
     // White on primary 5.3; link on background 9.6.
     primary: '#0B6BCB',
-    onPrimary: '#ffffff',
+    onPrimary: '#FFFFFF',
     link: '#6CB4FF',
     dangerFill: '#CE2C31',
     danger: '#FF6369',
@@ -75,6 +83,16 @@ export const Spacing = {
   five: 32,
   six: 64,
 } as const;
+
+/** Corner radii: fields and buttons, cards and groups, chips. */
+export const Radius = {
+  control: 14,
+  card: 18,
+  pill: 999,
+} as const;
+
+/** Every control is at least this tall: a finger-sized target (44 pt). */
+export const ControlHeight = 52;
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;

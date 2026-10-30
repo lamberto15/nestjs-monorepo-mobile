@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export type Choice<T> = { value: T; label: string; disabled?: boolean };
@@ -40,7 +40,7 @@ export function ChoiceChips<T>({
             style={[
               styles.chip,
               {
-                borderColor: selected ? theme.primary : theme.border,
+                borderColor: selected ? theme.primary : theme.control,
                 backgroundColor: selected ? theme.primary : 'transparent',
               },
               inactive && !selected && styles.dimmed,
@@ -67,9 +67,10 @@ const styles = StyleSheet.create({
   },
   chip: {
     borderWidth: 1,
-    borderRadius: Spacing.four,
+    minHeight: 40,
+    justifyContent: 'center',
+    borderRadius: Radius.pill,
     paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.one + Spacing.half,
   },
   dimmed: {
     opacity: 0.4,

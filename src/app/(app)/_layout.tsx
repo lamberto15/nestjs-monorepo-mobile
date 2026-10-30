@@ -2,6 +2,8 @@ import { NativeTabs } from 'expo-router/native-tabs';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useMe } from '@/features/auth/hooks';
 import { useOfflineCache } from '@/api/use-offline-cache';
 import { useTelemetry } from '@/features/telemetry/use-telemetry';
@@ -27,12 +29,20 @@ export default function AppLayout() {
     }
   }, [saved, i18n]);
 
+  // The tab bar follows the palette: the brand blue for the chosen tab,
+  // the quiet secondary grey for the rest, the surface behind it.
+  const colors = Colors[useColorScheme() === 'dark' ? 'dark' : 'light'];
+
   const count = unread.data?.unread ?? 0;
   const badge = unread.data?.unreadCapped || count > 99 ? '99+' : String(count);
 
   return (
     <BrandingProvider>
-      <NativeTabs>
+      <NativeTabs
+        tintColor={colors.primary}
+        iconColor={{ default: colors.textSecondary, selected: colors.primary }}
+        backgroundColor={colors.background}
+      >
         <NativeTabs.Trigger name="(home)">
           <NativeTabs.Trigger.Label>{t('tabs.home')}</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon sf="house.fill" md="home" />

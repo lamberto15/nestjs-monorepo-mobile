@@ -12,7 +12,7 @@ import {
 } from '@/features/account/lifecycle';
 import { formatDateTime } from '@/i18n/format';
 import { Button } from '@/components/button';
-import { ListRow } from '@/components/list-row';
+import { ListGroup, ListRow } from '@/components/list-row';
 import { ErrorState } from '@/components/error-state';
 import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
@@ -56,38 +56,42 @@ export default function AccountScreen() {
         avatarUrl={me.data.user.avatarUrl ?? null}
       />
       <ProfileForm name={me.data.user.name} email={me.data.user.email} />
-      <ListRow
-        title={t('account.organization')}
-        detail={me.data.tenant?.name}
-        onPress={() => router.push('/account/organization')}
-      />
-      <ListRow
-        title={t('account.language')}
-        detail={language?.name}
-        onPress={() => router.push('/account/language')}
-      />
-      <ListRow
-        title={t('appearance.title')}
-        detail={t(`appearance.${appearance}`)}
-        onPress={() => router.push('/account/appearance')}
-      />
-      <ListRow
-        title={t('account.notifications')}
-        onPress={() => router.push('/account/notification-settings')}
-      />
-      <ListRow
-        title={t('account.security')}
-        detail={me.data.mfaEnabled ? t('account.twoFactorOn') : undefined}
-        onPress={() => router.push('/account/security')}
-      />
-      <ListRow
-        title={t('account.sessions')}
-        onPress={() => router.push('/account/sessions')}
-      />
-      <ListRow
-        title={t('account.yourData')}
-        onPress={() => router.push('/account/your-data')}
-      />
+      <ListGroup>
+        <ListRow
+          title={t('account.organization')}
+          detail={me.data.tenant?.name}
+          onPress={() => router.push('/account/organization')}
+        />
+        <ListRow
+          title={t('account.language')}
+          detail={language?.name}
+          onPress={() => router.push('/account/language')}
+        />
+        <ListRow
+          title={t('appearance.title')}
+          detail={t(`appearance.${appearance}`)}
+          onPress={() => router.push('/account/appearance')}
+        />
+        <ListRow
+          title={t('account.notifications')}
+          onPress={() => router.push('/account/notification-settings')}
+        />
+      </ListGroup>
+      <ListGroup>
+        <ListRow
+          title={t('account.security')}
+          detail={me.data.mfaEnabled ? t('account.twoFactorOn') : undefined}
+          onPress={() => router.push('/account/security')}
+        />
+        <ListRow
+          title={t('account.sessions')}
+          onPress={() => router.push('/account/sessions')}
+        />
+        <ListRow
+          title={t('account.yourData')}
+          onPress={() => router.push('/account/your-data')}
+        />
+      </ListGroup>
       <Button
         title={t('account.signOut')}
         variant="secondary"

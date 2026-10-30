@@ -9,8 +9,10 @@ import {
   View,
 } from 'react-native';
 
+import { EmptyState } from '@/components/empty-state';
 import { ErrorState } from '@/components/error-state';
 import { ListRow } from '@/components/list-row';
+import { SkeletonRows } from '@/components/skeleton';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -106,13 +108,11 @@ export default function NotificationsScreen() {
         }
         ListEmptyComponent={
           list.isPending ? (
-            <ActivityIndicator />
+            <SkeletonRows count={5} />
           ) : list.isError ? (
             <ErrorState error={list.error} onRetry={() => list.refetch()} />
           ) : (
-            <ThemedText themeColor="textSecondary">
-              {t('notifications.empty')}
-            </ThemedText>
+            <EmptyState title={t('notifications.empty')} />
           )
         }
         ListFooterComponent={
