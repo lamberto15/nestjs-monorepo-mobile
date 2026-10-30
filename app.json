@@ -30,7 +30,8 @@
             "NSPrivacyAccessedAPITypeReasons": ["E174.1", "85F4.1"]
           }
         ]
-      }
+      },
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -75,6 +76,12 @@
         "expo-local-authentication",
         {
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID to unlock the app."
+        }
+      ],
+      [
+        "expo-sqlite",
+        {
+          "useSQLCipher": true
         }
       ]
     ],

@@ -185,7 +185,8 @@
     "deleteBody": "„{{title}}“ wird zu den gelöschten Notizen verschoben; die Administration kann sie wiederherstellen.",
     "conflict": "Jemand anderes hat diese Notiz geändert, seit du sie geöffnet hast. Lade die neue Version und nimm deine Änderung erneut vor.",
     "loadLatest": "Neueste Version laden",
-    "share": "Teilen"
+    "share": "Teilen",
+    "choose": "Wähle eine Notiz."
   },
   "avatar": {
     "change": "Bild ändern",

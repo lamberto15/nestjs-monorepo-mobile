@@ -185,7 +185,8 @@
     "deleteBody": "\"{{title}}\" dipindahkan ke nota yang dipadam; pentadbir boleh memulihkannya.",
     "conflict": "Orang lain telah menukar nota ini sejak anda membukanya. Muatkan versi mereka, kemudian buat perubahan anda semula.",
     "loadLatest": "Muatkan versi terkini",
-    "share": "Kongsi"
+    "share": "Kongsi",
+    "choose": "Pilih satu nota."
   },
   "avatar": {
     "change": "Tukar gambar",

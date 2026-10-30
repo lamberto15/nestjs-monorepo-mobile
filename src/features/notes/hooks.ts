@@ -10,6 +10,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
+import { MAX_AGE_MS } from '@/api/offline-cache';
 import { api } from '@/api/api';
 import { etagOf, isApiError, unwrap, type GetResponse } from '@/api/client';
 import type { RecordRef } from '@/features/records/hooks';
@@ -39,6 +40,9 @@ export const noteKeys = {
 
 const PAGE_SIZE = 20;
 
+/** Kept on the device once viewed, to open offline (docs/architecture.md). */
+const offline = { meta: { persist: true }, gcTime: MAX_AGE_MS };
+
 /**
  * The list for a query (search, filters, a saved view's params): newest
  * change first unless it sorts, a page at a time; each note says what you
@@ -66,6 +70,7 @@ export function useNotes(query: ListQuery) {
       ),
     initialPageParam: null as string | null,
     getNextPageParam: (last) => last.nextCursor ?? undefined,
+    ...offline,
   });
 }
 
@@ -87,6 +92,7 @@ export function useNote(id: string) {
         etag: etagOf(result),
       };
     },
+    ...offline,
   });
 }
 

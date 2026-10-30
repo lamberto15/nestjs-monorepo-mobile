@@ -185,7 +185,8 @@
     "deleteBody": "\"{{title}}\" is moved to the deleted notes; an administrator can restore it.",
     "conflict": "Someone else changed this note since you opened it. Load their version, then make your change again.",
     "loadLatest": "Load the latest version",
-    "share": "Share"
+    "share": "Share",
+    "choose": "Choose a note."
   },
   "avatar": {
     "change": "Change picture",

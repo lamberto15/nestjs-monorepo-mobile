@@ -185,7 +185,8 @@
     "deleteBody": "“{{title}}”将移到已删除笔记中；管理员可以恢复它。",
     "conflict": "你打开此笔记后，其他人修改了它。请加载最新版本，再重新修改。",
     "loadLatest": "加载最新版本",
-    "share": "分享"
+    "share": "分享",
+    "choose": "选择一条笔记。"
   },
   "avatar": {
     "change": "更换头像",

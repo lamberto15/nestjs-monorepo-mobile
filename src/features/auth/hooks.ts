@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getCalendars } from 'expo-localization';
 import { useTranslation } from 'react-i18next';
 
+import { MAX_AGE_MS } from '@/api/offline-cache';
 import { api } from '@/api/api';
 import { unwrap } from '@/api/client';
 import { publicApi } from '@/api/public-api';
@@ -27,6 +28,9 @@ export function useMe() {
   return useQuery({
     queryKey: ['auth', 'me'],
     queryFn: () => unwrap(api.GET('/v1/auth/me')),
+    // Offline, the app still knows whose it is and what they may do.
+    meta: { persist: true },
+    gcTime: MAX_AGE_MS,
   });
 }
 
