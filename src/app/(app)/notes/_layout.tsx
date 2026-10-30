@@ -1,9 +1,13 @@
 import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { SplitView, useWide } from '@/components/split-view';
+import { NotesList } from '@/features/notes/notes-list';
+
 export default function NotesLayout() {
   const { t } = useTranslation();
-  return (
+  const wide = useWide();
+  const stack = (
     <Stack>
       <Stack.Screen name="index" options={{ title: t('notes.list') }} />
       <Stack.Screen name="new" options={{ title: t('notes.new') }} />
@@ -15,4 +19,6 @@ export default function NotesLayout() {
       />
     </Stack>
   );
+  // Wide: the list stays at the side, the note opens beside it.
+  return wide ? <SplitView list={<NotesList />}>{stack}</SplitView> : stack;
 }

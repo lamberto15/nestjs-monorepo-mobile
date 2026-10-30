@@ -111,12 +111,22 @@ layout must work: Arabic is one of the backend's languages.
   changes (`usePreventRemove`); a successful save goes through.
 - **Feedback:** `feedback.success()` / `.warning()` (haptics) after saves,
   decisions and before discarding.
-- **No offline read cache yet, on purpose.** TanStack Query can persist its
-  cache, but the stores Expo Go has (`expo-sqlite/kv-store`, AsyncStorage)
-  are not encrypted, and the cache holds account data and record content.
-  A project that needs offline reading: persist with SQLCipher
-  (`expo-sqlite`'s `useSQLCipher`, a development build), only queries that
-  opt in, keyed by user and tenant, cleared on sign-out.
+- **Offline read cache** (`src/api/offline-cache.ts`): what was already
+  viewed opens offline. Only queries that opt in are kept
+  (`meta: { persist: true }` and `gcTime: MAX_AGE_MS`: the Notes list, a
+  note, `me`), for 7 days, in an SQLCipher database (`expo-sqlite` with
+  `useSQLCipher`) whose random key is in the secure store. Encrypted or
+  nothing: without SQLCipher (Expo Go, web) `PRAGMA key` is ignored, so
+  the app checks `PRAGMA cipher_version` and keeps nothing. It holds one
+  person in one tenant: restored at once (offline, `me` can't load), then
+  deleted if `me` says it was someone else's or another tenant's, and
+  deleted with its key on sign-out. Saves while offline still wait for the
+  network; nothing is written offline.
+- **Wide screens** (iPad, `ios.supportsTablet`): `SplitView` puts a list
+  beside what it opens (`useWide()`: 768 points and up). Notes uses it in
+  `notes/_layout.tsx`, the list as `NotesList` and the index route as
+  "Choose a note."; `pnpm feature:add` copies that. Approvals stay one
+  column (they live in the Home stack).
 
 ## Telemetry
 

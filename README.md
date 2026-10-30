@@ -27,7 +27,7 @@ template.
   API, saved views, ETag conflicts, custom fields; comments with mentions,
   tags, watching, history, files from the camera, PDFs, CSV export, who
   else is looking; `pnpm feature:add` copies it for your own features.
-- **Platform:** offline handling, timeouts, error states, accessibility
+- **Platform:** an encrypted offline cache of what was viewed, iPad two-column Notes, offline handling, timeouts, error states, accessibility
   (WCAG AA colours), the tenant's branding, a privacy cover, the iOS
   privacy manifest, consent-gated telemetry (off by default).
 - **Quality:** tests, CI, a weekly client drift check, a UI catalogue,

@@ -14,6 +14,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
+import { wipeOfflineCache } from '@/api/offline-cache';
 import { queryClient } from '@/api/query-client';
 import { session } from '@/api/session';
 import { OfflineBanner } from '@/components/offline-banner';
@@ -60,6 +61,7 @@ function RootNavigator() {
     }
     if (status === 'signedOut') {
       queryClient.clear(); // nothing cached outlives its session
+      void wipeOfflineCache();
     }
   }, [status]);
 
