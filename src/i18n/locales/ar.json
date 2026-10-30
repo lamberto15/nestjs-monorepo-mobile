@@ -484,5 +484,11 @@
     "removeTitle": "إزالة {{name}}؟",
     "synced": "متزامن",
     "lastUsed": "آخر استخدام {{time}}"
+  },
+  "appearance": {
+    "title": "المظهر",
+    "system": "مثل الهاتف",
+    "light": "فاتح",
+    "dark": "داكن"
   }
 }

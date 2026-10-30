@@ -20,12 +20,17 @@ import { session } from '@/api/session';
 import { OfflineBanner } from '@/components/offline-banner';
 import { PrivacyCover } from '@/components/privacy-cover';
 import { appLock } from '@/features/account/app-lock';
+import {
+  applyAppearance,
+  savedAppearance,
+} from '@/features/account/appearance';
 import { pendingLink } from '@/features/auth/pending-link';
 import { useSessionStatus } from '@/hooks/use-session-status';
 
 SplashScreen.preventAutoHideAsync();
 void session.restore();
 void appLock.load();
+applyAppearance(savedAppearance());
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();

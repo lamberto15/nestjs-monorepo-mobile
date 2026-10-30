@@ -484,5 +484,11 @@
     "removeTitle": "Alih keluar {{name}}?",
     "synced": "Disegerakkan",
     "lastUsed": "Kali terakhir digunakan {{time}}"
+  },
+  "appearance": {
+    "title": "Penampilan",
+    "system": "Ikut telefon",
+    "light": "Cerah",
+    "dark": "Gelap"
   }
 }

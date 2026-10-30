@@ -139,6 +139,13 @@ personal keys and cuts emails and tokens; screen views carry routes with
 ids removed. Crash reporting (#14) follows the same consent. Tracking
 across apps is not done, so no App Tracking Transparency prompt.
 
+## Appearance
+
+Light, dark, or as the phone (Account → Appearance): a preference of the
+device, kept in `expo-sqlite/kv-store` and applied with React Native's
+`Appearance.setColorScheme` at start (`src/app/_layout.tsx`), so the
+theme tokens, the navigation and the system's controls all follow it.
+
 ## Accessibility
 
 - Colours meet WCAG AA: text on `primary` and `dangerFill` and `link` on

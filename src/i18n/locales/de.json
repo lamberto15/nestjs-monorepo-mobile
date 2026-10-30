@@ -484,5 +484,11 @@
     "removeTitle": "{{name}} entfernen?",
     "synced": "Synchronisiert",
     "lastUsed": "Zuletzt verwendet {{time}}"
+  },
+  "appearance": {
+    "title": "Darstellung",
+    "system": "Wie das Telefon",
+    "light": "Hell",
+    "dark": "Dunkel"
   }
 }
