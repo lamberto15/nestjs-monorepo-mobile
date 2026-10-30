@@ -5,11 +5,12 @@ import type { ReactNode } from 'react';
 
 import {
   useAddComment,
+  useRevisions,
   useWatch,
   type RecordRef,
 } from '@/features/records/hooks';
 import { changeLines, shownValue } from '@/features/records/revisions';
-import { fakeApi, reply } from '@/test/fake-api';
+import { fakeApi, problem, reply } from '@/test/fake-api';
 
 beforeAll(() => SecureStore.setItemAsync('session.refreshToken', 'r1'));
 
@@ -50,6 +51,23 @@ test("the add-ons call the record type's own routes", async () => {
     'POST /v1/tasks/t1/watch',
   ]);
   expect(calls[1].body).toEqual({ body: 'Hi', parentId: 'c0' });
+});
+
+test('the history asks only for what the API sorts by (date)', async () => {
+  fakeApi({
+    'POST /v1/auth/token/refresh': () =>
+      reply({ accessToken: 'a', refreshToken: 'r2', expiresIn: 900 }),
+    // As the API: revisions sort by createdAt or updatedAt only.
+    'GET /v1/tasks/t1/revisions': (call) =>
+      /^-?(createdAt|updatedAt)?$/.test(call.query.get('sort') ?? '')
+        ? reply({ items: [], nextCursor: null })
+        : problem(400, 'validation_failed'),
+  });
+  const { result } = await renderHook(() => useRevisions(task), { wrapper });
+  await act(async () => {
+    await result.current.refetch();
+  });
+  expect(result.current.isSuccess).toBe(true);
 });
 
 test('a revision reads as "field: from → to"', () => {

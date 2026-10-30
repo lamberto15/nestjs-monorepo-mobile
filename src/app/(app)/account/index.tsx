@@ -18,6 +18,7 @@ import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
 import { useUpdateProfile } from '@/features/account/hooks';
+import { useAppearance } from '@/features/account/appearance';
 import { LANGUAGES } from '@/features/account/language';
 import {
   apiErrorMessage,
@@ -27,6 +28,7 @@ import {
 import { useMe } from '@/features/auth/hooks';
 
 export default function AccountScreen() {
+  const appearance = useAppearance();
   const { t, i18n } = useTranslation();
   const me = useMe();
 
@@ -63,6 +65,11 @@ export default function AccountScreen() {
         title={t('account.language')}
         detail={language?.name}
         onPress={() => router.push('/account/language')}
+      />
+      <ListRow
+        title={t('appearance.title')}
+        detail={t(`appearance.${appearance}`)}
+        onPress={() => router.push('/account/appearance')}
       />
       <ListRow
         title={t('account.notifications')}

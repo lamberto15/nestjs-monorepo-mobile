@@ -484,5 +484,11 @@
     "removeTitle": "移除 {{name}}？",
     "synced": "已同步",
     "lastUsed": "上次使用 {{time}}"
+  },
+  "appearance": {
+    "title": "外观",
+    "system": "跟随手机",
+    "light": "浅色",
+    "dark": "深色"
   }
 }

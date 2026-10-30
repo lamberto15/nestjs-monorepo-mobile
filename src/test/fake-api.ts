@@ -7,6 +7,8 @@
 export interface Call {
   method: string;
   path: string;
+  /** The query string's parameters. */
+  query: URLSearchParams;
   body: unknown;
   authorization: string | null;
   headers: Headers;
@@ -35,6 +37,7 @@ export function fakeApi(routes: Record<string, Handler>) {
       const call: Call = {
         method: request.method,
         path: new URL(request.url).pathname,
+        query: new URL(request.url).searchParams,
         body: text ? JSON.parse(text) : undefined,
         authorization: request.headers.get('Authorization'),
         headers: request.headers,

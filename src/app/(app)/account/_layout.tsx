@@ -8,6 +8,10 @@ export default function AccountLayout() {
       <Stack.Screen name="index" options={{ title: t('account.title') }} />
       <Stack.Screen name="language" options={{ title: t('language.title') }} />
       <Stack.Screen
+        name="appearance"
+        options={{ title: t('appearance.title') }}
+      />
+      <Stack.Screen
         name="organization"
         options={{ title: t('organization.title') }}
       />

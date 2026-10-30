@@ -216,7 +216,7 @@ export function useToggleFavorite(ref: RecordRef) {
 
 // Revisions
 
-/** What changed, newest first. */
+/** What changed, newest first (the API's order: it sorts revisions by date only). */
 export function useRevisions(ref: RecordRef) {
   return useQuery({
     queryKey: recordKeys.revisions(ref),
@@ -225,7 +225,7 @@ export function useRevisions(ref: RecordRef) {
         api.GET(path(ref, '/v1/notes/{id}/revisions'), {
           params: {
             path: { id: ref.id },
-            query: { limit: 50, sort: '-number' },
+            query: { limit: 50 },
           },
         }),
       ),

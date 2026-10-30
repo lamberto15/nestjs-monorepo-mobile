@@ -484,5 +484,11 @@
     "removeTitle": "Remove {{name}}?",
     "synced": "Synced",
     "lastUsed": "Last used {{time}}"
+  },
+  "appearance": {
+    "title": "Appearance",
+    "system": "As the phone",
+    "light": "Light",
+    "dark": "Dark"
   }
 }
