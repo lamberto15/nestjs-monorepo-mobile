@@ -332,9 +332,17 @@
     "camera": "相机",
     "photo": "照片",
     "file": "文件",
-    "uploading": "上传中…",
     "tooLarge": "文件过大：最多 {{max}}。",
-    "noCamera": "未允许使用相机，请在设置中允许。"
+    "noCamera": "未允许使用相机，请在设置中允许。",
+    "more": "更多",
+    "newVersion": "新版本",
+    "versions": "版本",
+    "version": "版本 {{n}}",
+    "current": "当前",
+    "restore": "恢复",
+    "progress": "正在上传… {{percent}}%",
+    "cancelUpload": "取消上传",
+    "changed": "自你打开后，此文件已被更改。请重新查看后再试。"
   },
   "search": {
     "title": "搜索",

@@ -12,19 +12,19 @@ What the backend offers, and where it is on mobile (backend docs are
 `docs/<name>.md` there). "Web" means admin or setup work left to the web
 app.
 
-| Backend                                                                                                                                                                                       | Mobile                                                     |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| auth: sign-in, two-factor, sign-up, password reset, tenants, sessions, step-up, account deletion, export, consents, avatar                                                                    | yes                                                        |
-| auth: provider and tenant SSO sign-in, magic links                                                                                                                                            | planned (#12)                                              |
-| auth: passkeys, app attestation                                                                                                                                                               | planned (#13)                                              |
-| notifications: list, realtime, preferences, quiet hours                                                                                                                                       | yes                                                        |
-| notifications: push                                                                                                                                                                           | planned (#13)                                              |
-| comments, tags, favorites, watching, revisions, saved views, custom fields                                                                                                                    | yes (on any record, #17)                                   |
-| attachments                                                                                                                                                                                   | yes; presigned/resumable uploads and file versions not yet |
-| work-surfaces: inbox, recents, search, presence                                                                                                                                               | yes                                                        |
-| approvals (decide, request), acknowledgments                                                                                                                                                  | yes; policies and delegations: web                         |
-| documents (PDF), data-transfer (list export), branding, feature switches                                                                                                                      | yes                                                        |
-| permissions, access, identity, tenancy (operators), automations, retention, data quality, reports, forms, sequences, merging, bulk operations, templates, choices, computed fields, money, AI | web (admin), or a feature's own work                       |
+| Backend                                                                                                                                                                                       | Mobile                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| auth: sign-in, two-factor, sign-up, password reset, tenants, sessions, step-up, account deletion, export, consents, avatar                                                                    | yes                                                                                             |
+| auth: provider and tenant SSO sign-in, magic links                                                                                                                                            | planned (#12)                                                                                   |
+| auth: passkeys, app attestation                                                                                                                                                               | planned (#13)                                                                                   |
+| notifications: list, realtime, preferences, quiet hours                                                                                                                                       | yes                                                                                             |
+| notifications: push                                                                                                                                                                           | planned (#13)                                                                                   |
+| comments, tags, favorites, watching, revisions, saved views, custom fields                                                                                                                    | yes (on any record, #17)                                                                        |
+| attachments                                                                                                                                                                                   | yes: resumable uploads, versions; presigned uploads not used (resumable works on every storage) |
+| work-surfaces: inbox, recents, search, presence                                                                                                                                               | yes                                                                                             |
+| approvals (decide, request), acknowledgments                                                                                                                                                  | yes; policies and delegations: web                                                              |
+| documents (PDF), data-transfer (list export), branding, feature switches                                                                                                                      | yes                                                                                             |
+| permissions, access, identity, tenancy (operators), automations, retention, data quality, reports, forms, sequences, merging, bulk operations, templates, choices, computed fields, money, AI | web (admin), or a feature's own work                                                            |
 
 ## The typed client
 
@@ -265,10 +265,18 @@ zone to the phone's when they differ.
 
 ## Files (backend `attachments`)
 
-- **Upload:** multipart, the field `file` (`expo-file-system` `File` from
-  the camera, photo library or files app), checked against the type's
-  `attachmentLimits.maxBytes` before sending; the API reads the type from
-  the bytes (415 for one not allowed).
+- **Upload:** resumable, on every storage driver (`…/attachments/sessions`,
+  `src/features/records/upload.ts`): the file from the camera, photo
+  library or files app (checked against the type's
+  `attachmentLimits.maxBytes` first) goes in chunks of the session's
+  `chunkSize`, read with `expo-file-system`'s `File.open()`, each at the
+  offset the server has received; then `…/attachments/complete`. Progress
+  shows, Cancel deletes the session. A dropped connection or a 5xx retries
+  (4 tries) from where the server stands (`GET` the session); a stale
+  offset (409: a chunk that landed but whose answer was lost) continues
+  from there without sending it again. The API reads the type from the
+  bytes (415 for one not allowed). Presigned uploads (S3 only) are not
+  used: one PUT, no progress or resume.
 - **Download:** `GET /v1/attachments/{id}/download` needs the token and
   answers 302 to a signed link valid 5 minutes. `signedLink()`
   (`src/api/signed-link.ts`) reads the redirect without following it
@@ -277,7 +285,12 @@ zone to the phone's when they differ.
 - A new file is `pending` while scanned and rendered (its download: 409):
   the list looks again every few seconds until it's ready, and the realtime
   `record.attachments.changed` refreshes it for watchers.
-- Not built: presigned and resumable uploads (S3), file versions.
+- **Versions:** a file's More menu: a new version (multipart to
+  `…/attachments/{attachmentId}/versions`), its versions (open any,
+  restore an earlier one). Both send the attachment's ETag as `If-Match`,
+  read just before and checked against the version on screen, so a change
+  meanwhile is a conflict ("This file changed since you opened it"). The
+  API refuses a restore while the current file is still processed.
 
 ## Work surfaces (backend `work-surfaces`)
 

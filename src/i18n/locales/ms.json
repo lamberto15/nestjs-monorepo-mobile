@@ -332,9 +332,17 @@
     "camera": "Kamera",
     "photo": "Foto",
     "file": "Fail",
-    "uploading": "Memuat naik…",
     "tooLarge": "Fail ini terlalu besar: maksimum {{max}}.",
-    "noCamera": "Kamera tidak dibenarkan. Benarkan dalam Tetapan."
+    "noCamera": "Kamera tidak dibenarkan. Benarkan dalam Tetapan.",
+    "more": "Lagi",
+    "newVersion": "Versi baharu",
+    "versions": "Versi",
+    "version": "Versi {{n}}",
+    "current": "Semasa",
+    "restore": "Pulihkan",
+    "progress": "Memuat naik… {{percent}}%",
+    "cancelUpload": "Batalkan muat naik",
+    "changed": "Fail ini telah berubah sejak anda membukanya. Semak semula, kemudian cuba lagi."
   },
   "search": {
     "title": "Cari",
