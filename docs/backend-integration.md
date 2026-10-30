@@ -15,7 +15,7 @@ app.
 | Backend                                                                                                                                                                                       | Mobile                                                                                          |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | auth: sign-in, two-factor, sign-up, password reset, tenants, sessions, step-up, account deletion, export, consents, avatar                                                                    | yes                                                                                             |
-| auth: provider and tenant SSO sign-in, magic links                                                                                                                                            | planned (#12)                                                                                   |
+| auth: provider sign-in (yes), tenant SSO and magic links                                                                                                                                      | provider sign-in: yes; SSO, magic links: later                                                  |
 | auth: passkeys, app attestation                                                                                                                                                               | planned (#13)                                                                                   |
 | notifications: list, realtime, preferences, quiet hours                                                                                                                                       | yes                                                                                             |
 | notifications: push                                                                                                                                                                           | planned (#13)                                                                                   |
@@ -117,14 +117,14 @@ forgot password, `me`). Email links (verification, password reset) open
 the web app; the app then says "check your email" and returns to sign-in.
 Passkeys come with the account phase (a development build).
 
-| Method                    | Status                     | How                                                                                                                                                                                                                                                                                                                                                                        |
-| ------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Password                  | built                      | `POST /v1/auth/token`                                                                                                                                                                                                                                                                                                                                                      |
-| Two-factor                | built                      | the first `/token` answers the problem `mfa_required`; ask for the code and send the same request with `code` (or `recoveryCode`)                                                                                                                                                                                                                                          |
-| Sign-up                   | built                      | `POST /v1/auth/sign-up` when `GET /v1/auth/methods` says it's on; then verify the email, then `/token`                                                                                                                                                                                                                                                                     |
-| Passkeys                  | account phase              | `POST /v1/auth/passkeys/sign-in/options` → the platform's passkey API → `POST /v1/auth/passkeys/token { response, code?, tenantId? }`. Needs a dev build, and on the backend `PASSKEY_APPLE_APPS` (`TEAMID.bundle.id`) and `PASSKEY_ANDROID_APPS` (package and signing SHA-256), which it serves as `apple-app-site-association` and `assetlinks.json` on the RP ID's host |
-| Google, Microsoft, GitHub | **blocked on the backend** | see below                                                                                                                                                                                                                                                                                                                                                                  |
-| Magic link                | **blocked on the backend** | see below                                                                                                                                                                                                                                                                                                                                                                  |
+| Method                    | Status        | How                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Password                  | built         | `POST /v1/auth/token`                                                                                                                                                                                                                                                                                                                                                      |
+| Two-factor                | built         | the first `/token` answers the problem `mfa_required`; ask for the code and send the same request with `code` (or `recoveryCode`)                                                                                                                                                                                                                                          |
+| Sign-up                   | built         | `POST /v1/auth/sign-up` when `GET /v1/auth/methods` says it's on; then verify the email, then `/token`                                                                                                                                                                                                                                                                     |
+| Passkeys                  | account phase | `POST /v1/auth/passkeys/sign-in/options` → the platform's passkey API → `POST /v1/auth/passkeys/token { response, code?, tenantId? }`. Needs a dev build, and on the backend `PASSKEY_APPLE_APPS` (`TEAMID.bundle.id`) and `PASSKEY_ANDROID_APPS` (package and signing SHA-256), which it serves as `apple-app-site-association` and `assetlinks.json` on the RP ID's host |
+| Google, Microsoft, GitHub | built         | the system browser and a handoff code: below                                                                                                                                                                                                                                                                                                                               |
+| Magic link                | waits (#13)   | a universal / app link: a paid Apple team or Android                                                                                                                                                                                                                                                                                                                       |
 
 `GET /v1/auth/methods` says what this backend offers: show only those.
 
@@ -139,15 +139,31 @@ attestation"); the app side needs a development build and a paid Apple team
 or Android, so it waits. Meanwhile run with `CAPTCHA_MODE` unset (the
 default); when a captcha is required the app says so (`errors.captcha`).
 
-**Next: provider sign-in and magic links.** The backend hands tokens to
-apps now: a provider or tenant-SSO login started with `redirectUri` (one of
-`NATIVE_REDIRECT_URIS`) and a PKCE `codeChallenge` ends at
-`redirectUri?code=…`, and `POST /v1/auth/token/exchange { handoffCode,
-codeVerifier, code?, recoveryCode?, tenantId? }` answers tokens;
-`POST /v1/auth/magic-link/handoff` does the same for a link the app opens
-(a universal/app link, so a paid Apple team or Android). Provider sign-in
-fits `expo-web-browser`'s auth session in Expo Go; it waits for a provider
-configured on the test server.
+**Provider sign-in** (`signInWithProvider`, the buttons from
+`methods.providers`): the API's `GET /v1/auth/oidc/{provider}/login` with
+`redirectUri` and a PKCE `codeChallenge` (S256, `expo-crypto`) opens in the
+system browser (`WebBrowser.openAuthSessionAsync`). It ends at
+`<APP_ID>:/auth?code=…`: `redirectUri` is the app's ID as a scheme
+(`app.config.ts` registers it), which the backend's `NATIVE_REDIRECT_URIS`
+must list exactly. `POST /v1/auth/token/exchange { handoffCode,
+codeVerifier, code?, recoveryCode?, tenantId? }` answers tokens; then the
+same two-factor and tenant steps as a password. The code and verifier stay
+in memory; a wrong two-factor code spends the handoff code, so the person
+starts again. On iOS the browser session catches the return itself; on
+Android it also arrives as a link, which `src/app/+native-intent.tsx`
+keeps from opening a screen. Works in Expo Go on iOS.
+
+- **Which account:** the backend links a provider identity to an existing
+  account by verified email only. A GitHub with another address is linked
+  once from the web app (a browser session, `?link=true`): a token-only
+  app can't link yet, nor step up through a provider (backend #974).
+  Account → Security lists the linked providers and disconnects one
+  (`GET`/`DELETE /v1/auth/identities`; never the last way to sign in).
+- **Backend setup:** the provider's client ID and secret
+  (`GITHUB_CLIENT_ID/SECRET`…, callback `<APP_URL>/v1/auth/oidc/<provider>/callback`)
+  and `NATIVE_REDIRECT_URIS=<APP_ID>:/auth`.
+- **Not built:** tenant SSO (`POST /v1/auth/sso/discover`): no SSO
+  connection on the test server to build it against.
 
 ## Tenants (backend `tenancy`)
 

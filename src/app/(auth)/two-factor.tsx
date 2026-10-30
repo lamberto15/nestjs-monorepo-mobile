@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
@@ -11,6 +12,7 @@ import { ThemedText } from '@/components/themed-text';
 import { apiErrorMessage, firstError } from '@/features/auth/errors';
 import { useSecondFactor } from '@/features/auth/hooks';
 import { goToStep } from '@/features/auth/navigation';
+import { signInPending } from '@/features/auth/sign-in-flow';
 
 /** The second factor of a sign-in. */
 export default function TwoFactorScreen() {
@@ -72,6 +74,14 @@ export default function TwoFactorScreen() {
         <ThemedText themeColor="danger" accessibilityRole="alert">
           {apiErrorMessage(verify.error, t)}
         </ThemedText>
+      )}
+      {verify.error && !signInPending() && (
+        // A provider's sign-in: a wrong code spent it, so it starts over.
+        <Button
+          title={t('twoFactor.startAgain')}
+          variant="secondary"
+          onPress={() => router.dismissTo('/sign-in')}
+        />
       )}
       <Button
         title={t('twoFactor.submit')}

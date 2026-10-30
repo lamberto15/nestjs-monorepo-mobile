@@ -13,7 +13,9 @@
     "password": "Kata laluan",
     "submit": "Log masuk",
     "forgot": "Lupa kata laluan?",
-    "signUp": "Cipta akaun"
+    "signUp": "Cipta akaun",
+    "with": "Teruskan dengan {{provider}}",
+    "providerFailed": "Log masuk itu tidak berjaya. Cuba lagi, atau guna kata laluan anda."
   },
   "twoFactor": {
     "title": "Kod pengesahan",
@@ -23,7 +25,8 @@
     "recoveryCode": "Kod pemulihan",
     "useRecovery": "Gunakan kod pemulihan",
     "useCode": "Gunakan kod daripada aplikasi",
-    "submit": "Teruskan"
+    "submit": "Teruskan",
+    "startAgain": "Mula semula"
   },
   "chooseTenant": {
     "title": "Pilih organisasi",
@@ -459,5 +462,12 @@
       "read-only": "Perkhidmatan hanya boleh dibaca buat masa ini: perubahan tidak disimpan.",
       "maintenance": "Perkhidmatan sedang diselenggara."
     }
+  },
+  "identities": {
+    "title": "Log masuk dengan",
+    "disconnect": "Putuskan",
+    "disconnectTitle": "Putuskan {{provider}}?",
+    "disconnectBody": "Anda tidak lagi boleh log masuk dengannya. Sambungkan semula dalam aplikasi web.",
+    "last": "Ini satu-satunya cara anda log masuk: tetapkan kata laluan dahulu."
   }
 }

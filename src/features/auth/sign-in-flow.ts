@@ -1,12 +1,17 @@
 /**
  * Signing in with tokens (docs/backend-integration.md, "Sign-in methods",
- * "Tenants"): password, then the two-factor code when the API asks for it,
- * then the tenant when the person has several. The credentials stay in this
- * module's memory until the two-factor step is done: never in route params
- * or storage.
+ * "Tenants"): a password, or a provider (GitHub, Google, Microsoft) in the
+ * system browser; then the two-factor code when the API asks for it, then
+ * the tenant when the person has several. The credentials (or a provider's
+ * one-time handoff code and its verifier) stay in this module's memory
+ * until the two-factor step is done: never in route params or storage.
  */
+import Constants from 'expo-constants';
+import * as Crypto from 'expo-crypto';
+import * as WebBrowser from 'expo-web-browser';
+
 import { isApiError, unwrap, type GetResponse } from '@/api/client';
-import { clientWithToken, publicApi } from '@/api/public-api';
+import { API_URL, clientWithToken, publicApi } from '@/api/public-api';
 import { session, type Tokens } from '@/api/session';
 
 export interface Credentials {
@@ -25,9 +30,16 @@ export type Tenant = GetResponse<'/v1/auth/tenants'>['items'][number];
 /** Where the flow goes next. */
 export type Step = 'twoFactor' | 'chooseTenant' | 'signedIn';
 
+/** A provider's sign-in, back from the browser: what exchanges it for tokens. */
+interface Handoff {
+  handoffCode: string;
+  codeVerifier: string;
+}
+
 type Pending =
   /** Waiting for the two-factor code. */
   | { credentials: Credentials }
+  | { handoff: Handoff }
   /** Signed in (tokens in the tenant the API chose), choosing a tenant. */
   | { tokens: Tokens; tenants: Tenant[] };
 
@@ -56,6 +68,11 @@ export async function signIn(
     }
     throw error;
   }
+  return withTokens(tokens);
+}
+
+/** Signed in: on to the tenant, when there are several. */
+async function withTokens(tokens: Tokens): Promise<Step> {
   const { items } = await unwrap(
     clientWithToken(tokens.accessToken).GET('/v1/auth/tenants'),
   );
@@ -68,10 +85,100 @@ export async function signIn(
 
 /** The two-factor step: the code for the pending sign-in. */
 export function continueWithSecondFactor(second: SecondFactor): Promise<Step> {
+  if (pending && 'handoff' in pending) {
+    return exchange(pending.handoff, second);
+  }
   if (!pending || !('credentials' in pending)) {
     throw new Error('No sign-in in progress');
   }
   return signIn(pending.credentials, second);
+}
+
+/** Where the browser hands back: the app's own scheme (`<APP_ID>:/auth`), one of the API's `NATIVE_REDIRECT_URIS`. */
+export function providerRedirectUri(): string | null {
+  const config = Constants.expoConfig;
+  const appId = config?.ios?.bundleIdentifier ?? config?.android?.package;
+  return appId ? `${appId}:/auth` : null;
+}
+
+const base64Url = (base64: string) =>
+  base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+/** PKCE (RFC 7636, S256): a random verifier and its SHA-256 challenge. */
+export async function pkce() {
+  const bytes = Crypto.getRandomBytes(32);
+  const codeVerifier = base64Url(btoa(String.fromCharCode(...bytes)));
+  const codeChallenge = base64Url(
+    await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      codeVerifier,
+      { encoding: Crypto.CryptoEncoding.BASE64 },
+    ),
+  );
+  return { codeVerifier, codeChallenge };
+}
+
+/**
+ * A provider's sign-in (`GET /v1/auth/oidc/{provider}/login`) in the
+ * system browser, which hands back a one-time code on the app's scheme;
+ * the code and the verifier make the tokens. Null: the person closed the
+ * browser.
+ */
+export async function signInWithProvider(
+  provider: string,
+): Promise<Step | null> {
+  const redirectUri = providerRedirectUri();
+  if (!redirectUri) {
+    throw new Error('APP_ID is not set: no redirect for a provider sign-in');
+  }
+  const { codeVerifier, codeChallenge } = await pkce();
+  const url = `${API_URL}/v1/auth/oidc/${encodeURIComponent(provider)}/login?${new URLSearchParams({ redirectUri, codeChallenge })}`;
+  const result = await WebBrowser.openAuthSessionAsync(url, redirectUri);
+  if (result.type !== 'success') {
+    return null;
+  }
+  const back = new URL(result.url).searchParams;
+  const handoffCode = back.get('code');
+  if (!handoffCode) {
+    // `?error=sign_in_failed`: the provider said no, or no such account.
+    throw new ProviderSignInError(back.get('error') ?? 'sign_in_failed');
+  }
+  return exchange({ handoffCode, codeVerifier });
+}
+
+/** The browser came back without a code. */
+export class ProviderSignInError extends Error {
+  constructor(readonly code: string) {
+    super(code);
+    this.name = 'ProviderSignInError';
+  }
+}
+
+/**
+ * The handoff code for tokens (`POST /v1/auth/token/exchange`). Without the
+ * two-factor code the API answers `mfa_required` and the code still works;
+ * a wrong one spends it (start again in the browser).
+ */
+async function exchange(
+  handoff: Handoff,
+  second?: SecondFactor,
+): Promise<Step> {
+  let tokens: Tokens;
+  try {
+    tokens = await unwrap(
+      publicApi.POST('/v1/auth/token/exchange', {
+        body: { ...handoff, ...second },
+      }),
+    );
+  } catch (error) {
+    if (isApiError(error) && error.code === 'mfa_required' && !second) {
+      pending = { handoff };
+      return 'twoFactor';
+    }
+    pending = null;
+    throw error;
+  }
+  return withTokens(tokens);
 }
 
 /** The tenants to choose from, the one the tokens act in first. */
@@ -101,6 +208,9 @@ export async function chooseTenant(tenantId: string): Promise<Step> {
     ),
   );
 }
+
+/** Whether a sign-in waits for its next step (a provider's spent code leaves none). */
+export const signInPending = () => pending !== null;
 
 /** Leaving the flow: forget the credentials. */
 export function cancelSignIn() {
