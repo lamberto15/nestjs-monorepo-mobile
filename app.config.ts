@@ -14,12 +14,31 @@ if (appId && !/^[a-zA-Z][\w-]*(\.[a-zA-Z][\w-]*)+$/.test(appId)) {
   );
 }
 
+/**
+ * Passkeys: the app may use the credentials of the API's domain (the
+ * WebAuthn RP ID), which serves `apple-app-site-association` listing
+ * `<TEAMID>.<APP_ID>` (backend `PASSKEY_APPLE_APPS`). `mode=developer`
+ * outside store builds: iOS reads the file from the domain itself, not
+ * Apple's cache (Developer Mode on a device).
+ */
+const apiHost = process.env.EXPO_PUBLIC_API_URL
+  ? new URL(process.env.EXPO_PUBLIC_API_URL).hostname
+  : undefined;
+const developerMode =
+  process.env.EAS_BUILD_PROFILE === 'production' ? '' : '?mode=developer';
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: config.name ?? 'NestJS Mobile',
   slug: config.slug ?? 'nestjs-monorepo-mobile',
   ...(appId && {
-    ios: { ...config.ios, bundleIdentifier: appId },
+    ios: {
+      ...config.ios,
+      bundleIdentifier: appId,
+      ...(apiHost && {
+        associatedDomains: [`webcredentials:${apiHost}${developerMode}`],
+      }),
+    },
     android: { ...config.android, package: appId },
   }),
 });
