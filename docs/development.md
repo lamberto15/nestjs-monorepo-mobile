@@ -37,7 +37,17 @@ Program). Once, on the Mac and the phone:
 `pnpm ios` / `pnpm android` build and install (`expo run:*`); `pnpm start`
 alone serves Expo Go or a build already installed. The free signature
 expires after **7 days** (build again). A free team can't sign Push or
-Associated Domains, so no push, passkeys or universal links (#13).
+Associated Domains, so no push, passkeys or universal links (#13): build
+the phone with `PASSKEYS=off pnpm ios --device` (passkeys stay hidden).
+
+**Passkeys on the simulator, free:** a simulator build carries the
+Associated Domains link (`pnpm ios`), and iOS checks it against the API's
+`apple-app-site-association` (backend `PASSKEY_APPLE_APPS` =
+`<TEAMID>.<APP_ID>`, your Personal Team's ID works). To store passkeys,
+sign the simulator in to an Apple Account with Passwords (iCloud Keychain)
+on, and enroll Face ID (Features → Face ID → Enrolled; Matching Face at the
+prompt). Without an Apple Account it only offers a QR code, which needs
+Bluetooth the simulator doesn't have.
 
 ## Make it yours
 

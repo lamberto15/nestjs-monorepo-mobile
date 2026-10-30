@@ -15,7 +15,9 @@
     "forgot": "Lupa kata laluan?",
     "signUp": "Cipta akaun",
     "with": "Teruskan dengan {{provider}}",
-    "providerFailed": "Log masuk itu tidak berjaya. Cuba lagi, atau guna kata laluan anda."
+    "providerFailed": "Log masuk itu tidak berjaya. Cuba lagi, atau guna kata laluan anda.",
+    "passkey": "Log masuk dengan kunci laluan",
+    "passkeyFailed": "Tiada kunci laluan digunakan. Belum menambahnya pada peranti ini? Log masuk dengan kata laluan, kemudian tambahkannya dalam Akaun → Keselamatan."
   },
   "twoFactor": {
     "title": "Kod pengesahan",
@@ -26,7 +28,8 @@
     "useRecovery": "Gunakan kod pemulihan",
     "useCode": "Gunakan kod daripada aplikasi",
     "submit": "Teruskan",
-    "startAgain": "Mula semula"
+    "startAgain": "Mula semula",
+    "passkeyAgain": "Guna kunci laluan anda sekali lagi untuk selesai log masuk."
   },
   "chooseTenant": {
     "title": "Pilih organisasi",
@@ -469,5 +472,13 @@
     "disconnectTitle": "Putuskan {{provider}}?",
     "disconnectBody": "Anda tidak lagi boleh log masuk dengannya. Sambungkan semula dalam aplikasi web.",
     "last": "Ini satu-satunya cara anda log masuk: tetapkan kata laluan dahulu."
+  },
+  "passkeys": {
+    "title": "Kunci laluan",
+    "add": "Tambah kunci laluan",
+    "remove": "Alih keluar",
+    "removeTitle": "Alih keluar {{name}}?",
+    "synced": "Disegerakkan",
+    "lastUsed": "Kali terakhir digunakan {{time}}"
   }
 }

@@ -17,10 +17,12 @@ import {
 } from '@/features/auth/errors';
 import {
   useAuthMethods,
+  usePasskeySignIn,
   useProviderSignIn,
   useSignIn,
 } from '@/features/auth/hooks';
 import { goToStep } from '@/features/auth/navigation';
+import { PasskeyFailed, passkeysAvailable } from '@/features/auth/passkeys';
 import { providerName } from '@/features/auth/providers';
 import { ProviderSignInError } from '@/features/auth/sign-in-flow';
 
@@ -29,6 +31,7 @@ export default function SignInScreen() {
   const methods = useAuthMethods();
   const signIn = useSignIn();
   const provider = useProviderSignIn();
+  const passkey = usePasskeySignIn();
 
   const schema = z.object({
     email: z.email({ error: t('validation.email') }),
@@ -99,6 +102,33 @@ export default function SignInScreen() {
         onPress={() => form.handleSubmit()}
       />
 
+      {methods.data?.passkeys && passkeysAvailable() && (
+        <Button
+          title={t('signIn.passkey')}
+          variant="secondary"
+          loading={passkey.isPending}
+          onPress={async () => {
+            // The account's passkeys when an email is typed, else the device's.
+            const email = form.getFieldValue('email').trim();
+            const step = await passkey
+              .mutateAsync(
+                z.email().safeParse(email).success ? email : undefined,
+              )
+              .catch(() => null);
+            if (step) {
+              goToStep(step);
+            }
+          }}
+        />
+      )}
+      {passkey.error && (
+        <ThemedText themeColor="danger" accessibilityRole="alert">
+          {passkey.error instanceof PasskeyFailed
+            ? t('signIn.passkeyFailed') +
+              (__DEV__ ? ` (${passkey.error.reason})` : '')
+            : apiErrorMessage(passkey.error, t)}
+        </ThemedText>
+      )}
       {(methods.data?.providers ?? []).map((name) => (
         <Button
           key={name}

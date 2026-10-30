@@ -19,11 +19,13 @@ if (appId && !/^[a-zA-Z][\w-]*(\.[a-zA-Z][\w-]*)+$/.test(appId)) {
  * WebAuthn RP ID), which serves `apple-app-site-association` listing
  * `<TEAMID>.<APP_ID>` (backend `PASSKEY_APPLE_APPS`). `mode=developer`
  * outside store builds: iOS reads the file from the domain itself, not
- * Apple's cache (Developer Mode on a device).
+ * Apple's cache (Developer Mode on a device). `PASSKEYS=off` leaves the
+ * link out: a free Apple team can't sign it for a real device.
  */
-const apiHost = process.env.EXPO_PUBLIC_API_URL
-  ? new URL(process.env.EXPO_PUBLIC_API_URL).hostname
-  : undefined;
+const apiHost =
+  process.env.PASSKEYS !== 'off' && process.env.EXPO_PUBLIC_API_URL
+    ? new URL(process.env.EXPO_PUBLIC_API_URL).hostname
+    : undefined;
 const developerMode =
   process.env.EAS_BUILD_PROFILE === 'production' ? '' : '?mode=developer';
 

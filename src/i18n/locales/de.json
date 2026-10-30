@@ -15,7 +15,9 @@
     "forgot": "Passwort vergessen?",
     "signUp": "Konto erstellen",
     "with": "Weiter mit {{provider}}",
-    "providerFailed": "Diese Anmeldung hat nicht geklappt. Versuche es erneut oder nutze dein Passwort."
+    "providerFailed": "Diese Anmeldung hat nicht geklappt. Versuche es erneut oder nutze dein Passwort.",
+    "passkey": "Mit Passkey anmelden",
+    "passkeyFailed": "Es wurde kein Passkey verwendet. Noch keinen auf diesem Gerät? Melde dich mit deinem Passwort an und füge ihn unter Konto → Sicherheit hinzu."
   },
   "twoFactor": {
     "title": "Bestätigungscode",
@@ -26,7 +28,8 @@
     "useRecovery": "Wiederherstellungscode verwenden",
     "useCode": "Code aus der App verwenden",
     "submit": "Weiter",
-    "startAgain": "Neu beginnen"
+    "startAgain": "Neu beginnen",
+    "passkeyAgain": "Nutze deinen Passkey noch einmal, um die Anmeldung abzuschließen."
   },
   "chooseTenant": {
     "title": "Organisation wählen",
@@ -469,5 +472,13 @@
     "disconnectTitle": "{{provider}} trennen?",
     "disconnectBody": "Du kannst dich dann nicht mehr damit anmelden. In der Web-App kannst du es wieder verbinden.",
     "last": "Das ist deine einzige Anmeldemöglichkeit: Lege zuerst ein Passwort fest."
+  },
+  "passkeys": {
+    "title": "Passkeys",
+    "add": "Passkey hinzufügen",
+    "remove": "Entfernen",
+    "removeTitle": "{{name}} entfernen?",
+    "synced": "Synchronisiert",
+    "lastUsed": "Zuletzt verwendet {{time}}"
   }
 }

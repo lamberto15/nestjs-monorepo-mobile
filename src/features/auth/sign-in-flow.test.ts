@@ -188,3 +188,59 @@ describe('a provider (GitHub) in the browser', () => {
     await expect(flow.signInWithProvider('github')).resolves.toBeNull();
   });
 });
+
+describe('a passkey', () => {
+  test('with two-factor: the code goes with a second passkey prompt (each challenge works once)', async () => {
+    const getPasskey = jest.fn(async (options: { challenge: string }) => ({
+      id: 'c1',
+      rawId: 'c1',
+      type: 'public-key',
+      response: { clientDataJSON: options.challenge },
+      clientExtensionResults: {},
+    }));
+    jest.doMock('@/features/auth/passkeys', () => ({ getPasskey }));
+    const { flow } = load();
+    let challenges = 0;
+    const calls = fakeApi({
+      'POST /v1/auth/passkeys/sign-in/options': () =>
+        reply({ challenge: `ch${(challenges += 1)}` }),
+      'POST /v1/auth/passkeys/token': (call) =>
+        (call.body as { code?: string }).code
+          ? reply(pair('t1'))
+          : problem(401, 'mfa_required'),
+      'GET /v1/auth/tenants': () => reply({ items: [tenants[0]] }),
+    });
+
+    expect(await flow.signInWithPasskey('ada@example.com')).toBe('twoFactor');
+    expect(await flow.continueWithSecondFactor({ code: '123456' })).toBe(
+      'signedIn',
+    );
+    // Two prompts, each answering its own challenge.
+    expect(getPasskey.mock.calls.map(([options]) => options.challenge)).toEqual(
+      ['ch1', 'ch2'],
+    );
+    const tokens = calls.filter(
+      (call) => call.path === '/v1/auth/passkeys/token',
+    );
+    expect(tokens[1].body).toMatchObject({
+      code: '123456',
+      response: { response: { clientDataJSON: 'ch2' } },
+    });
+    expect(
+      calls.find((call) => call.path === '/v1/auth/passkeys/sign-in/options')
+        ?.body,
+    ).toEqual({ email: 'ada@example.com' });
+  });
+
+  test('cancelled at the prompt: nothing happens', async () => {
+    jest.doMock('@/features/auth/passkeys', () => ({
+      getPasskey: async () => null,
+    }));
+    const { flow } = load();
+    fakeApi({
+      'POST /v1/auth/passkeys/sign-in/options': () => reply({ challenge: 'c' }),
+    });
+    await expect(flow.signInWithPasskey()).resolves.toBeNull();
+    expect(flow.signInPending()).toBe(false);
+  });
+});

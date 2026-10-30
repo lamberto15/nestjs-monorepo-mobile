@@ -12,7 +12,7 @@ import { ThemedText } from '@/components/themed-text';
 import { apiErrorMessage, firstError } from '@/features/auth/errors';
 import { useSecondFactor } from '@/features/auth/hooks';
 import { goToStep } from '@/features/auth/navigation';
-import { signInPending } from '@/features/auth/sign-in-flow';
+import { PasskeyCancelled, signInPending } from '@/features/auth/sign-in-flow';
 
 /** The second factor of a sign-in. */
 export default function TwoFactorScreen() {
@@ -72,7 +72,9 @@ export default function TwoFactorScreen() {
       </form.Field>
       {verify.error && (
         <ThemedText themeColor="danger" accessibilityRole="alert">
-          {apiErrorMessage(verify.error, t)}
+          {verify.error instanceof PasskeyCancelled
+            ? t('twoFactor.passkeyAgain')
+            : apiErrorMessage(verify.error, t)}
         </ThemedText>
       )}
       {verify.error && !signInPending() && (
