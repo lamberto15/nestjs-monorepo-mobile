@@ -1,20 +1,39 @@
-# Creates a note, finds it, deletes it. Runs after sign-in.yaml.
+# Creates a note, finds it, deletes it, signs out. Runs after sign-in.yaml.
 appId: host.exp.Exponent
 ---
 - runFlow: sign-in.yaml
+# A title of its own, so notes left by an earlier run can't pass the checks.
+- evalScript: ${output.title = 'Maestro check ' + Date.now()}
 - tapOn: Notes
-- tapOn: New
+# By its link: in Expo Go its floating tools button covers the header's "New".
+- openLink: ${(APP_URL || 'exp://127.0.0.1:8081') + '/--/notes/new'}
 - tapOn: Title
-- inputText: Maestro check
+- inputText: ${output.title}
 - tapOn: Create note
-- assertVisible: Maestro check
+# Saved: the note's own screen (the title field would match too early).
+- extendedWaitUntil:
+    visible: Share
+    timeout: 15000
+- assertVisible: ${output.title}
 - tapOn: Delete
+# The confirmation's button: beside its Cancel (the page's Delete is behind).
+- extendedWaitUntil:
+    visible: Delete this note?
+    timeout: 5000
 - tapOn:
     text: Delete
-    index: 1
-- assertNotVisible: Maestro check
+    rightOf: Cancel
+# Back on the list, and the note is gone (a row is named by all its text).
+- extendedWaitUntil:
+    visible: Export as CSV
+    timeout: 10000
+- assertNotVisible: ${'.*' + output.title + '.*'}
 - tapOn: Account
+# Centered: at the bottom, the floating tab bar covers it.
 - scrollUntilVisible:
     element: Sign out
+    centerElement: true
 - tapOn: Sign out
-- assertVisible: Forgot password?
+- extendedWaitUntil:
+    visible: Forgot password?
+    timeout: 10000

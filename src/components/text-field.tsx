@@ -14,7 +14,14 @@ export function TextField({ label, error, style, ...rest }: TextFieldProps) {
   const theme = useTheme();
   return (
     <View style={styles.field}>
-      <ThemedText type="smallBold">{label}</ThemedText>
+      {/* The input carries the label: screen readers say it once. */}
+      <ThemedText
+        type="smallBold"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        {label}
+      </ThemedText>
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor={theme.textSecondary}

@@ -1,6 +1,6 @@
 import { useForm, useStore } from '@tanstack/react-form';
-import { useNavigation, usePreventRemove } from 'expo-router';
-import { useRef, useState } from 'react';
+import { usePreventRemove } from 'expo-router';
+import { useState } from 'react';
 import { Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -50,39 +50,34 @@ export function NoteForm({
       }),
     },
     onSubmit: async ({ value }) => {
-      // Saving navigates away: let that through the unsaved-changes guard.
-      saved.current = true;
+      // Saving navigates away: the guard steps aside first, and comes back
+      // if the save fails.
+      setSaved(true);
+      disablePrevention();
       await onSubmit({
         title: value.title.trim(),
         body: value.body,
         ...(Object.keys(custom).length > 0 && { custom }),
       })
         .then(() => feedback.success())
-        .catch(() => {
-          saved.current = false;
-        });
+        .catch(() => setSaved(false));
     },
   });
 
   // Leaving with unsaved changes (back, a swipe, a tab) asks first.
-  const navigation = useNavigation();
-  const saved = useRef(false);
+  const [saved, setSaved] = useState(false);
   const formDirty = useStore(form.store, (state) => state.isDirty);
   const dirty =
     formDirty ||
     JSON.stringify(custom) !== JSON.stringify(initial.custom ?? {});
-  usePreventRemove(dirty, ({ data }) => {
-    if (saved.current) {
-      navigation.dispatch(data.action);
-      return;
-    }
+  const disablePrevention = usePreventRemove(dirty && !saved, ({ repeat }) => {
     feedback.warning();
     Alert.alert(t('unsaved.title'), t('unsaved.body'), [
       { text: t('unsaved.keep'), style: 'cancel' },
       {
         text: t('unsaved.discard'),
         style: 'destructive',
-        onPress: () => navigation.dispatch(data.action),
+        onPress: repeat,
       },
     ]);
   });

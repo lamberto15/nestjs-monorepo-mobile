@@ -1,16 +1,37 @@
 # Signs in with the test account from EMAIL and PASSWORD, and lands on Home.
+# Several organizations: picks the last used one.
+# Already signed in (a session kept from before): goes straight to Home.
 appId: host.exp.Exponent
 ---
 - launchApp
 # Expo Go opens on its own home screen: load the project from Metro.
 - openLink: ${APP_URL || 'exp://127.0.0.1:8081'}
-- tapOn: Email
-- inputText: ${EMAIL}
-- tapOn: Password
-- inputText: ${PASSWORD}
-- tapOn:
-    text: Sign in
-    index: 1
+- extendedWaitUntil:
+    visible:
+      text: (Home|Forgot password\?)
+    timeout: 30000
+- runFlow:
+    when:
+      visible: Forgot password?
+    commands:
+      - tapOn: Email
+      - inputText: ${EMAIL}
+      - tapOn: Password
+      - inputText: ${PASSWORD}
+      - tapOn: NestJS Mobile # closes the keyboard
+      - tapOn: Sign in
+# Several organizations: the last used one.
+- extendedWaitUntil:
+    visible:
+      text: (Home|Choose an organization)
+    timeout: 15000
+- runFlow:
+    when:
+      visible: Choose an organization
+    commands:
+      - tapOn: '.*Last used.*'
+# Signed in: start from Home, whichever tab the app reopened on.
+- tapOn: Home
 - extendedWaitUntil:
     visible: Waiting on you
     timeout: 15000
