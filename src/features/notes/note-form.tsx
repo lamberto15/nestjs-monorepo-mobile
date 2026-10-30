@@ -15,7 +15,10 @@ import {
   firstError,
 } from '@/features/auth/errors';
 import { isConflict, type NoteInput } from '@/features/notes/hooks';
-import { CustomFieldsInputs } from '@/features/records/custom-fields';
+import {
+  CustomFieldsInputs,
+  customFields,
+} from '@/features/records/custom-fields';
 import { useListMetadata } from '@/features/records/list';
 
 /** Title and body, for a new note and an edit; the API's field errors under their fields. */
@@ -115,11 +118,15 @@ export function NoteForm({
         metadata={metadata.data}
         values={custom}
         onChange={setCustom}
+        error={error}
       />
       {Boolean(error) &&
         !isConflict(error) &&
         !fieldError(error, 'title') &&
-        !fieldError(error, 'body') && (
+        !fieldError(error, 'body') &&
+        !customFields(metadata.data).some((field) =>
+          fieldError(error, field.name),
+        ) && (
           <ThemedText themeColor="danger" accessibilityRole="alert">
             {apiErrorMessage(error, t)}
           </ThemedText>

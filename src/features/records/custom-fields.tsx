@@ -5,6 +5,7 @@ import { ChoiceChips } from '@/components/choice-chips';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
+import { fieldError } from '@/features/auth/errors';
 import {
   fieldLabel,
   type ListMetadata,
@@ -64,15 +65,21 @@ export function toCustomValue(
   return text.trim();
 }
 
-/** Inputs for a record type's custom fields, typed by the metadata. */
+/**
+ * Inputs for a record type's custom fields, typed by the metadata. The
+ * API's error for one (`custom.<key>`: required, not an option…) shows
+ * under it.
+ */
 export function CustomFieldsInputs({
   metadata,
   values,
   onChange,
+  error,
 }: {
   metadata: ListMetadata | undefined;
   values: Record<string, unknown>;
   onChange: (values: Record<string, unknown>) => void;
+  error?: unknown;
 }) {
   const { t } = useTranslation();
   const fields = customFields(metadata);
@@ -87,15 +94,28 @@ export function CustomFieldsInputs({
       {fields.map((field) => {
         const value = values[keyOf(field)];
         const label = fieldLabel(field);
+        const problem = fieldError(error, field.name);
+        const below = problem && (
+          <ThemedText
+            type="small"
+            themeColor="danger"
+            accessibilityRole="alert"
+          >
+            {problem}
+          </ThemedText>
+        );
         if (field.type === 'boolean') {
           return (
-            <View key={field.name} style={styles.switch}>
-              <ThemedText>{label}</ThemedText>
-              <Switch
-                accessibilityLabel={label}
-                value={value === true}
-                onValueChange={(on) => set(field, on)}
-              />
+            <View key={field.name} style={styles.list}>
+              <View style={styles.switch}>
+                <ThemedText>{label}</ThemedText>
+                <Switch
+                  accessibilityLabel={label}
+                  value={value === true}
+                  onValueChange={(on) => set(field, on)}
+                />
+              </View>
+              {below}
             </View>
           );
         }
@@ -115,6 +135,7 @@ export function CustomFieldsInputs({
                   })),
                 ]}
               />
+              {below}
             </View>
           );
         }
@@ -133,6 +154,7 @@ export function CustomFieldsInputs({
             }
             keyboardType={field.type === 'number' ? 'decimal-pad' : 'default'}
             autoCapitalize={field.type === 'string' ? 'sentences' : 'none'}
+            error={problem}
           />
         );
       })}
