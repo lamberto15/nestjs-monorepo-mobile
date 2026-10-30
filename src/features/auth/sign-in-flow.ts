@@ -145,17 +145,30 @@ export async function signInWithProvider(
   }
   const { codeVerifier, codeChallenge } = await pkce();
   const url = `${API_URL}/v1/auth/oidc/${encodeURIComponent(provider)}/login?${new URLSearchParams({ redirectUri, codeChallenge })}`;
+  const handoffCode = await browserHandoff(url, redirectUri);
+  return handoffCode ? exchange({ handoffCode, codeVerifier }) : null;
+}
+
+/**
+ * Opens `url` in the system browser until it hands back on `redirectUri`:
+ * its one-time code, or null when the person closed it. `?error=` (the
+ * provider said no, no such account, an identity already someone else's)
+ * is a `ProviderSignInError`.
+ */
+export async function browserHandoff(
+  url: string,
+  redirectUri: string,
+): Promise<string | null> {
   const result = await WebBrowser.openAuthSessionAsync(url, redirectUri);
   if (result.type !== 'success') {
     return null;
   }
   const back = new URL(result.url).searchParams;
-  const handoffCode = back.get('code');
-  if (!handoffCode) {
-    // `?error=sign_in_failed`: the provider said no, or no such account.
+  const code = back.get('code');
+  if (!code) {
     throw new ProviderSignInError(back.get('error') ?? 'sign_in_failed');
   }
-  return exchange({ handoffCode, codeVerifier });
+  return code;
 }
 
 /** The browser came back without a code. */

@@ -202,7 +202,9 @@
     "title": "Confirm it's you",
     "hint": "This needs a recent sign-in.",
     "confirm": "Confirm",
-    "signInAgain": "Your account signs in with a link or another provider, which this app can't ask for here. Sign out and sign in again, then try once more."
+    "signInAgain": "Your account signs in with a link or another provider, which this app can't ask for here. Sign out and sign in again, then try once more.",
+    "providerHint": "Your account signs in with a provider: confirm with it.",
+    "providerFailed": "That didn't confirm it's you. Try again."
   },
   "security": {
     "title": "Security"
@@ -470,8 +472,10 @@
     "title": "Signs in with",
     "disconnect": "Disconnect",
     "disconnectTitle": "Disconnect {{provider}}?",
-    "disconnectBody": "You can no longer sign in with it. Connect it again in the web app.",
-    "last": "It is your only way to sign in: set a password first."
+    "disconnectBody": "You can no longer sign in with it until you connect it again.",
+    "last": "It is your only way to sign in: set a password first.",
+    "connect": "Connect {{provider}}",
+    "linkFailed": "That account couldn't be connected: it may already belong to another account here."
   },
   "passkeys": {
     "title": "Passkeys",

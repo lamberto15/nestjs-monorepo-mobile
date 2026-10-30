@@ -202,7 +202,9 @@
     "title": "确认是你本人",
     "hint": "此操作需要近期登录。",
     "confirm": "确认",
-    "signInAgain": "你的账户通过链接或其他提供方登录，应用无法在此请求。请退出后重新登录，再试一次。"
+    "signInAgain": "你的账户通过链接或其他提供方登录，应用无法在此请求。请退出后重新登录，再试一次。",
+    "providerHint": "你的账户通过第三方登录：请通过它确认身份。",
+    "providerFailed": "未能确认你的身份。请重试。"
   },
   "security": {
     "title": "安全"
@@ -470,8 +472,10 @@
     "title": "登录方式",
     "disconnect": "断开",
     "disconnectTitle": "断开 {{provider}}？",
-    "disconnectBody": "之后将无法再用它登录。可在网页版中重新连接。",
-    "last": "这是你唯一的登录方式：请先设置密码。"
+    "disconnectBody": "在重新连接之前将无法用它登录。",
+    "last": "这是你唯一的登录方式：请先设置密码。",
+    "connect": "连接 {{provider}}",
+    "linkFailed": "无法连接该账户：它可能已属于此处的另一个账户。"
   },
   "passkeys": {
     "title": "通行密钥",

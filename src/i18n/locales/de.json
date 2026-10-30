@@ -202,7 +202,9 @@
     "title": "Bestätige, dass du es bist",
     "hint": "Dafür braucht es eine aktuelle Anmeldung.",
     "confirm": "Bestätigen",
-    "signInAgain": "Dein Konto meldet sich per Link oder über einen anderen Anbieter an, was die App hier nicht abfragen kann. Melde dich ab und wieder an und versuche es dann erneut."
+    "signInAgain": "Dein Konto meldet sich per Link oder über einen anderen Anbieter an, was die App hier nicht abfragen kann. Melde dich ab und wieder an und versuche es dann erneut.",
+    "providerHint": "Dein Konto meldet sich über einen Anbieter an: Bestätige es dort.",
+    "providerFailed": "Das hat nicht bestätigt, dass du es bist. Versuche es erneut."
   },
   "security": {
     "title": "Sicherheit"
@@ -470,8 +472,10 @@
     "title": "Anmeldung mit",
     "disconnect": "Trennen",
     "disconnectTitle": "{{provider}} trennen?",
-    "disconnectBody": "Du kannst dich dann nicht mehr damit anmelden. In der Web-App kannst du es wieder verbinden.",
-    "last": "Das ist deine einzige Anmeldemöglichkeit: Lege zuerst ein Passwort fest."
+    "disconnectBody": "Du kannst dich damit nicht mehr anmelden, bis du es wieder verbindest.",
+    "last": "Das ist deine einzige Anmeldemöglichkeit: Lege zuerst ein Passwort fest.",
+    "connect": "{{provider}} verbinden",
+    "linkFailed": "Dieses Konto konnte nicht verbunden werden: Es gehört hier vielleicht schon zu einem anderen Konto."
   },
   "passkeys": {
     "title": "Passkeys",
