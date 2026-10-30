@@ -10,6 +10,7 @@ import {
   chooseTenant,
   continueWithSecondFactor,
   signIn,
+  signInWithPasskey,
   signInWithProvider,
   type Credentials,
   type SecondFactor,
@@ -38,6 +39,13 @@ export function useMe() {
 export function useSignIn() {
   return useMutation({
     mutationFn: (credentials: Credentials) => signIn(credentials),
+  });
+}
+
+/** A passkey sign-in (the account's when an email is typed); null: cancelled. */
+export function usePasskeySignIn() {
+  return useMutation({
+    mutationFn: (email?: string) => signInWithPasskey(email),
   });
 }
 

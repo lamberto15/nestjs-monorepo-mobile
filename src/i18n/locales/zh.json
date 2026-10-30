@@ -15,7 +15,9 @@
     "forgot": "忘记密码？",
     "signUp": "创建账户",
     "with": "使用 {{provider}} 继续",
-    "providerFailed": "此次登录未成功。请重试，或使用密码登录。"
+    "providerFailed": "此次登录未成功。请重试，或使用密码登录。",
+    "passkey": "使用通行密钥登录",
+    "passkeyFailed": "未使用通行密钥。还没在此设备上添加？请用密码登录，然后在“账户 → 安全”中添加。"
   },
   "twoFactor": {
     "title": "验证码",
@@ -26,7 +28,8 @@
     "useRecovery": "使用恢复码",
     "useCode": "使用应用中的验证码",
     "submit": "继续",
-    "startAgain": "重新开始"
+    "startAgain": "重新开始",
+    "passkeyAgain": "请再次使用通行密钥以完成登录。"
   },
   "chooseTenant": {
     "title": "选择组织",
@@ -469,5 +472,13 @@
     "disconnectTitle": "断开 {{provider}}？",
     "disconnectBody": "之后将无法再用它登录。可在网页版中重新连接。",
     "last": "这是你唯一的登录方式：请先设置密码。"
+  },
+  "passkeys": {
+    "title": "通行密钥",
+    "add": "添加通行密钥",
+    "remove": "移除",
+    "removeTitle": "移除 {{name}}？",
+    "synced": "已同步",
+    "lastUsed": "上次使用 {{time}}"
   }
 }

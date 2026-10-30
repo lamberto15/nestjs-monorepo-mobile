@@ -13,6 +13,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { isApiError, unwrap, type GetResponse } from '@/api/client';
 import { API_URL, clientWithToken, publicApi } from '@/api/public-api';
 import { session, type Tokens } from '@/api/session';
+import { getPasskey } from '@/features/auth/passkeys';
 
 export interface Credentials {
   email: string;
@@ -39,6 +40,8 @@ interface Handoff {
 type Pending =
   /** Waiting for the two-factor code. */
   | { credentials: Credentials }
+  /** A passkey sign-in: its challenge is spent, so the code goes with a new one. */
+  | { passkey: { email?: string } }
   | { handoff: Handoff }
   /** Signed in (tokens in the tenant the API chose), choosing a tenant. */
   | { tokens: Tokens; tenants: Tenant[] };
@@ -84,7 +87,16 @@ async function withTokens(tokens: Tokens): Promise<Step> {
 }
 
 /** The two-factor step: the code for the pending sign-in. */
-export function continueWithSecondFactor(second: SecondFactor): Promise<Step> {
+export async function continueWithSecondFactor(
+  second: SecondFactor,
+): Promise<Step> {
+  if (pending && 'passkey' in pending) {
+    const step = await signInWithPasskey(pending.passkey.email, second);
+    if (!step) {
+      throw new PasskeyCancelled();
+    }
+    return step;
+  }
   if (pending && 'handoff' in pending) {
     return exchange(pending.handoff, second);
   }
@@ -207,6 +219,52 @@ export async function chooseTenant(tenantId: string): Promise<Step> {
       }),
     ),
   );
+}
+
+/**
+ * A passkey sign-in (`/v1/auth/passkeys/sign-in/options`, the device's
+ * prompt, `/v1/auth/passkeys/token`): the account's passkeys with an
+ * email, the device's for this site without. Null: the person cancelled.
+ * With two-factor on the API asks for the code; each challenge works once,
+ * so the code goes with a second prompt.
+ */
+export async function signInWithPasskey(
+  email?: string,
+  second?: SecondFactor,
+): Promise<Step | null> {
+  const options = await unwrap(
+    publicApi.POST('/v1/auth/passkeys/sign-in/options', {
+      body: email ? { email } : {},
+    }),
+  );
+  const response = await getPasskey(options as never);
+  if (!response) {
+    return null;
+  }
+  let tokens: Tokens;
+  try {
+    tokens = await unwrap(
+      publicApi.POST('/v1/auth/passkeys/token', {
+        body: { response: response as never, ...second },
+      }),
+    );
+  } catch (error) {
+    if (isApiError(error) && error.code === 'mfa_required' && !second) {
+      pending = { passkey: { email } };
+      return 'twoFactor';
+    }
+    pending = null;
+    throw error;
+  }
+  return withTokens(tokens);
+}
+
+/** The second passkey prompt (after the two-factor code) was cancelled. */
+export class PasskeyCancelled extends Error {
+  constructor() {
+    super('Passkey cancelled');
+    this.name = 'PasskeyCancelled';
+  }
 }
 
 /** Whether a sign-in waits for its next step (a provider's spent code leaves none). */

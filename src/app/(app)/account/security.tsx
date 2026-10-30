@@ -24,10 +24,17 @@ import {
   fieldError,
   firstError,
 } from '@/features/auth/errors';
+import {
+  useAddPasskey,
+  usePasskeys,
+  useRemovePasskey,
+} from '@/features/account/passkeys';
 import { useMe } from '@/features/auth/hooks';
+import { PasskeyFailed, passkeysAvailable } from '@/features/auth/passkeys';
 import { providerName } from '@/features/auth/providers';
+import { formatDateTime } from '@/i18n/format';
 
-/** Two-factor, the app lock, linked providers, and the password. */
+/** Two-factor, the app lock, passkeys, linked providers, and the password. */
 export default function SecurityScreen() {
   const { t } = useTranslation();
   const me = useMe();
@@ -50,9 +57,87 @@ export default function SecurityScreen() {
         onPress={() => router.push('/account/two-factor')}
       />
       <AppLockSwitch />
+      <Passkeys />
       <LinkedProviders />
       <ChangePassword hasPassword={me.data.hasPassword} />
     </Screen>
+  );
+}
+
+/** The account's passkeys; adding one makes it on this device. */
+function Passkeys() {
+  const { t } = useTranslation();
+  const passkeys = usePasskeys();
+  const add = useAddPasskey();
+  const remove = useRemovePasskey();
+  const items = passkeys.data?.items ?? [];
+  const canAdd = passkeysAvailable();
+  if (!items.length && !canAdd) {
+    return null; // Expo Go, and none made elsewhere
+  }
+  const error = [add.error, remove.error].find(
+    (e) => e && !(e instanceof StepUpCancelled),
+  );
+  return (
+    <>
+      <ThemedText type="smallBold" accessibilityRole="header">
+        {t('passkeys.title')}
+      </ThemedText>
+      {items.map((passkey) => (
+        <ListRow
+          key={passkey.id}
+          title={passkey.name}
+          subtitle={[
+            passkey.backedUp ? t('passkeys.synced') : null,
+            passkey.lastUsedAt
+              ? t('passkeys.lastUsed', {
+                  time: formatDateTime(passkey.lastUsedAt),
+                })
+              : null,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+          detail={
+            <Button
+              title={t('passkeys.remove')}
+              variant="secondary"
+              loading={remove.isPending && remove.variables === passkey.id}
+              onPress={() =>
+                Alert.alert(
+                  t('passkeys.removeTitle', { name: passkey.name }),
+                  undefined,
+                  [
+                    { text: t('sessions.cancel'), style: 'cancel' },
+                    {
+                      text: t('passkeys.remove'),
+                      style: 'destructive',
+                      onPress: () => remove.mutate(passkey.id),
+                    },
+                  ],
+                )
+              }
+            />
+          }
+        />
+      ))}
+      {canAdd && (
+        <Button
+          title={t('passkeys.add')}
+          variant="secondary"
+          loading={add.isPending}
+          onPress={() => add.mutate()}
+        />
+      )}
+      {error && (
+        <ThemedText type="small" themeColor="danger" accessibilityRole="alert">
+          {isApiError(error) && error.code === 'last_sign_in_method'
+            ? t('identities.last')
+            : error instanceof PasskeyFailed
+              ? error.reason
+              : apiErrorMessage(error, t)}
+        </ThemedText>
+      )}
+    </>
   );
 }
 

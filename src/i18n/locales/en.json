@@ -15,7 +15,9 @@
     "forgot": "Forgot password?",
     "signUp": "Create an account",
     "with": "Continue with {{provider}}",
-    "providerFailed": "That sign-in didn't work. Try again, or use your password."
+    "providerFailed": "That sign-in didn't work. Try again, or use your password.",
+    "passkey": "Sign in with a passkey",
+    "passkeyFailed": "No passkey was used. Haven't added one on this device? Sign in with your password, then add it in Account → Security."
   },
   "twoFactor": {
     "title": "Two-factor code",
@@ -26,7 +28,8 @@
     "useRecovery": "Use a recovery code",
     "useCode": "Use a code from the app",
     "submit": "Continue",
-    "startAgain": "Start again"
+    "startAgain": "Start again",
+    "passkeyAgain": "Use your passkey once more to finish signing in."
   },
   "chooseTenant": {
     "title": "Choose an organization",
@@ -469,5 +472,13 @@
     "disconnectTitle": "Disconnect {{provider}}?",
     "disconnectBody": "You can no longer sign in with it. Connect it again in the web app.",
     "last": "It is your only way to sign in: set a password first."
+  },
+  "passkeys": {
+    "title": "Passkeys",
+    "add": "Add a passkey",
+    "remove": "Remove",
+    "removeTitle": "Remove {{name}}?",
+    "synced": "Synced",
+    "lastUsed": "Last used {{time}}"
   }
 }
