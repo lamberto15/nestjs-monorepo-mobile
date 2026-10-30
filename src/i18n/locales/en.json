@@ -13,7 +13,9 @@
     "password": "Password",
     "submit": "Sign in",
     "forgot": "Forgot password?",
-    "signUp": "Create an account"
+    "signUp": "Create an account",
+    "with": "Continue with {{provider}}",
+    "providerFailed": "That sign-in didn't work. Try again, or use your password."
   },
   "twoFactor": {
     "title": "Two-factor code",
@@ -23,7 +25,8 @@
     "recoveryCode": "Recovery code",
     "useRecovery": "Use a recovery code",
     "useCode": "Use a code from the app",
-    "submit": "Continue"
+    "submit": "Continue",
+    "startAgain": "Start again"
   },
   "chooseTenant": {
     "title": "Choose an organization",
@@ -459,5 +462,12 @@
       "read-only": "The service is read-only for now: changes are not saved.",
       "maintenance": "The service is in maintenance."
     }
+  },
+  "identities": {
+    "title": "Signs in with",
+    "disconnect": "Disconnect",
+    "disconnectTitle": "Disconnect {{provider}}?",
+    "disconnectBody": "You can no longer sign in with it. Connect it again in the web app.",
+    "last": "It is your only way to sign in: set a password first."
   }
 }

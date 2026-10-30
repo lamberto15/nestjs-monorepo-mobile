@@ -40,5 +40,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }),
     },
     android: { ...config.android, package: appId },
+    // The app's ID is also a URL scheme: a provider sign-in hands back on
+    // `<APP_ID>:/auth` (the API's NATIVE_REDIRECT_URIS, reverse-DNS).
+    scheme: [config.scheme, appId].flat().filter(Boolean) as string[],
   }),
 });

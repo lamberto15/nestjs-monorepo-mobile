@@ -10,6 +10,7 @@ import {
   chooseTenant,
   continueWithSecondFactor,
   signIn,
+  signInWithProvider,
   type Credentials,
   type SecondFactor,
 } from '@/features/auth/sign-in-flow';
@@ -37,6 +38,13 @@ export function useMe() {
 export function useSignIn() {
   return useMutation({
     mutationFn: (credentials: Credentials) => signIn(credentials),
+  });
+}
+
+/** A provider's sign-in in the browser; null: the person closed it. */
+export function useProviderSignIn() {
+  return useMutation({
+    mutationFn: (provider: string) => signInWithProvider(provider),
   });
 }
 

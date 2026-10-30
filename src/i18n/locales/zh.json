@@ -13,7 +13,9 @@
     "password": "密码",
     "submit": "登录",
     "forgot": "忘记密码？",
-    "signUp": "创建账户"
+    "signUp": "创建账户",
+    "with": "使用 {{provider}} 继续",
+    "providerFailed": "此次登录未成功。请重试，或使用密码登录。"
   },
   "twoFactor": {
     "title": "验证码",
@@ -23,7 +25,8 @@
     "recoveryCode": "恢复码",
     "useRecovery": "使用恢复码",
     "useCode": "使用应用中的验证码",
-    "submit": "继续"
+    "submit": "继续",
+    "startAgain": "重新开始"
   },
   "chooseTenant": {
     "title": "选择组织",
@@ -459,5 +462,12 @@
       "read-only": "服务暂时为只读：更改不会保存。",
       "maintenance": "服务正在维护。"
     }
+  },
+  "identities": {
+    "title": "登录方式",
+    "disconnect": "断开",
+    "disconnectTitle": "断开 {{provider}}？",
+    "disconnectBody": "之后将无法再用它登录。可在网页版中重新连接。",
+    "last": "这是你唯一的登录方式：请先设置密码。"
   }
 }

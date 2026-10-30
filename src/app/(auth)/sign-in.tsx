@@ -15,13 +15,20 @@ import {
   fieldError,
   firstError,
 } from '@/features/auth/errors';
-import { useAuthMethods, useSignIn } from '@/features/auth/hooks';
+import {
+  useAuthMethods,
+  useProviderSignIn,
+  useSignIn,
+} from '@/features/auth/hooks';
 import { goToStep } from '@/features/auth/navigation';
+import { providerName } from '@/features/auth/providers';
+import { ProviderSignInError } from '@/features/auth/sign-in-flow';
 
 export default function SignInScreen() {
   const { t } = useTranslation();
   const methods = useAuthMethods();
   const signIn = useSignIn();
+  const provider = useProviderSignIn();
 
   const schema = z.object({
     email: z.email({ error: t('validation.email') }),
@@ -92,6 +99,28 @@ export default function SignInScreen() {
         onPress={() => form.handleSubmit()}
       />
 
+      {(methods.data?.providers ?? []).map((name) => (
+        <Button
+          key={name}
+          title={t('signIn.with', { provider: providerName(name) })}
+          variant="secondary"
+          loading={provider.isPending && provider.variables === name}
+          disabled={provider.isPending}
+          onPress={async () => {
+            const step = await provider.mutateAsync(name).catch(() => null);
+            if (step) {
+              goToStep(step);
+            }
+          }}
+        />
+      ))}
+      {provider.error && (
+        <ThemedText themeColor="danger" accessibilityRole="alert">
+          {provider.error instanceof ProviderSignInError
+            ? t('signIn.providerFailed')
+            : apiErrorMessage(provider.error, t)}
+        </ThemedText>
+      )}
       <View style={styles.links}>
         <Link href="/forgot-password" asChild>
           <Pressable accessibilityRole="link">
