@@ -202,7 +202,9 @@
     "title": "Sahkan ini anda",
     "hint": "Ini memerlukan log masuk baru-baru ini.",
     "confirm": "Sahkan",
-    "signInAgain": "Akaun anda log masuk dengan pautan atau penyedia lain, yang tidak boleh diminta oleh aplikasi di sini. Log keluar dan log masuk semula, kemudian cuba lagi."
+    "signInAgain": "Akaun anda log masuk dengan pautan atau penyedia lain, yang tidak boleh diminta oleh aplikasi di sini. Log keluar dan log masuk semula, kemudian cuba lagi.",
+    "providerHint": "Akaun anda log masuk melalui penyedia: sahkan dengannya.",
+    "providerFailed": "Itu tidak mengesahkan bahawa ini anda. Cuba lagi."
   },
   "security": {
     "title": "Keselamatan"
@@ -470,8 +472,10 @@
     "title": "Log masuk dengan",
     "disconnect": "Putuskan",
     "disconnectTitle": "Putuskan {{provider}}?",
-    "disconnectBody": "Anda tidak lagi boleh log masuk dengannya. Sambungkan semula dalam aplikasi web.",
-    "last": "Ini satu-satunya cara anda log masuk: tetapkan kata laluan dahulu."
+    "disconnectBody": "Anda tidak boleh log masuk dengannya sehingga anda menyambungkannya semula.",
+    "last": "Ini satu-satunya cara anda log masuk: tetapkan kata laluan dahulu.",
+    "connect": "Sambungkan {{provider}}",
+    "linkFailed": "Akaun itu tidak dapat disambungkan: ia mungkin sudah milik akaun lain di sini."
   },
   "passkeys": {
     "title": "Kunci laluan",

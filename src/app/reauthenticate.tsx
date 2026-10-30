@@ -16,6 +16,9 @@ import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
 import { finishStepUp } from '@/features/account/step-up';
 import { apiErrorMessage, firstError } from '@/features/auth/errors';
+import { reauthenticateWithProvider } from '@/features/auth/native-provider';
+import { providerName } from '@/features/auth/providers';
+import { ProviderSignInError } from '@/features/auth/sign-in-flow';
 
 /** "Confirm it's you": the password (and a code with two-factor) again, before a sensitive action. */
 export default function ReauthenticateScreen() {
@@ -33,6 +36,46 @@ export default function ReauthenticateScreen() {
   useEffect(() => () => finishStepUp(proved.current), []);
 
   const methods = how.data?.methods ?? [];
+  // Connected providers, which can authenticate the person again.
+  const providers = methods
+    .filter((method) => method.startsWith('oidc:'))
+    .map((method) => method.slice('oidc:'.length));
+  const [viaProvider, setViaProvider] = useState<string | null>(null);
+
+  async function withProvider(provider: string) {
+    setError(null);
+    const code = form.getFieldValue('code').trim();
+    setViaProvider(provider);
+    try {
+      const done = await reauthenticateWithProvider(
+        provider,
+        withCode && code
+          ? recovery
+            ? { recoveryCode: code }
+            : { code }
+          : undefined,
+      );
+      if (done) {
+        proved.current = true;
+        router.back();
+      }
+    } catch (failed) {
+      setError(failed);
+    } finally {
+      setViaProvider(null);
+    }
+  }
+
+  const providerButtons = providers.map((provider) => (
+    <Button
+      key={provider}
+      title={t('signIn.with', { provider: providerName(provider) })}
+      variant="secondary"
+      loading={viaProvider === provider}
+      disabled={viaProvider !== null}
+      onPress={() => void withProvider(provider)}
+    />
+  ));
   const withPassword = methods.includes('password');
   const withCode =
     Boolean(how.data?.mfaRequired) ||
@@ -85,8 +128,32 @@ export default function ReauthenticateScreen() {
     );
   }
 
+  if (!withPassword && !withCode && providers.length) {
+    // A provider-only account: the provider proves it.
+    return (
+      <Screen>
+        <ThemedText type="subtitle">{t('reauth.title')}</ThemedText>
+        <ThemedText themeColor="textSecondary">
+          {t('reauth.providerHint')}
+        </ThemedText>
+        {providerButtons}
+        {Boolean(error) && (
+          <ThemedText themeColor="danger" accessibilityRole="alert">
+            {error instanceof ProviderSignInError
+              ? t('reauth.providerFailed')
+              : apiErrorMessage(error, t)}
+          </ThemedText>
+        )}
+        <Button
+          title={t('sessions.cancel')}
+          variant="secondary"
+          onPress={() => router.back()}
+        />
+      </Screen>
+    );
+  }
   if (!withPassword && !withCode) {
-    // An account that signs in only by link or provider can't prove it here.
+    // An account that signs in only by link can't prove it here.
     return (
       <Screen>
         <ThemedText type="subtitle">{t('reauth.title')}</ThemedText>
@@ -165,7 +232,9 @@ export default function ReauthenticateScreen() {
       )}
       {Boolean(error) && (
         <ThemedText themeColor="danger" accessibilityRole="alert">
-          {apiErrorMessage(error, t)}
+          {error instanceof ProviderSignInError
+            ? t('reauth.providerFailed')
+            : apiErrorMessage(error, t)}
         </ThemedText>
       )}
       <form.Subscribe selector={(state) => state.isSubmitting}>
@@ -177,6 +246,7 @@ export default function ReauthenticateScreen() {
           />
         )}
       </form.Subscribe>
+      {providerButtons}
       <Button
         title={t('sessions.cancel')}
         variant="secondary"

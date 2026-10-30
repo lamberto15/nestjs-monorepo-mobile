@@ -153,12 +153,23 @@ starts again. On iOS the browser session catches the return itself; on
 Android it also arrives as a link, which `src/app/+native-intent.tsx`
 keeps from opening a screen. Works in Expo Go on iOS.
 
-- **Which account:** the backend links a provider identity to an existing
-  account by verified email only. A GitHub with another address is linked
-  once from the web app (a browser session, `?link=true`): a token-only
-  app can't link yet, nor step up through a provider (backend #974).
-  Account → Security lists the linked providers and disconnects one
-  (`GET`/`DELETE /v1/auth/identities`; never the last way to sign in).
+- **Which account:** a sign-in finds the account by a linked identity, or
+  links by verified email. Signed in, the app connects a provider itself
+  (Account → Security, "Connect GitHub"): `POST
+/v1/auth/identities/{provider}/native { purpose: 'link', redirectUri,
+codeChallenge }` answers a one-time browser URL bound to this token
+  session; the browser hands back a code; `POST
+/v1/auth/identities/native/complete { handoffCode, codeVerifier }` links
+  it (`src/features/auth/native-provider.ts`). An identity that is another
+  account's is refused (`?error=link_failed`, 409 `identity_taken`).
+  Disconnect: `DELETE /v1/auth/identities/{provider}` (never the last way
+  to sign in).
+- **Step-up through a provider:** "Confirm it's you" offers the
+  connected providers (`oidc:<provider>` in `GET /v1/auth/reauthenticate`):
+  the same ticket with `purpose: 'reauthenticate'` (the provider asks
+  again), then `complete` with the current `refreshToken` (and the code
+  with two-factor) answers a new pair with a fresh `auth_time`, which the
+  session keeps (`session.reauthenticateWith`).
 - **Backend setup:** the provider's client ID and secret
   (`GITHUB_CLIENT_ID/SECRET`…, callback `<APP_URL>/v1/auth/oidc/<provider>/callback`)
   and `NATIVE_REDIRECT_URIS=<APP_ID>:/auth`.

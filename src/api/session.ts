@@ -225,6 +225,28 @@ export const session = {
     return exclusive(() => prove(proof));
   },
 
+  /**
+   * A step-up whose proof was made elsewhere (a provider, in the browser):
+   * `issue` gets the access token to call with and the refresh token to
+   * revoke, and answers the new pair, which the session keeps.
+   */
+  reauthenticateWith(
+    issue: (
+      accessToken: string,
+      refreshToken: string | null,
+    ) => Promise<Tokens>,
+  ): Promise<void> {
+    return exclusive(async () => {
+      const current =
+        accessToken && Date.now() < expiresAt - EARLY_MS
+          ? accessToken
+          : await renew();
+      const tokens = await issue(current, await storage.get(REFRESH_TOKEN_KEY));
+      await keep(tokens);
+      return tokens.accessToken;
+    });
+  },
+
   /** The API answered 401 to a token we thought valid: renew on next use. */
   dropAccessToken() {
     accessToken = null;

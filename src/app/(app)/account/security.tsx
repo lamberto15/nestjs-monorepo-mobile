@@ -15,6 +15,7 @@ import { ThemedText } from '@/components/themed-text';
 import { AppLockSwitch } from '@/features/account/app-lock-switch';
 import {
   useIdentities,
+  useLinkProvider,
   useUnlinkIdentity,
 } from '@/features/account/identities';
 import { useChangePassword } from '@/features/account/lifecycle';
@@ -29,7 +30,8 @@ import {
   usePasskeys,
   useRemovePasskey,
 } from '@/features/account/passkeys';
-import { useMe } from '@/features/auth/hooks';
+import { useAuthMethods, useMe } from '@/features/auth/hooks';
+import { ProviderSignInError } from '@/features/auth/sign-in-flow';
 import { PasskeyFailed, passkeysAvailable } from '@/features/auth/passkeys';
 import { providerName } from '@/features/auth/providers';
 import { formatDateTime } from '@/i18n/format';
@@ -145,11 +147,20 @@ function Passkeys() {
 function LinkedProviders() {
   const { t } = useTranslation();
   const identities = useIdentities();
+  const methods = useAuthMethods();
+  const link = useLinkProvider();
   const unlink = useUnlinkIdentity();
   const items = identities.data?.items ?? [];
-  if (!items.length) {
+  // This server's providers not connected yet.
+  const connectable = (methods.data?.providers ?? []).filter(
+    (provider) => !items.some((item) => item.provider === provider),
+  );
+  if (!items.length && !connectable.length) {
     return null;
   }
+  const error = [link.error, unlink.error].find(
+    (e) => e && !(e instanceof StepUpCancelled),
+  );
   return (
     <>
       <ThemedText type="smallBold" accessibilityRole="header">
@@ -187,12 +198,24 @@ function LinkedProviders() {
           }
         />
       ))}
-      {unlink.error && !(unlink.error instanceof StepUpCancelled) && (
+      {connectable.map((provider) => (
+        <Button
+          key={provider}
+          title={t('identities.connect', { provider: providerName(provider) })}
+          variant="secondary"
+          loading={link.isPending && link.variables === provider}
+          disabled={link.isPending}
+          onPress={() => link.mutate(provider)}
+        />
+      ))}
+      {error && (
         <ThemedText type="small" themeColor="danger" accessibilityRole="alert">
-          {isApiError(unlink.error) &&
-          unlink.error.code === 'last_sign_in_method'
+          {isApiError(error) && error.code === 'last_sign_in_method'
             ? t('identities.last')
-            : apiErrorMessage(unlink.error, t)}
+            : (isApiError(error) && error.code === 'identity_taken') ||
+                error instanceof ProviderSignInError
+              ? t('identities.linkFailed')
+              : apiErrorMessage(error, t)}
         </ThemedText>
       )}
     </>

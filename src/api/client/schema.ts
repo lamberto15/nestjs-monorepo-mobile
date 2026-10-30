@@ -4895,6 +4895,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/auth/identities/{provider}/native": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Link a provider, or step up through one, from a native app
+         * @description For an app signed in with tokens (a browser session: 400 `token_session_required`; use `?link=true` / `?reauthenticate=true`). Answers the `url` to open in the system browser: a one-time ticket, for five minutes, bound to you, this token session, the purpose, `redirectUri` (one of NATIVE_REDIRECT_URIS) and `codeChallenge`. A step-up asks the provider to authenticate you again. The browser lands on `redirectUri?code=…` (or `?error=link_failed` / `reauthentication_failed`): POST /auth/identities/native/complete with the verifier. docs/auth.md, "Native and mobile apps".
+         */
+        post: operations["OidcController_nativeTicket_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/identities/native/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Finish a native link or step-up with its handoff code
+         * @description With the token session that asked for the ticket. A link answers the identity (an identity already another account's was refused at the callback: `?error=link_failed`, nothing changed; connected to one since: 409 `identity_taken`). The link is written only now. A step-up answers new tokens with a fresh `auth_time`, as POST /auth/reauthenticate does for a password: send `refreshToken` to revoke the old pair. Two-factor on: without a code, 401 `mfa_required` and the handoff code still works (for its minute); a wrong one spends it.
+         */
+        post: operations["OidcController_nativeComplete_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/auth/identities/{provider}": {
         parameters: {
             query?: never;
@@ -30376,6 +30416,8 @@ export interface operations {
                 redirectUri?: string;
                 /** @description PKCE (RFC 7636, S256): the base64url SHA-256 of a `codeVerifier` the app keeps for POST /auth/token/exchange. */
                 codeChallenge?: string;
+                /** @description A signed-in app's link or step-up: the `url` of POST /auth/identities/{provider}/native carries it. */
+                ticket?: string;
             };
             header?: never;
             path: {
@@ -30442,6 +30484,109 @@ export interface operations {
                         }[];
                     };
                 };
+            };
+        };
+    };
+    OidcController_nativeTicket_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description `link`: connect the provider to your account (wants a recent sign-in, as the browser's). `reauthenticate`: step up through a provider already connected.
+                     * @enum {string}
+                     */
+                    purpose: "link" | "reauthenticate";
+                    /** @description One of NATIVE_REDIRECT_URIS: where the browser hands back `?code=` or `?error=`. */
+                    redirectUri: string;
+                    /** @description PKCE (RFC 7636, S256): the base64url SHA-256 of a `codeVerifier` the app keeps for POST /auth/token/exchange. */
+                    codeChallenge: string;
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The login route with the ticket: open it in the system browser. */
+                        url: string;
+                    };
+                };
+            };
+            /** @description `reauthentication_required`: no sign-in in the last REAUTHENTICATION_MAX_AGE_MINUTES: re-authenticate (POST /auth/reauthenticate, or sign in again: the problem lists `methods`) and retry. Or not allowed: your permissions, or acting as another user. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OidcController_nativeComplete_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The `code` the ticket's `redirectUri` was handed. */
+                    handoffCode: string;
+                    /** @description The PKCE verifier of the ticket's `codeChallenge`. */
+                    codeVerifier: string;
+                    /** @description A step-up with two-factor on: a code from the app. */
+                    code?: string;
+                    recoveryCode?: string;
+                    /** @description A step-up: your current refresh token, revoked once the new pair is issued. */
+                    refreshToken?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        purpose: "link";
+                        identity: {
+                            provider: string;
+                            email: string | null;
+                            /** Format: date-time */
+                            createdAt: string;
+                        };
+                    } | {
+                        /** @enum {string} */
+                        purpose: "reauthenticate";
+                        /** @description A JWT with `auth_time` now: `Authorization: Bearer …`. */
+                        accessToken: string;
+                        /** @description Single use: POST /auth/token/refresh. */
+                        refreshToken: string;
+                        /** @description Seconds until the access token expires. */
+                        expiresIn: number;
+                    };
+                };
+            };
+            /** @description Unknown, used or expired code, another verifier, user or session; a second factor required or wrong. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
