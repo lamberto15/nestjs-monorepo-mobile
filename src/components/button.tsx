@@ -6,11 +6,12 @@ import {
 } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { ControlHeight, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export type ButtonProps = Omit<PressableProps, 'children'> & {
   title: string;
+  /** primary: the action; secondary: a quieter one beside it; danger: destructive. */
   variant?: 'primary' | 'secondary' | 'danger';
   loading?: boolean;
 };
@@ -34,12 +35,13 @@ export function Button({
       style={(state) => [
         styles.button,
         variant === 'secondary'
-          ? { borderColor: theme.border, borderWidth: 1 }
+          ? { backgroundColor: theme.backgroundElement }
           : {
               backgroundColor:
                 variant === 'danger' ? theme.dangerFill : theme.primary,
             },
-        (state.pressed || inactive) && styles.dimmed,
+        state.pressed && styles.pressed,
+        inactive && styles.dimmed,
         typeof style === 'function' ? style(state) : style,
       ]}
       {...rest}
@@ -48,8 +50,10 @@ export function Button({
         <ActivityIndicator color={filled ? theme.onPrimary : theme.text} />
       ) : (
         <ThemedText
-          type="smallBold"
-          style={{ color: filled ? theme.onPrimary : theme.text }}
+          style={[
+            styles.label,
+            { color: filled ? theme.onPrimary : theme.text },
+          ]}
         >
           {title}
         </ThemedText>
@@ -62,11 +66,21 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
-    borderRadius: Spacing.two,
+    minHeight: ControlHeight,
+    borderRadius: Radius.control,
     paddingHorizontal: Spacing.three,
   },
+  label: {
+    fontSize: 16,
+    lineHeight: 22,
+    fontWeight: 600,
+  },
+  // A press sinks a little, so the control answers the finger.
+  pressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.985 }],
+  },
   dimmed: {
-    opacity: 0.6,
+    opacity: 0.5,
   },
 });

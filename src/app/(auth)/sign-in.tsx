@@ -52,7 +52,7 @@ export default function SignInScreen() {
 
   return (
     <Screen>
-      <ThemedText type="subtitle">{t('app.name')}</ThemedText>
+      <ThemedText type="headline">{t('app.name')}</ThemedText>
 
       <form.Field name="email">
         {(field) => (

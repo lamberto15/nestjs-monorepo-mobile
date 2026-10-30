@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/button';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { ThemedView } from '@/components/themed-view';
+import { Radius, Spacing } from '@/constants/theme';
 import { apiErrorMessage } from '@/features/auth/errors';
 
 /** A failed load: why (the API's words, or ours), and a way to try again. */
@@ -16,10 +17,16 @@ export function ErrorState({
 }) {
   const { t } = useTranslation();
   return (
-    <View style={styles.box} accessibilityLiveRegion="polite">
-      <ThemedText themeColor="danger" accessibilityRole="alert">
-        {apiErrorMessage(error, t)}
-      </ThemedText>
+    <ThemedView type="backgroundElement" style={styles.box}>
+      <View accessibilityLiveRegion="polite" style={styles.message}>
+        <ThemedText
+          themeColor="danger"
+          accessibilityRole="alert"
+          style={styles.text}
+        >
+          {apiErrorMessage(error, t)}
+        </ThemedText>
+      </View>
       {onRetry && (
         <Button
           title={t('errors.retry')}
@@ -27,12 +34,21 @@ export function ErrorState({
           onPress={onRetry}
         />
       )}
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   box: {
+    gap: Spacing.three,
+    padding: Spacing.three,
+    borderRadius: Radius.card,
+  },
+  message: {
     gap: Spacing.two,
+  },
+  text: {
+    fontSize: 15,
+    lineHeight: 22,
   },
 });

@@ -28,6 +28,8 @@ import { pendingLink } from '@/features/auth/pending-link';
 import { useSessionStatus } from '@/hooks/use-session-status';
 
 SplashScreen.preventAutoHideAsync();
+// The splash fades into the app instead of cutting to it.
+SplashScreen.setOptions({ fade: true, duration: 400 });
 void session.restore();
 void appLock.load();
 applyAppearance(savedAppearance());

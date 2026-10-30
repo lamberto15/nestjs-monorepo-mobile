@@ -2,11 +2,13 @@ import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/button';
+import { EmptyState } from '@/components/empty-state';
 import { ErrorState } from '@/components/error-state';
-import { ListRow } from '@/components/list-row';
+import { ListGroup, ListRow } from '@/components/list-row';
+import { SkeletonRows } from '@/components/skeleton';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { API_URL } from '@/api/public-api';
@@ -60,7 +62,7 @@ export default function HomeScreen() {
         <ErrorState error={me.error} onRetry={() => me.refetch()} />
       )}
       <Inbox />
-      <View style={styles.links}>
+      <ListGroup>
         <ListRow
           title={t('approvals.title')}
           onPress={() => router.push('/approvals')}
@@ -69,7 +71,7 @@ export default function HomeScreen() {
           title={t('acknowledgments.title')}
           onPress={() => router.push('/acknowledgments')}
         />
-      </View>
+      </ListGroup>
       <Favorites />
       <Recents />
       {__DEV__ && (
@@ -121,7 +123,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <ThemedText type="smallBold" accessibilityRole="header">
+      <ThemedText type="section" accessibilityRole="header">
         {title}
       </ThemedText>
       {children}
@@ -142,38 +144,40 @@ function Inbox() {
   const items = inbox.data?.pages.flatMap((page) => page.items) ?? [];
   return (
     <Section title={t('inbox.title')}>
-      {inbox.isPending && <ActivityIndicator />}
+      {inbox.isPending && <SkeletonRows count={3} />}
       {inbox.isError && (
         <ErrorState error={inbox.error} onRetry={() => inbox.refetch()} />
       )}
       {inbox.isSuccess && items.length === 0 && (
-        <ThemedText themeColor="textSecondary">{t('inbox.empty')}</ThemedText>
+        <EmptyState title={t('inbox.empty')} />
       )}
-      {items.map((item) => (
-        <ListRow
-          key={item.key}
-          title={t(`inbox.kinds.${item.kind}`, { defaultValue: item.kind })}
-          subtitle={[
-            item.subject,
-            item.dueAt
-              ? t('inbox.due', { date: formatDateTime(item.dueAt) })
-              : formatDateTime(item.at),
-          ]
-            .filter(Boolean)
-            .join(' · ')}
-          onPress={canOpen(item) ? () => openTarget(item) : undefined}
-          detail={
-            item.canDismiss ? (
-              <Button
-                title={t('inbox.dismiss')}
-                variant="secondary"
-                loading={dismiss.isPending && dismiss.variables === item.key}
-                onPress={() => dismiss.mutate(item.key)}
-              />
-            ) : undefined
-          }
-        />
-      ))}
+      <ListGroup>
+        {items.map((item) => (
+          <ListRow
+            key={item.key}
+            title={t(`inbox.kinds.${item.kind}`, { defaultValue: item.kind })}
+            subtitle={[
+              item.subject,
+              item.dueAt
+                ? t('inbox.due', { date: formatDateTime(item.dueAt) })
+                : formatDateTime(item.at),
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+            onPress={canOpen(item) ? () => openTarget(item) : undefined}
+            detail={
+              item.canDismiss ? (
+                <Button
+                  title={t('inbox.dismiss')}
+                  variant="secondary"
+                  loading={dismiss.isPending && dismiss.variables === item.key}
+                  onPress={() => dismiss.mutate(item.key)}
+                />
+              ) : undefined
+            }
+          />
+        ))}
+      </ListGroup>
       {inbox.hasNextPage && (
         <Button
           title={t('inbox.more')}
@@ -206,21 +210,23 @@ function Favorites() {
           onRetry={() => favorites.refetch()}
         />
       )}
-      {items.map((favorite) => {
-        // A record by its subject and id; a page or view by its path.
-        const target =
-          favorite.kind === 'record'
-            ? { subject: favorite.subject, recordId: favorite.target }
-            : { link: favorite.target };
-        return (
-          <ListRow
-            key={favorite.id}
-            title={favorite.label}
-            subtitle={favorite.subject}
-            onPress={canOpen(target) ? () => openTarget(target) : undefined}
-          />
-        );
-      })}
+      <ListGroup>
+        {items.map((favorite) => {
+          // A record by its subject and id; a page or view by its path.
+          const target =
+            favorite.kind === 'record'
+              ? { subject: favorite.subject, recordId: favorite.target }
+              : { link: favorite.target };
+          return (
+            <ListRow
+              key={favorite.id}
+              title={favorite.label}
+              subtitle={favorite.subject}
+              onPress={canOpen(target) ? () => openTarget(target) : undefined}
+            />
+          );
+        })}
+      </ListGroup>
     </Section>
   );
 }
@@ -238,16 +244,18 @@ function Recents() {
       {recents.isError && (
         <ErrorState error={recents.error} onRetry={() => recents.refetch()} />
       )}
-      {items.map((recent) => (
-        <ListRow
-          key={recent.id}
-          title={recent.label}
-          subtitle={[recent.subject, formatDateTime(recent.viewedAt)].join(
-            ' · ',
-          )}
-          onPress={canOpen(recent) ? () => openTarget(recent) : undefined}
-        />
-      ))}
+      <ListGroup>
+        {items.map((recent) => (
+          <ListRow
+            key={recent.id}
+            title={recent.label}
+            subtitle={[recent.subject, formatDateTime(recent.viewedAt)].join(
+              ' · ',
+            )}
+            onPress={canOpen(recent) ? () => openTarget(recent) : undefined}
+          />
+        ))}
+      </ListGroup>
       {items.length > 0 && (
         <Button
           title={t('recents.clear')}
@@ -264,9 +272,6 @@ const styles = StyleSheet.create({
   logo: {
     height: 40,
     width: 160,
-  },
-  links: {
-    gap: Spacing.two,
   },
   section: {
     gap: Spacing.two,
